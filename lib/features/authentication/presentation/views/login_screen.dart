@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+                SizedBox(height: Get.height * 0.02),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
@@ -106,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: Get.height * 0.01),
+                      SizedBox(height: Get.height * 0.02),
                       Text(
                         'username'.tr,
                         style: TextStyle(
@@ -195,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.02),
+                          height: MediaQuery.sizeOf(context).height * 0.04),
                       Obx(() {
                         if (authenticationController.loading.value) {
                           return CircularProgressIndicator(

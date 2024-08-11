@@ -53,6 +53,6 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'Tajawal',
               ),
         ),
-        home: RemoteDatabaseScreen());
+        home: LoginScreen());
   }
 }

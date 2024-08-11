@@ -227,9 +227,8 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
                                 Expanded(
                                   child: ButtonElevated(
                                       text: 'back'.tr,
-                                      width: MediaQuery.sizeOf(context).width /
-                                          3.5,
-                                      borderColor: AppColor.shadepurple,
+                                      borderRadius: 20,
+                                      borderColor: AppColor.brawn,
                                       onPressed: () async {
                                         Get.back();
                                       }),
