@@ -35,10 +35,10 @@ class AuthenticationController extends GetxController {
       LoginInfo loginInfo) async {
     loading.value = true;
     dynamic authResult = await authenticateService.authenticate(
-        username: loginInfo.userName!, password: loginInfo.password!);
+        visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
 
     if (authResult is User) {
-      authResult.password = loginInfo.password;
+      authResult.password = loginInfo.pinNumber;
       await saveUserDataLocally(authResult: authResult);
       authResult = ResponseResult(
           status: true, message: "Successful".tr, data: authResult);

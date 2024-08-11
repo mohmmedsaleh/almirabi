@@ -53,6 +53,8 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'Tajawal',
               ),
         ),
-        home: RemoteDatabaseScreen());
+        home: SharedPr.subscriptionDetailsObj?.url == null
+            ? RemoteDatabaseScreen()
+            : LoginScreen());
   }
 }

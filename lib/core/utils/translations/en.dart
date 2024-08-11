@@ -5,8 +5,7 @@ var en = {
   'no_connection': 'You Don\'t have an Internet Connection',
   'connection_is_back': 'You are Connected to Internet',
   'error_message': 'Error Message',
-  'send_ticket_message':
-      'Invalid Database name or URL\nYou can submit a ticket to contact administrators',
+  'invalid_dborurl_message': 'Invalid Database name or URL',
   'failed_connect_server': 'Failed to connect with server',
   'subscription_ended': 'Subscription ended',
   'success_key_login': 'Add DataBase & URL successfully!',
@@ -224,5 +223,6 @@ var en = {
   "new": "New",
   "loading_error": "some error happened when loading data, Please try again ",
   "url": "URL",
-  "dbName": "Database name"
+  "dbName": "Database name",
+  'visa_number': 'Visa Number'
 };

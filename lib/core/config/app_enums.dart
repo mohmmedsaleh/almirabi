@@ -37,18 +37,7 @@ enum SideUserMenu {
   dataManagement
 }
 
-enum Loaddata {
-  products,
-  customers,
-  categories,
-  vendors,
-  stockWarehouses,
-  priceList,
-  productUnit,
-  userPermissions,
-  posInfo,
-  paymentType,
-}
+enum Loaddata { requests }
 
 // enum SessionState {
 //   open,

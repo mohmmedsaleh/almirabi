@@ -3,19 +3,19 @@ import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
 import '../../../core/config/app_shared_pr.dart';
+import '../../../core/config/app_urls.dart';
 
 class OdooProjectOwnerConnectionHelper {
   static late OdooClient odooClient;
   static OdooSession? odooSession;
   static bool sessionClosed = false;
 
-  static Future instantiateOdooConnection(
-      {required String username, required String password}) async {
+  static Future instantiateOdooConnection() async {
     // change
     try {
       odooClient = OdooClient(SharedPr.subscriptionDetailsObj!.url!);
       odooSession = await odooClient.authenticate(
-          SharedPr.subscriptionDetailsObj!.db!, username, password);
+          SharedPr.subscriptionDetailsObj!.db!, remoteUsername, remotePassword);
       SharedPr.setSessionId(sessionId: "session_id=${odooSession!.id}");
     } on OdooException {
       if (kDebugMode) {

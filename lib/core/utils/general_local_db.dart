@@ -174,6 +174,7 @@ class GeneralLocalDB<T> {
 
   Future<int> createList({required List recordsList}) async {
     const batchSize = 10; // Adjust this size as needed
+    print('hrllo============== ${tableName}');
     return await DbHelper.db!.transaction((txn) async {
       int affectedRows = 0;
       try {
@@ -195,6 +196,7 @@ class GeneralLocalDB<T> {
           final List<dynamic> result = await batch.commit();
           affectedRows = result.reduce((sum, element) => sum + element);
         }
+
         return affectedRows;
       } catch (e) {
         if (kDebugMode) {
