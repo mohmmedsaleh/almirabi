@@ -1,25 +1,21 @@
 class LocalDatabaseStructure {
   //odoo_id INTEGER,
-  static String productStructure = """
+  static String carStructure = """
         id INTEGER PRIMARY KEY,
         product_id INTEGER,
-        product_name TEXT,
-        detailed_type TEXT,
-        product_tmpl_id INTEGER,
-        pos_available INTEGER,
-        uom_id INTEGER,
-        default_code TEXT,
-        so_pos_categ_id INTEGER,
-        barcode TEXT,
-        unit_price REAL,
-        currency TEXT,
-        image TEXT,
-        record_hash TEXT""";
+        name TEXT,
+        image TEXT""";
 
-  static String posCategoryStructure = """
+  static String requestStructure = """
         id INTEGER PRIMARY KEY,
-        name TEXT""";
-
+        carid INTEGER,    
+        from_date TEXT,
+        to_date TEXT,
+        montalmirabi_2022_2023_apph INTEGER,
+        total REAL
+        """;
+//  FOREIGN KEY (carid) REFERENCES car(id),
+//  FOREIGN KEY (source_shipping_path) REFERENCES car(id),
   static String productUnitStructure = """
         id INTEGER PRIMARY KEY,
         name TEXT""";
@@ -50,7 +46,7 @@ class LocalDatabaseStructure {
         password TEXT,
         pincode TEXT""";
 
-    static String posSessionStructure = """
+  static String posSessionStructure = """
         id INTEGER PRIMARY KEY,
         pos_id INTEGER,
         user_id INTEGER,
@@ -63,7 +59,6 @@ class LocalDatabaseStructure {
         last_end_date TEXT,
         last_balance_opening REAL
         """;
-
 
   //
   // static String itemHistoryStructure = """

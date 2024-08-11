@@ -25,33 +25,27 @@ class AuthenticationService implements AuthenticationRepository {
 
   @override
   Future authenticate(
-      {required String username, required String password}) async {
+      {required String visaNumber, required String pinNumber}) async {
     try {
       OdooProjectOwnerConnectionHelper.odooSession = null;
-      await OdooProjectOwnerConnectionHelper.instantiateOdooConnection(
-          username: username, password: password);
-
+      await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
       List result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.resUsers,
+        'model': OdooModels.hremployee,
         'method': 'search_read',
         'args': [],
         'kwargs': {
           //'context': {'bin_size': true}, // for user image
           'domain': [
-            ['id', '=', OdooProjectOwnerConnectionHelper.odooSession!.userId]
-          ],
-          'fields': [
-            'id',
-            'name',
-            'login',
-            'image_1920',
-            'pin_code',
-            'pin_code_lock',
-            'account_lock',
-            'pos_config_ids'
+            ['driver_emp', '=', true],
+            ['pin', '=', pinNumber],
+            ['visa_no', '=', visaNumber],
           ],
         },
       });
+
+      if (result.isEmpty) {
+        return 'user_not_found'.tr;
+      }
       // _GeneralOdooFunInstance = GeneralOdooFun.getInstance<Customer>(
       //     fromJsonFun: Customer.fromJson, modelName: OdooModels.customer);
       // int affectedRows = await _GeneralOdooFunInstance!.show(id: 0);
@@ -67,6 +61,7 @@ class AuthenticationService implements AuthenticationRepository {
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
+      return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
       // return "exception".tr;
       return e.toString().replaceFirst('Exception: ', '');

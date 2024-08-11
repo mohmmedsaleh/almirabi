@@ -1,5 +1,5 @@
 abstract class AuthenticationRepository {
-  Future authenticate({required String username, required String password});
+  Future authenticate({required String visaNumber, required String pinNumber});
 
   Future deleteData();
   Future dropTable();
