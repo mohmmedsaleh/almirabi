@@ -1,28 +1,37 @@
 class LocalDatabaseStructure {
   //odoo_id INTEGER,
   static String carStructure = """
-        id INTEGER PRIMARY KEY,
-        product_id INTEGER,
-        name TEXT,
-        image TEXT""";
+        car_id INTEGER PRIMARY KEY,
+        car_name TEXT
+        """;
 
   static String requestStructure = """
         id INTEGER PRIMARY KEY,
-        carid INTEGER,    
+        product_car_id INTEGER,    
         from_date TEXT,
         to_date TEXT,
-        montalmirabi_2022_2023_apph INTEGER,
-        total REAL
+        month_name INTEGER,
+        source_path_id INTEGER,
+        source_path_name TEXT,
+        state TEXT,
+        request_lines TEXT,
+        amout_total REAL
         """;
 //  FOREIGN KEY (carid) REFERENCES car(id),
 //  FOREIGN KEY (source_shipping_path) REFERENCES car(id),
-  static String productUnitStructure = """
-        id INTEGER PRIMARY KEY,
-        name TEXT""";
-
+  static String sourcePathStructure = """
+        source_path_id INTEGER PRIMARY KEY,
+        source_path_name TEXT,
+        lines TEXT
+        """;
+  static String sourcePathLineStructure = """
+        dest_id INTEGER PRIMARY KEY,
+        dest_name TEXT,
+        dest_price REAL
+        """;
 // id INTEGER PRIMARY KEY AUTOINCREMENT,
   static String customerStructure = """
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,almirabi_2022_2023_app
       name TEXT,
       email TEXT,
       phone TEXT,
@@ -41,10 +50,10 @@ class LocalDatabaseStructure {
           stauts INTEGER
       """;
   static String userStructure = """
-        id INTEGER PRIMARY KEY,
-        username TEXT,
-        password TEXT,
-        pincode TEXT""";
+        driver_id INTEGER PRIMARY KEY,
+        driver_name TEXT,
+        image TEXT
+        """;
 
   static String posSessionStructure = """
         id INTEGER PRIMARY KEY,

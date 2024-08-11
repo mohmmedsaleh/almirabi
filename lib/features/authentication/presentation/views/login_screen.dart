@@ -12,7 +12,7 @@ import '../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../core/utils/response_result.dart';
-import '../../../basic_data_management/request/presentation/order_list_screen.dart';
+import '../../../basic_data_management/request/presentation/request_list_screen.dart';
 import '../../data/login_info.dart';
 import '../../domain/authentication_viewmodel.dart';
 
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
               visaNumber: visaNumberController.text,
               pinNumber: pinNumberController.text));
       if (responseResult.status) {
-        Get.to(() => const HomePage());
+        Get.to(() => const RequestListScreen());
 
         // Get.to(() => const DashboardScreen());
         appSnackBar(

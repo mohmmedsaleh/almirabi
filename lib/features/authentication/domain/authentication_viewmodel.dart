@@ -38,8 +38,8 @@ class AuthenticationController extends GetxController {
         visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
 
     if (authResult is User) {
-      authResult.password = loginInfo.pinNumber;
       await saveUserDataLocally(authResult: authResult);
+      SharedPr.setUserObj(userObj: authResult);
       authResult = ResponseResult(
           status: true, message: "Successful".tr, data: authResult);
 
@@ -58,22 +58,25 @@ class AuthenticationController extends GetxController {
         GeneralLocalDB.getInstance<User>(fromJsonFun: User.fromJson);
     await _generalLocalDBinstance!
         .createTable(structure: LocalDatabaseStructure.userStructure);
-    Map<String, dynamic>? objToCreate = {
-      'username': authResult.userName,
-      'pincode': authResult.pinCode,
-    };
-    objToCreate.addIf(
-        authResult.password != null, 'password', authResult.password);
+    // Map<String, dynamic>? objToCreate = {
+    //   'username': authResult.userName,
+    //   'pincode': authResult.pinCode,
+    // };
+    // objToCreate.addIf(
+    //     authResult.password != null, 'password', authResult.password);
 
     // print(objToCreate);
     bool userExist = await _generalLocalDBinstance!
-        .checkRowExists(val: authResult.userName, whereKey: 'username');
+        .checkRowExists(val: authResult.id, whereKey: 'driver_id');
     if (userExist) {
-      await _generalLocalDBinstance!.update(
-          id: authResult.userName, obj: objToCreate, whereField: 'username');
+      await _generalLocalDBinstance!
+          .update(id: authResult.id, obj: authResult, whereField: 'driver_id');
     } else {
-      await _generalLocalDBinstance!.create(obj: objToCreate);
+      await _generalLocalDBinstance!.create(obj: authResult);
     }
+    bool userExist2 = await _generalLocalDBinstance!
+        .checkRowExists(val: authResult.id, whereKey: 'driver_id');
+    print("object");
   }
 
   // ========================================== [ AUTHENTICATE ] =============================================

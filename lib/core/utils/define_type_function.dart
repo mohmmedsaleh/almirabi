@@ -1,5 +1,6 @@
 // [ HELPER FUNCTION ] =================================================================
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
+import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:get/get.dart';
 
 // ignore_for_file: type_literal_in_constant_pattern
@@ -115,9 +116,12 @@ getLocalInstanceType<T>({T? type}) {
       instance =
           GeneralLocalDB.getInstance<Requests>(fromJsonFun: Requests.fromJson);
       break;
-
     case Car:
       instance = GeneralLocalDB.getInstance<Car>(fromJsonFun: Car.fromJson);
+      break;
+    case SourcePath:
+      instance = GeneralLocalDB.getInstance<SourcePath>(
+          fromJsonFun: SourcePath.fromJson);
       break;
     // case PosCategory:
     //   instance = GeneralLocalDB.getInstance<PosCategory>(

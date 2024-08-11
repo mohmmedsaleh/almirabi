@@ -26,7 +26,7 @@ PreferredSizeWidget customAppBar(
         Text(
           '${"welcomeBack".tr} ${SharedPr.userObj!.name}',
           style: AppStyle.textStyle(
-            fontSize: Get.width * 0.01,
+            fontSize: Get.width * 0.025,
             fontWeight: FontWeight.bold,
             color: AppColor.white,
           ),
@@ -145,23 +145,26 @@ PreferredSizeWidget customAppBar(
                 child: SizedBox(
                   width: Get.height * 0.04,
                   height: Get.height * 0.04,
-                  child: SharedPr.userObj!.image_1920 != ''
-                      ? isSvg(SharedPr.userObj!.image_1920!)
-                          ? SvgPicture.memory(
-                              base64.decode(SharedPr.userObj!.image_1920!),
-                              clipBehavior: Clip.antiAlias,
-                              fit: BoxFit.fill,
-                            )
-                          : Image.memory(
-                              base64Decode(SharedPr.userObj!.image_1920!),
-                              // clipBehavior: Clip.antiAlias,
-                              fit: BoxFit.fill,
-                            )
-                      : Icon(
-                          // color: AppColor.white,
-                          Icons.account_circle,
-                          size: Get.height * 0.04,
-                        ),
+                  child: CircleAvatar(
+                    backgroundColor: AppColor.white,
+                    child: SharedPr.userObj!.image_1920 != ''
+                        ? isSvg(SharedPr.userObj!.image_1920!)
+                            ? SvgPicture.memory(
+                                base64.decode(SharedPr.userObj!.image_1920!),
+                                clipBehavior: Clip.antiAlias,
+                                fit: BoxFit.fill,
+                              )
+                            : Image.memory(
+                                base64Decode(SharedPr.userObj!.image_1920!),
+                                // clipBehavior: Clip.antiAlias,
+                                fit: BoxFit.fill,
+                              )
+                        : Icon(
+                            color: AppColor.black,
+                            Icons.account_circle,
+                            size: Get.height * 0.04,
+                          ),
+                  ),
                 ),
               ),
             ],
@@ -180,14 +183,10 @@ PreferredSizeWidget customAppBar(
       // padding: const EdgeInsets.all(15),
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
-          color: headerBackground ? AppColor.purple : Colors.transparent,
+          color: headerBackground ? AppColor.brawn : Colors.transparent,
           borderRadius: BorderRadius.only(
-              bottomLeft: SharedPr.lang == "en"
-                  ? Radius.zero
-                  : const Radius.circular(20),
-              bottomRight: SharedPr.lang == "ar"
-                  ? Radius.zero
-                  : const Radius.circular(20))),
+              bottomLeft: const Radius.circular(20),
+              bottomRight: const Radius.circular(20))),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(

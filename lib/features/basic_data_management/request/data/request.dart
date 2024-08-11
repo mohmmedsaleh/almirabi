@@ -3,12 +3,13 @@ import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 class Requests {
   int? id;
   Car? car;
-  int? fromDate;
-  int? toDate;
-  int? monthName;
-  String? sourcePathId;
-  int? state;
-  String? requestLines;
+  String? fromDate;
+  String? toDate;
+  String? monthName;
+  int? sourcePathId;
+  String? sourcePathName;
+  String? state;
+  List? requestLines;
   double? amoutTotal;
   Requests(
       {this.id,
@@ -22,54 +23,42 @@ class Requests {
       this.amoutTotal});
 
   Requests.fromJson(Map<String, dynamic> json, {bool fromTemblet = false}) {
+    print("${json['id']} ${json['id'].runtimeType}");
+    print("${json['product_car_id']} ${json['product_car_id'].runtimeType}");
+    print("${json['from_date']} ${json['from_date'].runtimeType}");
+    print("${json['to_date']} ${json['to_date'].runtimeType}");
+    print("${json['month_name']} ${json['month_name'].runtimeType}");
+    print("${json['source_path_id']} ${json['source_path_id'].runtimeType}");
+    print(
+        "${json['source_path_name']} ${json['source_path_name'].runtimeType}");
+    print("${json['state']} ${json['state'].runtimeType}");
+    print("${json['request_lines']} ${json['request_lines'].runtimeType}");
+    print("${json['amout_total']} ${json['amout_total'].runtimeType}");
     id = json['id'];
-    car = Car(
-        id: json['product_car_id'].first,
-        productId: 0,
-        image: '',
-        name: json['product_car_id'].last);
+    car = Car(id: json['product_car_id'], name: '');
     fromDate = json['from_date'];
     toDate = json['to_date'];
     monthName = json['month_name'];
     sourcePathId = json['source_path_id'];
+    sourcePathName = json['source_path_name'];
     state = json['state'];
-    requestLines = json['request_lines'];
+    requestLines = json['request_lines'] ?? [];
     amoutTotal = json['amout_total'];
   }
 
   Map<String, dynamic> toJson({bool isRemotelyAdded = false}) {
     final Map<String, dynamic> data = <String, dynamic>{};
 
-    // if(toLocal){
-    //   data['list_price'] = unitPrice;
-    //   return data;
-    // }
     data['id'] = id;
-    data['product_tmpl_id'] = productTmplId;
-    data['product_id'] = productId;
-    data['uom_id'] = uomId;
-    // data['uom_name'] = uomName;
-    data['default_code'] = defaultCode;
-    data['so_pos_categ_id'] = soPosCategId;
-    // data['so_pos_categ_name'] = soPosCategName;
-    data['barcode'] = barcode;
-    data['unit_price'] = unitPrice;
-    data['currency'] = currency;
-    data['image'] = image;
-    data[]
-    return data;
-  }
-
-  Map<String, dynamic> remoteInsertWithSpecificMap({bool update = false}) {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['list_price'] = unitPrice;
-    data['detailed_type'] = "product";
-    data['barcode'] = barcode;
-    data['so_pos_categ_id'] = soPosCategId;
-    data['uom_id'] = uomId; // unit_uom_id
-    data['uom_po_id'] = uomId; // purchase_uom_id
-    data['pos_available'] = true;
-    data['image_1920'] = image;
+    data['product_car_id'] = car!.id;
+    data['from_date'] = fromDate;
+    data['to_date'] = toDate;
+    data['month_name'] = monthName;
+    data['source_path_id'] = sourcePathId;
+    data['source_path_name'] = sourcePathName;
+    data['state'] = state;
+    data['request_lines'] = requestLines.toString();
+    data['amout_total'] = amoutTotal;
     return data;
   }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -51,21 +52,27 @@ class LoadingSynchronizingDataService
   Future<dynamic> loadCars() async {
     try {
       print('load car :===================');
+      // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.product,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {
+      //     'context': {},
+      //     'domain': [
+      //       ['car_flag', '=', true],
+      //     ],
+      //     'fields': ['name'],
+      //   },
+      // });
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.product,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {
-          'context': {},
-          'domain': [
-            ['car_flag', '=', true],
-          ],
-          'fields': ['name'],
-        },
+        'model': OdooModels.transfunctions,
+        'method': 'product_car_list',
+        'args': [SharedPr.userObj!.id],
+        'kwargs': {},
       });
-      print('result : ${result}');
+      print('result :=>>> ${result}');
 
-      return result.isEmpty
+      return result is bool
           ? <Car>[]
           : (result as List).map((e) => Car.fromJson(e)).toList();
     } on OdooSessionExpiredException {
@@ -89,24 +96,69 @@ class LoadingSynchronizingDataService
   @override
   Future<dynamic> loadRequest() async {
     try {
-      print('load requests :===========${SharedPr.userObj!.userName}========');
+      print('load requests :===========${SharedPr.userObj!}========');
+      // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.requests,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {
+      //     'context': {},
+      //     'domain': [
+      //       // ['', '=', true],
+      //     ],
+      //     // 'fields': ['name'],
+      //   },
+      // });
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.requests,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {
-          'context': {},
-          'domain': [
-            // ['', '=', true],
-          ],
-          // 'fields': ['name'],
-        },
+        'model': OdooModels.transfunctions,
+        'method': 'return_driver_requests_list',
+        'args': [SharedPr.userObj!.id],
+        'kwargs': {},
       });
       print('result : ${result}');
-
+      // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.transfunctions,
+      //   'method': 'source_path_list',
+      //   'args': [541, 6287],
+      //   'kwargs': {},
+      // });
+      // print('result : ${result2}');
       return result.isEmpty
           ? <Requests>[]
           : (result as List).map((e) => Requests.fromJson(e)).toList();
+    } on OdooSessionExpiredException {
+      // OdooProjectOwnerConnectionHelper.sessionClosed = true;
+      // if (kDebugMode) {
+      //   print("session_expired");
+      // }
+      return 'session_expired'.tr;
+    } on OdooException catch (e) {
+      print(e);
+      return e.toString().replaceFirst('Exception: ', '');
+    } catch (e) {
+      print(e);
+      return handleException(
+          exception: e,
+          navigation: false,
+          methodName: "loadUserPosSettingInfo");
+    }
+  }
+
+  @override
+  Future<dynamic> loadSourcePath() async {
+    try {
+      print('load requests :===========${SharedPr.userObj!}========');
+
+      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.transfunctions,
+        'method': 'source_path_list',
+        'args': [SharedPr.userObj!.id, 6287],
+        'kwargs': {},
+      });
+      print('result : ${result}');
+      return result.isEmpty
+          ? <SourcePath>[]
+          : (result as List).map((e) => SourcePath.fromJson(e)).toList();
     } on OdooSessionExpiredException {
       // OdooProjectOwnerConnectionHelper.sessionClosed = true;
       // if (kDebugMode) {

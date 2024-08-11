@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
+import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,6 +52,7 @@ class LoadingDataController extends GetxController {
       // await loadingPosCategoryIdsList();
       await loadingCar();
       await loadingRequest();
+      await loadingSourcePath();
       // await loadingProduct(posCategoriesIds: posCategoryIdsList);
       // await loadingCustomer();
       // await loadingProductUnit();
@@ -227,6 +229,30 @@ class LoadingDataController extends GetxController {
     isLoad.value = false;
   }
 
+  Future<void> loadingSourcePath() async {
+    print('=====================');
+    isLoad.value = true;
+    loadText.value = 'PosCategories Loading';
+
+    loadTital.value = "Pos Category Loading";
+    isLoadData.value = true;
+
+    lengthRemote.value = 0;
+    var result = await loadingSynchronizingDataService.loadSourcePath();
+    print('result : ${result.runtimeType}');
+    isLoadData.value = false;
+    if (result is List) {
+      print("===================================");
+      loadTital.value = "Create Pos Category";
+      lengthRemote.value = result.length;
+      await saveInLocalDB<SourcePath>(list: result as List<SourcePath>);
+    }
+    // List<PosCategory> list = await loadingSynchronizingDataService
+    //     .loadPosCategoryBasedOnUser(posCategoriesIds: posCategoriesIds);
+    // await saveInLocalDB<PosCategory>(list: list);
+    loadText.value = 'Completed';
+    isLoad.value = false;
+  }
 //   // [ LOADING CUSTOMERS ] ===============================================================
 //   Future<void> loadingCustomer() async {
 //     isLoad.value = true;
@@ -337,6 +363,7 @@ class LoadingDataController extends GetxController {
 //   }
 
   saveInLocalDB<T>({required List<T> list}) async {
+    print("==============getLocalInstanceType=====================");
     _instance = getLocalInstanceType<T>();
     // if (kDebugMode) {
     //   print("saveInLocalDB _instance : $_instance");
@@ -350,6 +377,7 @@ class LoadingDataController extends GetxController {
     // if (kDebugMode) {
     //   print('_instance list : $_instance');
     // }
+    print(_instance);
     _instance!.deleteData();
     if (list.isNotEmpty) {
       await _instance!.createList(recordsList: list);

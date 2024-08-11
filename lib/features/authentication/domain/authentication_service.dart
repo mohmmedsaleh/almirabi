@@ -29,21 +29,27 @@ class AuthenticationService implements AuthenticationRepository {
     try {
       OdooProjectOwnerConnectionHelper.odooSession = null;
       await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
-      List result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.hremployee,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {
-          //'context': {'bin_size': true}, // for user image
-          'domain': [
-            ['driver_emp', '=', true],
-            ['pin', '=', pinNumber],
-            ['visa_no', '=', visaNumber],
-          ],
-        },
+      // List result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.hremployee,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {
+      //     //'context': {'bin_size': true}, // for user image
+      //     'domain': [
+      //       ['driver_emp', '=', true],
+      //       ['pin', '=', pinNumber],
+      //       ['visa_no', '=', visaNumber],
+      //     ],
+      //   },
+      // });
+      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.transfunctions,
+        'method': 'authentication_login',
+        'args': [visaNumber, pinNumber],
+        'kwargs': {},
       });
-
-      if (result.isEmpty) {
+      print("object=========== : ${result}");
+      if (result is bool) {
         return 'user_not_found'.tr;
       }
       // _GeneralOdooFunInstance = GeneralOdooFun.getInstance<Customer>(
@@ -53,7 +59,7 @@ class AuthenticationService implements AuthenticationRepository {
       // print(affectedRows);
       // print("object==========ddd====================");
       // print(result.first);
-      return User.fromJson(result.first);
+      return User.fromJson(result);
     } on OdooSessionExpiredException {
       // OdooProjectOwnerConnectionHelper.sessionClosed = true;
       // if (kDebugMode) {
@@ -61,8 +67,10 @@ class AuthenticationService implements AuthenticationRepository {
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
+      print(e);
       return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
+      print(e);
       // return "exception".tr;
       return e.toString().replaceFirst('Exception: ', '');
     }

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../core/shared_widgets/app_dialog.dart';
 import '../../../core/utils/create_local_db_tables.dart';
-import '../../basic_data_management/request/presentation/order_list_screen.dart';
+import '../../basic_data_management/request/presentation/request_list_screen.dart';
 
 void failLoadingDialog() {
   CustomDialog.getInstance().dialog(
@@ -14,7 +14,7 @@ void failLoadingDialog() {
         Get.back();
         await DBHelper.dropDBTable(isDeleteBasicData: true);
         await DBHelper.createDBTables();
-        Get.offAll(() => const HomePage());
+        Get.offAll(() => const RequestListScreen());
       },
       secondaryOnPressed: () async {
         await DBHelper.dropDBTable(isDeleteBasicData: true);
