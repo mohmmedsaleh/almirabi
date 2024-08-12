@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../features/authentication/utils/handle_exception_helper.dart';
 import 'db_helper.dart';
@@ -81,10 +80,10 @@ class GeneralLocalDB<T> {
       } else {
         result = await DbHelper.db!.query(tableName);
       }
-      // if (kDebugMode) {
-      //      print('$tableName index');
-      //      print('$tableName result : $result');
-      // }
+      if (kDebugMode) {
+        print('$tableName index');
+        print('$tableName result : $result');
+      }
       return result.map((e) => fromJson(e)).toList();
     } catch (e) {
       throw handleException(
@@ -174,7 +173,7 @@ class GeneralLocalDB<T> {
 
   Future<int> createList({required List recordsList}) async {
     const batchSize = 10; // Adjust this size as needed
-    print('hrllo============== ${tableName}');
+    print('hrllo============== $tableName');
     return await DbHelper.db!.transaction((txn) async {
       int affectedRows = 0;
       try {

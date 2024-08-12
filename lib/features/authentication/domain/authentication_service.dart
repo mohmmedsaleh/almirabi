@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import '../../../core/config/app_odoo_models.dart';
-import '../../../core/config/app_shared_pr.dart';
 import '../../../core/utils/general_local_db.dart';
 import '../../../core/utils/general_odoo_fun.dart';
 import '../data/user.dart';
-import '../utils/handle_exception_helper.dart';
 import '../utils/odoo_connection_helper.dart';
 import 'authentication_repository.dart';
 
@@ -48,7 +46,7 @@ class AuthenticationService implements AuthenticationRepository {
         'args': [visaNumber, pinNumber],
         'kwargs': {},
       });
-      print("object=========== : ${result}");
+      print("object=========== : $result");
       if (result is bool) {
         return 'user_not_found'.tr;
       }

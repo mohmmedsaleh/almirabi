@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +8,8 @@ class RPSCustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Layer 1
 
-    Paint paint_fill_0 = Paint()
-      ..color = Color.fromRGBO(173, 89, 31, 200)
+    Paint paintFill0 = Paint()
+      ..color = const Color.fromRGBO(173, 89, 31, 200)
       ..style = PaintingStyle.fill
       ..strokeWidth = size.width * 0.00
       ..strokeCap = StrokeCap.butt
@@ -41,22 +40,22 @@ class RPSCustomPainter extends CustomPainter {
     path_0.lineTo(0, 0);
     path_0.close();
 
-    canvas.drawPath(path_0, paint_fill_0);
+    canvas.drawPath(path_0, paintFill0);
 
     // Layer 1
 
-    Paint paint_stroke_0 = Paint()
+    Paint paintStroke0 = Paint()
       ..color = const Color.fromRGBO(173, 89, 31, 200)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.00
       ..strokeCap = StrokeCap.butt
       ..strokeJoin = StrokeJoin.miter;
 
-    canvas.drawPath(path_0, paint_stroke_0);
+    canvas.drawPath(path_0, paintStroke0);
 
     // Layer 1
 
-    Paint paint_fill_1 = Paint()
+    Paint paintFill1 = Paint()
       ..color = const Color.fromRGBO(173, 89, 35, 100)
       ..style = PaintingStyle.fill
       ..strokeWidth = size.width * 0.00
@@ -88,18 +87,18 @@ class RPSCustomPainter extends CustomPainter {
     path_1.lineTo(size.width * 0.9988889, size.height * -0.0150000);
     path_1.close();
 
-    canvas.drawPath(path_1, paint_fill_1);
+    canvas.drawPath(path_1, paintFill1);
 
     // Layer 1
 
-    Paint paint_stroke_1 = Paint()
+    Paint paintStroke1 = Paint()
       ..color = const Color.fromRGBO(173, 89, 35, 100)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.00
       ..strokeCap = StrokeCap.butt
       ..strokeJoin = StrokeJoin.miter;
 
-    canvas.drawPath(path_1, paint_stroke_1);
+    canvas.drawPath(path_1, paintStroke1);
   }
 
   @override

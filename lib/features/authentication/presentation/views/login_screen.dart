@@ -1,12 +1,9 @@
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../../core/config/app_colors.dart';
 import '../../../../core/config/app_enums.dart';
-import '../../../../core/config/app_shared_pr.dart';
-import '../../../../core/config/app_styles.dart';
 import '../../../../core/shared_widgets/app_button.dart';
 import '../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../core/shared_widgets/app_snack_bar.dart';
@@ -72,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.w100,
                                   color: AppColor.grey),
                             ),
-                            Text("")
+                            const Text("")
                           ],
                         ),
                         Column(
@@ -126,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: Get.height * 0.01),
                         ContainerTextField(
                           controller: visaNumberController,
-                          prefixIcon: CustomIcon(
+                          prefixIcon: const CustomIcon(
                               size: 5, assetPath: 'assets/images/passport.png'),
                           hintText: 'visa_number'.tr,
                           labelText: 'visa_number'.tr,
@@ -160,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ContainerTextField(
                           keyboardType: TextInputType.number,
                           controller: pinNumberController,
-                          prefixIcon: CustomIcon(
+                          prefixIcon: const CustomIcon(
                               size: 5, assetPath: 'assets/images/key.png'),
                           hintText: 'pin_number'.tr,
                           labelText: 'pin_number'.tr,

@@ -22,6 +22,7 @@ class LocalDatabaseStructure {
   static String sourcePathStructure = """
         source_path_id INTEGER PRIMARY KEY,
         source_path_name TEXT,
+        product_car_id INTEGER,
         lines TEXT
         """;
   static String sourcePathLineStructure = """

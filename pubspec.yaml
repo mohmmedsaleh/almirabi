@@ -44,6 +44,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   connectivity_plus: ^6.0.5
+  path: any
+  http: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

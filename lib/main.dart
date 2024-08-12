@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               ),
         ),
         home: SharedPr.subscriptionDetailsObj?.url == null
-            ? RemoteDatabaseScreen()
-            : LoginScreen());
+            ? const RemoteDatabaseScreen()
+            : const LoginScreen());
   }
 }

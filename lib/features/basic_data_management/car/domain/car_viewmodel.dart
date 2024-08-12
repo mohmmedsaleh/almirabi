@@ -3,10 +3,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/config/app_enums.dart';
 import '../../../../core/utils/response_result.dart';
 import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_service.dart';
-import '../../../loading_synchronizing_data/presentation/utils/fetch_date.dart';
 import '../data/car.dart';
 
 class CarController extends GetxController {

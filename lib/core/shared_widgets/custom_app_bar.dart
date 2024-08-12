@@ -8,8 +8,6 @@ import '../../features/authentication/presentation/views/login_screen.dart';
 import '../../features/authentication/utils/odoo_connection_helper.dart';
 
 import '../config/app_colors.dart';
-import '../config/app_enums.dart';
-import '../config/app_lists.dart';
 import '../config/app_shared_pr.dart';
 import '../config/app_styles.dart';
 import 'app_header_icons.dart';

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:get/get.dart';
 import '../../../core/config/app_shared_pr.dart';

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../config/app_colors.dart';
 
 class ContainerDropDownField extends StatelessWidget {
-  final IconData? prefixIcon;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String labelText;
   final String hintText;
@@ -77,7 +77,7 @@ class ContainerDropDownField extends StatelessWidget {
 
         style: TextStyle(
             color: color ?? AppColor.black,
-            fontSize: fontSize ?? Get.width * 0.01,
+            fontSize: fontSize ?? Get.width * 0.03,
             overflow: TextOverflow.ellipsis,
             fontFamily: 'Tajawal',
             fontWeight: FontWeight.bold),
@@ -90,17 +90,21 @@ class ContainerDropDownField extends StatelessWidget {
                   fontSize: fontSize,
                   fontWeight: FontWeight.bold),
             ),
+            focusedBorder: isPIN!
+                ? InputBorder.none
+                : OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide(
+                      color: AppColor.brawn,
+                    )),
             border: isPIN!
                 ? InputBorder.none
                 : OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(
-                      color: AppColor.grey,
+                      color: AppColor.brawn,
                     )),
-            prefixIcon: Icon(
-              prefixIcon,
-              color: iconcolor,
-            ),
+            prefixIcon: prefixIcon,
             contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             // hintStyle: TextStyle(
             //     color: hintcolor ?? AppColor.greyWithOpcity,

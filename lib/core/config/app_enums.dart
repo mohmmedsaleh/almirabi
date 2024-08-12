@@ -12,7 +12,7 @@ enum RequestState {
   final String text;
 
   @override
-  String toString() => '${text.tr}';
+  String toString() => text.tr;
 }
 
 enum SessionState {

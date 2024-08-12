@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 class CustomIcon extends StatelessWidget {
   final String assetPath;
   final double size;
+  final double padding;
 
-  const CustomIcon({
-    Key? key,
-    required this.assetPath,
-    required this.size,
-  }) : super(key: key);
+  const CustomIcon(
+      {super.key,
+      required this.assetPath,
+      required this.size,
+      this.padding = 6});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(padding),
       child: Image.asset(
         assetPath,
         width: size,

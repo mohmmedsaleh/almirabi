@@ -1,26 +1,15 @@
 // ignore_for_file: type_literal_in_constant_pattern, unnecessary_type_check
 
-import 'dart:io';
-
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/config/app_enums.dart';
-import '../../../core/config/app_lists.dart';
-import '../../../core/config/app_shared_pr.dart';
-import '../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../core/utils/define_type_function.dart';
 
 import '../../../core/utils/general_local_db.dart';
 import '../../basic_data_management/request/data/request.dart';
 
-import '../utils/customer_processor.dart';
 import '../utils/fail_loading_dialog.dart';
-import '../utils/main_history_item_processor.dart';
-import '../utils/product_processor.dart';
 import 'loading_synchronizing_data_service.dart';
 
 class LoadingDataController extends GetxController {
@@ -51,7 +40,7 @@ class LoadingDataController extends GetxController {
     try {
       // await loadingPosCategoryIdsList();
       await loadingCar();
-      await loadingRequest();
+      // await loadingRequest();
       await loadingSourcePath();
       // await loadingProduct(posCategoriesIds: posCategoryIdsList);
       // await loadingCustomer();
@@ -191,7 +180,7 @@ class LoadingDataController extends GetxController {
 
     lengthRemote.value = 0;
     var result = await loadingSynchronizingDataService.loadCars();
-    print('result : ${result}');
+    print('result : $result');
     isLoadData.value = false;
     if (result is List) {
       loadTital.value = "Create Pos Category";
@@ -205,29 +194,29 @@ class LoadingDataController extends GetxController {
     isLoad.value = false;
   }
 
-  Future<void> loadingRequest() async {
-    print('=====================');
-    isLoad.value = true;
-    loadText.value = 'PosCategories Loading';
+  // Future<void> loadingRequest() async {
+  //   print('=====================');
+  //   isLoad.value = true;
+  //   loadText.value = 'PosCategories Loading';
 
-    loadTital.value = "Pos Category Loading";
-    isLoadData.value = true;
+  //   loadTital.value = "Pos Category Loading";
+  //   isLoadData.value = true;
 
-    lengthRemote.value = 0;
-    var result = await loadingSynchronizingDataService.loadRequest();
-    print('result : ${result}');
-    isLoadData.value = false;
-    if (result is List) {
-      loadTital.value = "Create Pos Category";
-      lengthRemote.value = result.length;
-      await saveInLocalDB<Requests>(list: result as List<Requests>);
-    }
-    // List<PosCategory> list = await loadingSynchronizingDataService
-    //     .loadPosCategoryBasedOnUser(posCategoriesIds: posCategoriesIds);
-    // await saveInLocalDB<PosCategory>(list: list);
-    loadText.value = 'Completed';
-    isLoad.value = false;
-  }
+  //   lengthRemote.value = 0;
+  //   var result = await loadingSynchronizingDataService.loadRequest();
+  //   print('result : $result');
+  //   isLoadData.value = false;
+  //   if (result is List) {
+  //     loadTital.value = "Create Pos Category";
+  //     lengthRemote.value = result.length;
+  //     await saveInLocalDB<Requests>(list: result as List<Requests>);
+  //   }
+  //   // List<PosCategory> list = await loadingSynchronizingDataService
+  //   //     .loadPosCategoryBasedOnUser(posCategoriesIds: posCategoriesIds);
+  //   // await saveInLocalDB<PosCategory>(list: list);
+  //   loadText.value = 'Completed';
+  //   isLoad.value = false;
+  // }
 
   Future<void> loadingSourcePath() async {
     print('=====================');
@@ -242,9 +231,9 @@ class LoadingDataController extends GetxController {
     print('result : ${result.runtimeType}');
     isLoadData.value = false;
     if (result is List) {
-      print("===================================");
       loadTital.value = "Create Pos Category";
       lengthRemote.value = result.length;
+
       await saveInLocalDB<SourcePath>(list: result as List<SourcePath>);
     }
     // List<PosCategory> list = await loadingSynchronizingDataService
@@ -382,8 +371,6 @@ class LoadingDataController extends GetxController {
     if (list.isNotEmpty) {
       await _instance!.createList(recordsList: list);
 
-      var x = await _instance!.checkIfThereIsRowsInTable();
-      print(x);
       // var createList =
       // await _instance!.createList(recordsList: list).then((_) async {
       //   await _itemHistoryController.updateHistoryRecordOnFirstLogin<T>();

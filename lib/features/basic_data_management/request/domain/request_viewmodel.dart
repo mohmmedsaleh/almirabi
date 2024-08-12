@@ -30,10 +30,10 @@ class RequestController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await carData();
+    await RequestData();
   }
 
-  carData() async {
+  RequestData() async {
     var result = await displayRequestList(paging: false);
     requestList.value = result.data;
     // pagingList.value = result.data;
@@ -114,6 +114,7 @@ class RequestController extends GetxController {
       result = await requestService.index();
       print(result);
       if (result is List) {
+        requestList.clear();
         requestList.addAll(result as List<Requests>);
         result = ResponseResult(
             status: true, message: "Successful".tr, data: result);
@@ -122,7 +123,8 @@ class RequestController extends GetxController {
       }
       isLoading.value = false;
     }
-    update();
+    RequestController requestController = Get.find();
+    requestController.update();
     return result;
   }
 

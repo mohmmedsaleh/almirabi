@@ -1,12 +1,10 @@
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../core/config/app_colors.dart';
 import '../../../core/config/app_enums.dart';
 import '../../../core/config/app_shared_pr.dart';
-import '../../../core/config/app_styles.dart';
 
 import '../../../core/shared_widgets/app_button.dart';
 import '../../../core/shared_widgets/app_custom_icon.dart';
@@ -77,7 +75,7 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
                                   fontWeight: FontWeight.w100,
                                   color: AppColor.grey),
                             ),
-                            Text("")
+                            const Text("")
                           ],
                         ),
                         Column(
@@ -132,7 +130,7 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
                         ContainerTextField(
                           controller: dbNameController,
                           prefixIcon: CustomIcon(
-                              size: 5,
+                              size: Get.width * 0.05,
                               assetPath: 'assets/images/database-storage.png'),
                           hintText: 'dbName'.tr,
                           labelText: 'dbName'.tr,

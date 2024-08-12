@@ -1,18 +1,14 @@
 // [ HELPER FUNCTION ] =================================================================
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
-import 'package:get/get.dart';
 
 // ignore_for_file: type_literal_in_constant_pattern
 
 // [ HELPER FUNCTION ] =================================================================
 
-import '../../features/authentication/utils/handle_exception_helper.dart';
 import '../../features/basic_data_management/request/data/request.dart';
-import '../../features/loading_synchronizing_data/presentation/utils/fetch_date.dart';
 import '../config/app_enums.dart';
 import '../config/app_odoo_models.dart';
-import '../shared_widgets/app_snack_bar.dart';
 import 'general_local_db.dart';
 
 setFromJsonType<T>() {

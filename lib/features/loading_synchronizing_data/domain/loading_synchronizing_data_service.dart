@@ -1,12 +1,7 @@
 // ignore_for_file: type_literal_in_constant_pattern
 
-import 'dart:convert';
-
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
-import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
 import '../../../core/config/app_odoo_models.dart';
@@ -70,7 +65,10 @@ class LoadingSynchronizingDataService
         'args': [SharedPr.userObj!.id],
         'kwargs': {},
       });
-      print('result :=>>> ${result}');
+      if (result is bool) {
+        return result;
+      }
+      print('result :=>>> $result');
 
       return result is bool
           ? <Car>[]
@@ -93,69 +91,75 @@ class LoadingSynchronizingDataService
     }
   }
 
-  @override
-  Future<dynamic> loadRequest() async {
-    try {
-      print('load requests :===========${SharedPr.userObj!}========');
-      // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-      //   'model': OdooModels.requests,
-      //   'method': 'search_read',
-      //   'args': [],
-      //   'kwargs': {
-      //     'context': {},
-      //     'domain': [
-      //       // ['', '=', true],
-      //     ],
-      //     // 'fields': ['name'],
-      //   },
-      // });
-      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.transfunctions,
-        'method': 'return_driver_requests_list',
-        'args': [SharedPr.userObj!.id],
-        'kwargs': {},
-      });
-      print('result : ${result}');
-      // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-      //   'model': OdooModels.transfunctions,
-      //   'method': 'source_path_list',
-      //   'args': [541, 6287],
-      //   'kwargs': {},
-      // });
-      // print('result : ${result2}');
-      return result.isEmpty
-          ? <Requests>[]
-          : (result as List).map((e) => Requests.fromJson(e)).toList();
-    } on OdooSessionExpiredException {
-      // OdooProjectOwnerConnectionHelper.sessionClosed = true;
-      // if (kDebugMode) {
-      //   print("session_expired");
-      // }
-      return 'session_expired'.tr;
-    } on OdooException catch (e) {
-      print(e);
-      return e.toString().replaceFirst('Exception: ', '');
-    } catch (e) {
-      print(e);
-      return handleException(
-          exception: e,
-          navigation: false,
-          methodName: "loadUserPosSettingInfo");
-    }
-  }
+  // @override
+  // Future<dynamic> loadRequest() async {
+  //   try {
+  //     print('load requests :===========${SharedPr.userObj!}========');
+  //     // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+  //     //   'model': OdooModels.requests,
+  //     //   'method': 'search_read',
+  //     //   'args': [],
+  //     //   'kwargs': {
+  //     //     'context': {},
+  //     //     'domain': [
+  //     //       // ['', '=', true],
+  //     //     ],
+  //     //     // 'fields': ['name'],
+  //     //   },
+  //     // });
+  //     var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+  //       'model': OdooModels.transfunctions,
+  //       'method': 'return_driver_requests_list',
+  //       'args': [SharedPr.userObj!.id],
+  //       'kwargs': {},
+  //     });
+  //     if (result is bool) {
+  //       return result;
+  //     }
+  //     print('result : $result');
+  //     // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+  //     //   'model': OdooModels.transfunctions,
+  //     //   'method': 'source_path_list',
+  //     //   'args': [541, 6287],
+  //     //   'kwargs': {},
+  //     // });
+  //     // print('result : ${result2}');
+  //     return result.isEmpty
+  //         ? <Requests>[]
+  //         : (result as List).map((e) => Requests.fromJson(e)).toList();
+  //   } on OdooSessionExpiredException {
+  //     // OdooProjectOwnerConnectionHelper.sessionClosed = true;
+  //     // if (kDebugMode) {
+  //     //   print("session_expired");
+  //     // }
+  //     return 'session_expired'.tr;
+  //   } on OdooException catch (e) {
+  //     print(e);
+  //     return e.toString().replaceFirst('Exception: ', '');
+  //   } catch (e) {
+  //     print(e);
+  //     return handleException(
+  //         exception: e,
+  //         navigation: false,
+  //         methodName: "loadUserPosSettingInfo");
+  //   }
+  // }
 
   @override
   Future<dynamic> loadSourcePath() async {
     try {
-      print('load requests :===========${SharedPr.userObj!}========');
+      print('load SourcePath :===========${SharedPr.userObj!}========');
 
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
-        'method': 'source_path_list',
-        'args': [SharedPr.userObj!.id, 6287],
+        'method': 'source_path_all',
+        'args': [SharedPr.userObj!.id],
         'kwargs': {},
       });
-      print('result : ${result}');
+      if (result is bool) {
+        return result;
+      }
+      print('result : $result');
       return result.isEmpty
           ? <SourcePath>[]
           : (result as List).map((e) => SourcePath.fromJson(e)).toList();

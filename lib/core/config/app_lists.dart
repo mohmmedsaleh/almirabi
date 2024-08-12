@@ -9,10 +9,18 @@ var messageTypesIcon = {
   MessageTypes.connectivityOn: [Icons.wifi, Colors.green[600]],
   MessageTypes.success: [Icons.check_circle_outline, Colors.green[600]],
 };
-var stateList = [
+var stateList = {
   // MessageTypes.warning: [Icons.warning_amber_outlined, Colors.grey[900]!],
-  RequestState.draft,
-  RequestState.closed,
-  RequestState.confirm,
-  RequestState.closed,
-];
+  RequestState.draft: [
+    "assets/images/draft-button.png",
+  ],
+  RequestState.closed: [
+    "assets/images/send-mail.png",
+  ],
+  RequestState.confirm: [
+    "assets/images/check-mark.png",
+  ],
+  RequestState.cancel: [
+    "assets/images/cancelled.png",
+  ],
+};

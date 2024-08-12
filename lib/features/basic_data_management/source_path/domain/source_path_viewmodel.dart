@@ -6,7 +6,7 @@ import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_se
 import '../data/source_path.dart';
 import 'source_path_service.dart';
 
-class RequestController extends GetxController {
+class SourcePathController extends GetxController {
   SourcePathService sourcePathService = SourcePathService.getInstance();
 
   LoadingSynchronizingDataService loadingSynchronizingDataService =
@@ -30,12 +30,13 @@ class RequestController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await carData();
+    await SourcePathData();
   }
 
-  carData() async {
+  SourcePathData() async {
     var result = await displaySourcePathList(paging: false);
     sourcePathList.value = result.data;
+    print(sourcePathList.first.lins);
     // pagingList.value = result.data;
     update();
   }

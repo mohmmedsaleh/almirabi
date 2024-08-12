@@ -1,4 +1,3 @@
-import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 
 class SourcePathLine {
   int? destId;

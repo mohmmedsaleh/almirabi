@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 
-import '../../../../core/config/app_odoo_models.dart';
 import '../../../../core/config/app_table_structure.dart';
 import '../../../../core/utils/general_local_db.dart';
 import '../../../authentication/utils/handle_exception_helper.dart';
-import '../../../authentication/utils/odoo_connection_helper.dart';
 import '../data/car.dart';
 import 'car_repository.dart';
 
