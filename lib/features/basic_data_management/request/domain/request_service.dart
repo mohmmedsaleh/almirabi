@@ -91,18 +91,18 @@ class RequestService extends RequestRepository {
     }
   }
 
-  // Future searchByCateg(int query) async {
-  //   try {
-  //     _generalLocalDBInstance =
-  //         GeneralLocalDB.getInstance<Requests>(fromJsonFun: Requests.fromJson)
-  //             as GeneralLocalDB<Requests>?;
-  //     return await _generalLocalDBInstance!
-  //         .filter(whereArgs: [query], where: 'so_pos_categ_id = ?');
-  //   } catch (e) {
-  //     return handleException(
-  //         exception: e, navigation: false, methodName: "searchByCateg");
-  //   }
-  // }
+  Future searchByState(String query) async {
+    try {
+      _generalLocalDBInstance =
+          GeneralLocalDB.getInstance<Requests>(fromJsonFun: Requests.fromJson)
+              as GeneralLocalDB<Requests>?;
+      return await _generalLocalDBInstance!
+          .filter(whereArgs: [query], where: 'state = ?');
+    } catch (e) {
+      return handleException(
+          exception: e, navigation: false, methodName: "searchByCateg");
+    }
+  }
 
   // object can be map or class object
   Future createRequestRemotely({required obj}) async {

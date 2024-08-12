@@ -110,9 +110,11 @@ class RequestController extends GetxController {
       // }
     } else {
       isLoading.value = true;
+      print('========ELSE===');
       result = await requestService.index();
-
+      print(result);
       if (result is List) {
+        requestList.addAll(result as List<Requests>);
         result = ResponseResult(
             status: true, message: "Successful".tr, data: result);
       } else {
@@ -120,7 +122,7 @@ class RequestController extends GetxController {
       }
       isLoading.value = false;
     }
-
+    update();
     return result;
   }
 
@@ -205,16 +207,16 @@ class RequestController extends GetxController {
     }
   }
 
-  // Future<void> searchByCateg(int query) async {
-  //   if (productList.isNotEmpty) {
-  //     searchResults.clear();
-  //     var result = await productService.searchByCateg(query);
-  //     if (result is List) {
-  //       searchResults.addAll(result as List<Product>);
-  //     }
-  //     update();
-  //   }
-  // }
+  Future<void> searchByState(String query) async {
+    if (requestList.isNotEmpty) {
+      searchResults.clear();
+      var result = await requestService.searchByState(query);
+      if (result is List) {
+        searchResults.addAll(result as List<Requests>);
+      }
+      update();
+    }
+  }
 
 // ============================================ [ SEARCH PRODUCT ] ===============================================
 

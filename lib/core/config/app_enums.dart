@@ -1,15 +1,18 @@
+import 'package:get/get.dart';
+
 enum MessageTypes { warning, error, connectivityOff, connectivityOn, success }
 
-enum TicketState {
-  newTicket('New'),
-  inProgress('In Progress'),
-  closed('Closed');
+enum RequestState {
+  draft('draft'),
+  closed('done_seended'),
+  confirm('confirm'),
+  cancel('cancel');
 
-  const TicketState(this.text);
+  const RequestState(this.text);
   final String text;
 
   @override
-  String toString() => 'TicketState($text)';
+  String toString() => '${text.tr}';
 }
 
 enum SessionState {

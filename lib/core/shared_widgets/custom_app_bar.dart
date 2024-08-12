@@ -184,9 +184,7 @@ PreferredSizeWidget customAppBar(
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
           color: headerBackground ? AppColor.brawn : Colors.transparent,
-          borderRadius: BorderRadius.only(
-              bottomLeft: const Radius.circular(20),
-              bottomRight: const Radius.circular(20))),
+        ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(

@@ -92,7 +92,7 @@ class ContainerTextField extends StatelessWidget {
             counterText: "",
             hintText:
                 isAddOrEdit != null && isAddOrEdit == true ? null : hintText,
-            prefixIcon:prefixIcon,
+            prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius!)),
@@ -111,6 +111,10 @@ class ContainerTextField extends StatelessWidget {
                 )),
             // border: isPIN! ? InputBorder.none : const OutlineInputBorder(),
             contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            labelStyle: TextStyle(
+                color: hintcolor ?? AppColor.greyWithOpcity,
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold),
             hintStyle: TextStyle(
                 color: hintcolor ?? AppColor.greyWithOpcity,
                 fontSize: fontSize,

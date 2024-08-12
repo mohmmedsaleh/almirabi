@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class ButtonElevated extends StatelessWidget {
   double? borderRadius;
   double? width;
   double? height;
+  IconData? iconData;
   TextStyle? textStyle;
 
   ButtonElevated(
@@ -23,6 +25,7 @@ class ButtonElevated extends StatelessWidget {
       this.minimumSize = 40,
       this.backgroundColor,
       this.textColor,
+      this.iconData,
       this.borderColor,
       this.borderRadius = 15.0,
       this.width,
@@ -37,16 +40,42 @@ class ButtonElevated extends StatelessWidget {
         width: width ?? MediaQuery.sizeOf(context).width / 2.7,
         height: height ?? MediaQuery.sizeOf(context).height * 0.05,
         decoration: BoxDecoration(
-          color: borderColor == null ? (backgroundColor ?? AppColor.shadepurple) : Colors.transparent,
+          color: borderColor == null
+              ? (backgroundColor ?? AppColor.shadepurple)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(borderRadius!),
-          border: borderColor != null ? Border.all(width: 2, color: borderColor!) : null,
+          border: borderColor != null
+              ? Border.all(width: 2, color: borderColor!)
+              : null,
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: textStyle ?? TextStyle(
-                color: borderColor != null ? AppColor.shadepurple : Colors.white, fontSize: Get.height * 0.02, fontWeight: FontWeight.normal),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconData != null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: AppColor.white,
+                      child: Icon(
+                        iconData,
+                        color: AppColor.brawn,
+                      ),
+                    ),
+                  )
+                : Container(),
+            Text(
+              text,
+              style: textStyle ??
+                  TextStyle(
+                      color: borderColor != null
+                          ? AppColor.shadepurple
+                          : Colors.white,
+                      fontSize: Get.height * 0.02,
+                      fontWeight: FontWeight.normal),
+            ),
+          ],
         ),
       ),
     );
