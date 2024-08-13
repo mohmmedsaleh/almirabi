@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  date_picker_plus:
+    dependency: "direct main"
+    description:
+      name: date_picker_plus
+      sha256: "9b22c94f86c76b20ebe46fa3e54544266400556a8ec9ad5508868ef3180ee513"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   dbus:
     dependency: transitive
     description:
@@ -131,6 +139,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_month_select:
+    dependency: "direct main"
+    description:
+      name: flutter_month_select
+      sha256: "1934a15be1fab11f71599861041d3b8db8c82acb56a641d8e11e928ccb90d663"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   flutter_svg:
     dependency: "direct main"
     description:

@@ -46,6 +46,8 @@ dependencies:
   connectivity_plus: ^6.0.5
   path: any
   http: any
+  date_picker_plus: ^4.1.0
+  flutter_month_select: ^0.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

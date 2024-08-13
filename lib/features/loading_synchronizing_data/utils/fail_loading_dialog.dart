@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../core/shared_widgets/app_dialog.dart';
 import '../../../core/utils/create_local_db_tables.dart';
-import '../../basic_data_management/request/presentation/request_list_screen.dart';
+import '../../basic_data_management/request/presentation/view/request_list_screen.dart';
 
 void failLoadingDialog() {
   CustomDialog.getInstance().dialog(
