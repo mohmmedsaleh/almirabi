@@ -171,7 +171,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                           .firstWhere(
                                               (element) => element.id == val,
                                               orElse: () => Car());
-
                                       sourcePathList = [];
                                       requestLineList = [];
                                       requests!.sourcePathId = null;
