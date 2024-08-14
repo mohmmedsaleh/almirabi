@@ -23,9 +23,9 @@ class ContainerDropDownField extends StatelessWidget {
   double? horizontal;
   double? vertical;
   TextAlign? textAlign;
-  int? value;
+  String? value;
   bool? isPIN;
-  List<DropdownMenuItem<dynamic>>? items;
+  List<DropdownMenuItem<String>>? items;
 
   ContainerDropDownField(
       {super.key,
@@ -54,16 +54,20 @@ class ContainerDropDownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('==============$value=============drop00');
     return SizedBox(
       width: width ?? MediaQuery.sizeOf(context).width / 2.7,
       height: height ?? MediaQuery.sizeOf(context).height * 0.07,
-      child: DropdownButtonFormField(
+      child: DropdownButtonFormField<String>(
+        onTap: onTap,
+
         // alignment: AlignmentDirectional.centerStart,
         isExpanded: true,
         focusColor: AppColor.white.withOpacity(0),
         focusNode: focusNode,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         value: value,
+
         // hint: Center(
         //   child: Text(
         //     hintText,
