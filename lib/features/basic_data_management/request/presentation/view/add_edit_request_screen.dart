@@ -43,7 +43,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
   List<SourcePathLine> requestLineList = [];
   List<SourcePath> sourcePathList = [];
   final FocusNode nameFocusNode = FocusNode();
-  int? carid, sourcePathId, sourcePathLineId;
+  String? carid, sourcePathId, sourcePathLineId;
   Requests? requests;
   String? errorMessage;
   int countErrors = 0;
@@ -51,6 +51,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
   bool isAdd = false;
   double totalPrice = 0.0;
   int? month;
+  String? _firstValue;
+  String? _secondValue;
   DateTime? fromDate, toDate;
   // List<ProductUnit> productUnitList = [];
   back() async {
@@ -96,6 +98,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
         appBar: customAppBar(headerBackground: true),
         body: CustomBackGround(
             child: GetBuilder<RequestController>(builder: (controller) {
+          print('=========================dddddddd==============0');
           return Container(
             child: Column(
               children: [
@@ -153,6 +156,18 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                     width: Get.width,
                                     height: MediaQuery.sizeOf(context).height *
                                         0.05,
+                                    onTap: () {
+                                      print('onTap==============');
+                                      sourcePathId = null;
+                                      carid = null;
+                                      sourcePathList = [];
+                                      requestLineList = [];
+                                      requests!.sourcePathId = null;
+                                      requests!.sourcePathName = null;
+                                      requests!.requestLines = [];
+                                      sourcePathLineList = [];
+                                      controller.update();
+                                    },
                                     prefixIcon: CustomIcon(
                                       assetPath:
                                           'assets/images/delivery-truck.png',
@@ -167,28 +182,16 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                     iconcolor: AppColor.black,
                                     fontSize: Get.width * 0.03,
                                     onChanged: (val) {
+                                      print('onChanged==============');
                                       Car car = carController.carList
                                           .firstWhere(
-                                              (element) => element.id == val,
+                                              (element) => element.name == val,
                                               orElse: () => Car());
-                                      sourcePathList = [];
-                                      requestLineList = [];
-                                      requests!.sourcePathId = null;
-                                      requests!.sourcePathName = null;
-
-                                      requests!.requestLines = [];
-                                      carid = null;
-                                      sourcePathId = null;
-
-                                      print(sourcePathId);
-                                      controller.update();
-                                      print(sourcePathId);
                                       sourcePathList = sourcePathController
                                           .sourcePathList
-                                          .where((e) => e.car!.id == val)
+                                          .where((e) => e.car!.id == car.id)
                                           .toList();
-                                      print(
-                                          "sourcePathList ${sourcePathList.first.sourcePathName}");
+
                                       if (sourcePathList.isNotEmpty) {
                                         carid = val;
                                       } else {
@@ -196,7 +199,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                       }
 
                                       requests!.car = car;
-
                                       controller.update();
                                     },
                                     validator: (value) {
@@ -210,9 +212,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                       return null;
                                     },
                                     items: carController.carList
-                                        .map((e) => DropdownMenuItem(
+                                        .map((e) => DropdownMenuItem<String>(
                                               // value: e.id,
-                                              value: e.id,
+                                              value: e.name,
                                               child: Center(
                                                   child: Text(
                                                 (e.name)!,
@@ -247,14 +249,24 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               AppColor.black.withOpacity(0.5),
                                           iconcolor: AppColor.black,
                                           fontSize: Get.width * 0.03,
+                                          onTap: () {
+                                            sourcePathId = null;
+                                            sourcePathLineList = [];
+                                            requestLineList = [];
+                                            requests!.sourcePathId = null;
+                                            requests!.sourcePathName = null;
+                                            requests!.requestLines = [];
+                                            controller.update();
+                                          },
                                           onChanged: (val) {
+                                            sourcePathId = val;
                                             SourcePath sourcePath =
                                                 sourcePathController
                                                     .sourcePathList
                                                     .firstWhere(
                                                         (element) =>
                                                             element
-                                                                .sourcePathId ==
+                                                                .sourcePathName ==
                                                             val,
                                                         orElse: () =>
                                                             SourcePath());
@@ -287,9 +299,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                           items: sourcePathList.map((e) {
                                             print(
                                                 " =============> ${e.sourcePathName}");
-                                            return DropdownMenuItem(
+                                            return DropdownMenuItem<String>(
                                               // value: e.id,
-                                              value: e.sourcePathId,
+                                              value: e.sourcePathName,
                                               child: Center(
                                                   child: Text(
                                                 (e.sourcePathName)!,
@@ -628,9 +640,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                                 items:
                                                                     sourcePathLineList
                                                                         .map((e) =>
-                                                                            DropdownMenuItem(
+                                                                            DropdownMenuItem<String>(
                                                                               // value: e.id,
-                                                                              value: e.destId,
+                                                                              value: e.destName,
                                                                               child: Row(
                                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                                 children: [
@@ -710,10 +722,11 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                         sourcePathLineList.firstWhere(
                                                             (element) =>
                                                                 element
-                                                                    .destId ==
+                                                                    .destName ==
                                                                 val,
                                                             orElse: () =>
                                                                 SourcePathLine());
+
                                                     requestLineList
                                                         .add(sourcePathLine);
                                                     totalPrice = sourcePathLine
@@ -740,9 +753,11 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                   items: sourcePathLineList
                                                       .map(
                                                           (e) =>
-                                                              DropdownMenuItem(
+                                                              DropdownMenuItem<
+                                                                  String>(
                                                                 // value: e.id,
-                                                                value: e.destId,
+                                                                value:
+                                                                    e.destName,
                                                                 child: Row(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
@@ -793,6 +808,37 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                 ],
                               ),
                             ),
+                          ),
+                          DropdownButtonFormField<String>(
+                            value: _firstValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _firstValue = value;
+                                _secondValue =
+                                    null; // clear the second dropdown
+                              });
+                            },
+                            items: carController.carList.map((option) {
+                              return DropdownMenuItem<String>(
+                                value: option.name,
+                                child: Text(option.name!),
+                              );
+                            }).toList(),
+                          ),
+                          SizedBox(height: 16.0),
+                          DropdownButtonFormField<String>(
+                            value: _secondValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _secondValue = value;
+                              });
+                            },
+                            items: sourcePathList.map((option) {
+                              return DropdownMenuItem<String>(
+                                value: option.sourcePathName,
+                                child: Text(option.sourcePathName!),
+                              );
+                            }).toList(),
                           ),
                           requestLineList.isNotEmpty
                               ? Container(
@@ -849,5 +895,60 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
       ),
     );
     return monthselcted;
+  }
+}
+
+class MyWidget extends StatefulWidget {
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  String? _firstValue;
+  String? _secondValue;
+
+  List<String> _firstOptions = ['Option 1', 'Option 2', 'Option 3'];
+  List<String> _secondOptions = [
+    'Sub-option 1',
+    'Sub-option 2',
+    'Sub-option 3'
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DropdownButtonFormField<String>(
+          value: _firstValue,
+          onChanged: (value) {
+            setState(() {
+              _firstValue = value;
+              _secondValue = null; // clear the second dropdown
+            });
+          },
+          items: _firstOptions.map((option) {
+            return DropdownMenuItem<String>(
+              value: option,
+              child: Text(option),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 16.0),
+        DropdownButtonFormField<String>(
+          value: _secondValue,
+          onChanged: (value) {
+            setState(() {
+              _secondValue = value;
+            });
+          },
+          items: _secondOptions.map((option) {
+            return DropdownMenuItem<String>(
+              value: option,
+              child: Text(option),
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 }

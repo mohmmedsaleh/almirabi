@@ -26,6 +26,7 @@ class RequestController extends GetxController {
   var hasMore = true.obs;
   var hasLess = false.obs;
   TextEditingController searchProductController = TextEditingController();
+  String? carid, sourcePathId, sourcePathLineId;
 
   @override
   Future<void> onInit() async {
@@ -110,7 +111,7 @@ class RequestController extends GetxController {
       // }
     } else {
       isLoading.value = true;
-      print('========ELSE===');
+      print('========ELSE ===');
       result = await requestService.index();
       print(result);
       if (result is List) {
@@ -227,6 +228,12 @@ class RequestController extends GetxController {
     // if (kDebugMode) {
     //   print('hideMainScreen.value : ${hideMainScreen.value}');
     // }
+    update();
+  }
+
+  updatedropDown() {
+    sourcePathId = null;
+    carid = null;
     update();
   }
 }
