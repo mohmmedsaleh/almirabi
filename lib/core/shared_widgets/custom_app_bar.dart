@@ -46,17 +46,17 @@ PreferredSizeWidget customAppBar(
               icon is IconData
                   ? Icon(
                       icon,
-                      size: Get.height * 0.02,
+                      size: Get.width * 0.07,
                     )
                   : Image.asset(
                       icon,
-                      width: Get.height * 0.02,
-                      height: Get.height * 0.02,
+                      width: Get.width * 0.07,
+                      height: Get.width * 0.07,
                     ),
               const SizedBox(width: 10),
               Text(
                 label.tr,
-                style: TextStyle(fontSize: Get.width * 0.007),
+                style: TextStyle(fontSize: Get.width * 0.03),
               ),
             ],
           ),
@@ -73,8 +73,8 @@ PreferredSizeWidget customAppBar(
           if (userOpstionShow == false) {
             showPopover(
               context: buildContext,
-              width: Get.width * 0.15,
-              height: Get.height * 0.15,
+              width: Get.width * 0.3,
+              height: Get.height * 0.07,
               backgroundColor: AppColor.white.withOpacity(0.5),
               bodyBuilder: (context) {
                 return Column(
@@ -130,14 +130,6 @@ PreferredSizeWidget customAppBar(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: [
-              if (Get.currentRoute == "/NotificationScreen") ...[
-                BackButton(
-                  color: AppColor.white,
-                  onPressed: () {
-                    Get.back();
-                  },
-                )
-              ],
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(1000.0)),
                 child: SizedBox(
@@ -181,14 +173,14 @@ PreferredSizeWidget customAppBar(
       // padding: const EdgeInsets.all(15),
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
-          color: headerBackground ? AppColor.brawn : Colors.transparent,
-        ),
+        color: headerBackground ? AppColor.brawn : Colors.transparent,
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (SharedPr.userObj != null && Get.currentRoute != "/KeyScreen")
+            if (SharedPr.userObj != null)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,

@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               errorMessage = 'required_message'
-                                  .trParams({'field_name': 'username'.tr});
+                                  .trParams({'field_name': 'visa_number'.tr});
                               countErrors++;
                               return "";
                             }

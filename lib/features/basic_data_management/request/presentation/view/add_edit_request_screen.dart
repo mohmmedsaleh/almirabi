@@ -1,17 +1,16 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:almirabi/core/config/app_colors.dart';
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
+import 'package:almirabi/core/utils/response_result.dart';
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
+import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_month_select/flutter_month_select.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 
+import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/config/app_shared_pr.dart';
 import '../../../../../core/shared_widgets/app_button.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
@@ -115,13 +114,14 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                           },
                           icon: CircleAvatar(
                               backgroundColor: AppColor.white,
-                              child: Icon(Icons.arrow_back_ios_new_outlined))),
+                              child: const Icon(
+                                  Icons.arrow_back_ios_new_outlined))),
                     ),
                     Expanded(
                       flex: 3,
                       child: Center(
                         child: Text(
-                          "add_new_requst",
+                          "add_new_requst".tr,
                           style: TextStyle(
                               fontSize: Get.width * 0.05,
                               fontWeight: FontWeight.bold,
@@ -270,10 +270,17 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                             val,
                                                         orElse: () =>
                                                             SourcePath());
+
                                             if (sourcePath.lins!.isNotEmpty) {
+                                              print(
+                                                  '===============in==========');
                                               sourcePathLineList =
                                                   sourcePath.lins!;
+                                              print(sourcePathLineList.length);
+                                              print(requestLineList.length);
                                             } else {
+                                              print(
+                                                  '===============out==========');
                                               sourcePathLineList =
                                                   sourcePath.lins!;
                                               //snake bar
@@ -314,387 +321,125 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                           }).toList(),
                                         )
                                       : Container(),
+                                  SizedBox(
+                                    height: Get.height * 0.02,
+                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          fromDate = await showDatePickerDialog(
-                                              context: context,
-                                              minDate: DateTime(1990, 1, 1),
-                                              maxDate: DateTime(2100, 12, 31),
-                                              height: Get.height / 3);
-                                          if (fromDate != null) {
-                                            requests!.fromDate =
-                                                fromDate.toString();
-                                          } else {
-                                            ///snakbar
-                                          }
-                                        },
-                                        child: ButtonElevated(
-                                            width: Get.width / 4,
-                                            text: 'from'.tr,
-                                            backgroundColor: AppColor.brawn,
-                                            // iconData: Icons.add,
-                                            borderRadius: 25),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              fromDate =
+                                                  await showDatePickerDialog(
+                                                      context: context,
+                                                      minDate:
+                                                          DateTime(1990, 1, 1),
+                                                      maxDate: DateTime(
+                                                          2100, 12, 31),
+                                                      height: Get.height / 3);
+                                              if (fromDate != null) {
+                                                requests!.fromDate =
+                                                    fromDate.toString();
+                                              } else {
+                                                ///snakbar
+                                              }
+                                              controller.update();
+                                            },
+                                            child: ButtonElevated(
+                                                width: Get.width / 4,
+                                                text: 'from'.tr,
+                                                backgroundColor: AppColor.brawn,
+                                                // iconData: Icons.add,
+                                                borderRadius: 25),
+                                          ),
+                                          Text(requests!.fromDate != null
+                                              ? requests!.fromDate
+                                                  .toString()
+                                                  .substring(0, 11)
+                                              : '')
+                                        ],
                                       ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          final toDate =
-                                              await showDatePickerDialog(
-                                                  context: context,
-                                                  minDate: DateTime(1990, 1, 1),
-                                                  maxDate:
-                                                      DateTime(2100, 12, 31),
-                                                  height: Get.height / 3);
-                                          if (toDate != null) {
-                                            requests!.fromDate =
-                                                toDate.toString();
-                                          } else {
-                                            ///snakbar
-                                          }
-                                        },
-                                        child: ButtonElevated(
-                                            width: Get.width / 4,
-                                            text: 'to'.tr,
-                                            backgroundColor: AppColor.brawn,
-                                            // iconData: Icons.add,
-                                            borderRadius: 25),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final toDate =
+                                                  await showDatePickerDialog(
+                                                      context: context,
+                                                      minDate:
+                                                          DateTime(1990, 1, 1),
+                                                      maxDate: DateTime(
+                                                          2100, 12, 31),
+                                                      height: Get.height / 3);
+                                              if (toDate != null) {
+                                                requests!.toDate =
+                                                    toDate.toString();
+                                              } else {
+                                                ///snakbar
+                                              }
+                                              controller.update();
+                                            },
+                                            child: ButtonElevated(
+                                                width: Get.width / 4,
+                                                text: 'to'.tr,
+                                                backgroundColor: AppColor.brawn,
+                                                // iconData: Icons.add,
+                                                borderRadius: 25),
+                                          ),
+                                          Text(requests!.toDate != null
+                                              ? requests!.toDate
+                                                  .toString()
+                                                  .substring(0, 11)
+                                              : '')
+                                        ],
                                       ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          // final date =
-                                          //     await showDatePickerDialog(
-                                          //   context: context,
-                                          //   minDate: DateTime(1990, 1, 1),
-                                          //   maxDate: DateTime(2100, 12, 31),
-                                          //   height: Get.height / 3,
-                                          //   initialPickerType:
-                                          //       PickerType.months,
-                                          // );
-                                          month = await _selectMonth();
-                                          print(month);
-                                          if (month != null) {
-                                            requests!.fromDate =
-                                                month.toString();
-                                          } else {
-                                            ///snakbar
-                                          }
-                                        },
-                                        child: ButtonElevated(
-                                            width: Get.width / 4,
-                                            text: 'month'.tr,
-                                            backgroundColor: AppColor.brawn,
-                                            // iconData: Icons.add,
-                                            borderRadius: 25),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              // final date =
+                                              //     await showDatePickerDialog(
+                                              //   context: context,
+                                              //   minDate: DateTime(1990, 1, 1),
+                                              //   maxDate: DateTime(2100, 12, 31),
+                                              //   height: Get.height / 3,
+                                              //   initialPickerType:
+                                              //       PickerType.months,
+                                              // );
+                                              month = await _selectMonth();
+                                              print(month);
+                                              if (month != null) {
+                                                requests!.monthName =
+                                                    month.toString();
+                                              } else {
+                                                ///snakbar
+                                              }
+                                              controller.update();
+                                            },
+                                            child: ButtonElevated(
+                                                width: Get.width / 4,
+                                                text: 'month'.tr,
+                                                backgroundColor: AppColor.brawn,
+                                                // iconData: Icons.add,
+                                                borderRadius: 25),
+                                          ),
+                                          Text(requests!.monthName != null
+                                              ? monthName(int.parse(
+                                                  requests!.monthName!))
+                                              : '')
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  requestLineList.isNotEmpty
-                                      ? Column(
-                                          children: [
-                                            SizedBox(
-                                              height: Get.height * 0.02,
-                                            ),
-                                            Container(
-                                              width: Get.width,
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                  color: const Color.fromRGBO(
-                                                      173, 89, 31, 200),
-                                                  border: Border.all(
-                                                      color: AppColor.brawn),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text("Destination",
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.04,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: AppColor
-                                                                  .brawn)),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            isAdd = true;
-                                                            controller.update();
-                                                          },
-                                                          child: ButtonElevated(
-                                                              width:
-                                                                  Get.width / 4,
-                                                              text: 'new'.tr,
-                                                              backgroundColor:
-                                                                  AppColor
-                                                                      .brawn,
-                                                              // iconData: Icons.add,
-                                                              borderRadius: 25),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Container(
-                                                    width: Get.width,
-                                                    height: MediaQuery.sizeOf(
-                                                                context)
-                                                            .height *
-                                                        0.05,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.brawn,
-                                                        border: Border.all(
-                                                            color:
-                                                                AppColor.brawn),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                            flex: 5,
-                                                            child: Center(
-                                                              child: Text(
-                                                                "Destination path",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        Get.width *
-                                                                            0.03,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: AppColor
-                                                                        .white),
-                                                              ),
-                                                            )),
-                                                        Expanded(
-                                                            flex: 2,
-                                                            child: Center(
-                                                              child: Text(
-                                                                "price",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        Get.width *
-                                                                            0.03,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: AppColor
-                                                                        .white),
-                                                              ),
-                                                            )),
-                                                        Expanded(
-                                                            flex: 1,
-                                                            child: Container()),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  ...requestLineList
-                                                      .map((e) => Container(
-                                                            width: Get.width,
-                                                            height: MediaQuery
-                                                                        .sizeOf(
-                                                                            context)
-                                                                    .height *
-                                                                0.05,
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 5,
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                      e.destName!,
-                                                                      style: TextStyle(
-                                                                          fontSize: Get.width *
-                                                                              0.03,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              AppColor.brawn),
-                                                                    ))),
-                                                                Expanded(
-                                                                    flex: 2,
-                                                                    child:
-                                                                        Center(
-                                                                      child:
-                                                                          Text(
-                                                                        e.destPrice
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            fontSize: Get.width *
-                                                                                0.03,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: AppColor.brawn),
-                                                                      ),
-                                                                    )),
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Center(
-                                                                        child: IconButton(
-                                                                            onPressed: () {
-                                                                              totalPrice -= e.destPrice!;
-                                                                              requestLineList.remove(e);
-                                                                              requests!.requestLines = requestLineList;
-                                                                              controller.update();
-                                                                            },
-                                                                            icon: Icon(Icons.delete)))),
-                                                              ],
-                                                            ),
-                                                          )),
-                                                  isAdd
-                                                      ? Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child:
-                                                                  ContainerDropDownField(
-                                                                // width: Get.width,
-                                                                height: MediaQuery.sizeOf(
-                                                                            context)
-                                                                        .height *
-                                                                    0.05,
-                                                                prefixIcon:
-                                                                    CustomIcon(
-                                                                  assetPath:
-                                                                      'assets/images/destination.png',
-                                                                  size:
-                                                                      Get.width *
-                                                                          0.05,
-                                                                ),
-                                                                hintText:
-                                                                    'source_dest'
-                                                                        .tr,
-                                                                labelText:
-                                                                    'source_dest'
-                                                                        .tr,
-                                                                value:
-                                                                    sourcePathLineId,
-                                                                color: AppColor
-                                                                    .black,
-                                                                // isPIN: true,
-                                                                hintcolor: AppColor
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                iconcolor:
-                                                                    AppColor
-                                                                        .black,
-                                                                fontSize:
-                                                                    Get.width *
-                                                                        0.03,
-                                                                onChanged:
-                                                                    (val) {
-                                                                  SourcePathLine
-                                                                      sourcePathLine =
-                                                                      sourcePathLineList.firstWhere(
-                                                                          (element) =>
-                                                                              element.destId ==
-                                                                              val,
-                                                                          orElse: () =>
-                                                                              SourcePathLine());
-                                                                  requestLineList
-                                                                      .add(
-                                                                          sourcePathLine);
-                                                                  totalPrice +=
-                                                                      sourcePathLine
-                                                                          .destPrice!;
-                                                                  requests!
-                                                                          .requestLines =
-                                                                      requestLineList;
-                                                                  isAdd = false;
-                                                                  controller
-                                                                      .update();
-
-                                                                  // sourcePathLineList = jsonDecode(sourcePath);
-                                                                },
-                                                                validator:
-                                                                    (value) {
-                                                                  if (value ==
-                                                                      null) {
-                                                                    errorMessage =
-                                                                        'required_message'
-                                                                            .trParams({
-                                                                      'field_name':
-                                                                          'product_category'
-                                                                              .tr
-                                                                    });
-                                                                    countErrors++;
-                                                                    return "";
-                                                                  }
-                                                                  return null;
-                                                                },
-                                                                items:
-                                                                    sourcePathLineList
-                                                                        .map((e) =>
-                                                                            DropdownMenuItem<String>(
-                                                                              // value: e.id,
-                                                                              value: e.destName,
-                                                                              child: Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  Expanded(
-                                                                                    flex: 1,
-                                                                                    child: Align(
-                                                                                      alignment: Alignment.center,
-                                                                                      child: Text(
-                                                                                        (e.destName)!,
-                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: AppColor.black),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    flex: 1,
-                                                                                    child: Align(
-                                                                                      alignment: Alignment.center,
-                                                                                      child: Text(
-                                                                                        (e.destPrice.toString()),
-                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: AppColor.black),
-                                                                                      ),
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ))
-                                                                        .toList(),
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  isAdd = false;
-                                                                  controller
-                                                                      .update();
-                                                                },
-                                                                icon: Icon(Icons
-                                                                    .cancel_sharp))
-                                                          ],
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Container(),
                                   sourcePathLineList.isNotEmpty
                                       ? requestLineList.isEmpty
                                           ? Column(
                                               children: [
                                                 SizedBox(
-                                                  height: Get.height * 0.02,
+                                                  height: Get.height * 0.01,
                                                 ),
                                                 ContainerDropDownField(
                                                   width: Get.width,
@@ -707,8 +452,10 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                         'assets/images/destination.png',
                                                     size: Get.width * 0.05,
                                                   ),
-                                                  hintText: 'source_dest'.tr,
-                                                  labelText: 'source_dest'.tr,
+                                                  hintText:
+                                                      'destination_path'.tr,
+                                                  labelText:
+                                                      'destination_path'.tr,
                                                   value: sourcePathLineId,
                                                   color: AppColor.black,
                                                   // isPIN: true,
@@ -716,6 +463,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                       .withOpacity(0.5),
                                                   iconcolor: AppColor.black,
                                                   fontSize: Get.width * 0.03,
+                                                  onTap: () {
+                                                    requests!.requestLines = [];
+                                                  },
                                                   onChanged: (val) {
                                                     SourcePathLine
                                                         sourcePathLine =
@@ -743,7 +493,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                           'required_message'
                                                               .trParams({
                                                         'field_name':
-                                                            'source_dest'.tr
+                                                            'destination_path'
+                                                                .tr
                                                       });
                                                       countErrors++;
                                                       return "";
@@ -805,48 +556,324 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                             )
                                           : Container()
                                       : Container(),
+                                  Expanded(
+                                    child: requestLineList.isNotEmpty
+                                        ? SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: Get.height * 0.01,
+                                                ),
+                                                Container(
+                                                  width: Get.width,
+                                                  padding:
+                                                      const EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              173, 89, 31, 200),
+                                                      border: Border.all(
+                                                          color:
+                                                              AppColor.brawn),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text("destination".tr,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.04,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: AppColor
+                                                                      .brawn)),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                isAdd = true;
+                                                                controller
+                                                                    .update();
+                                                              },
+                                                              child:
+                                                                  ButtonElevated(
+                                                                      width:
+                                                                          Get.width /
+                                                                              4,
+                                                                      text: 'new'
+                                                                          .tr,
+                                                                      backgroundColor:
+                                                                          AppColor
+                                                                              .brawn,
+                                                                      // iconData: Icons.add,
+                                                                      borderRadius:
+                                                                          25),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        width: Get.width,
+                                                        height:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .height *
+                                                                0.05,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                AppColor.brawn,
+                                                            border: Border.all(
+                                                                color: AppColor
+                                                                    .brawn),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                                flex: 5,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "destination_path"
+                                                                        .tr,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            Get.width *
+                                                                                0.03,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: AppColor
+                                                                            .white),
+                                                                  ),
+                                                                )),
+                                                            Expanded(
+                                                                flex: 2,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "price".tr,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            Get.width *
+                                                                                0.03,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: AppColor
+                                                                            .white),
+                                                                  ),
+                                                                )),
+                                                            Expanded(
+                                                                flex: 1,
+                                                                child:
+                                                                    Container()),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      ...requestLineList
+                                                          .map((e) => SizedBox(
+                                                                width:
+                                                                    Get.width,
+                                                                height: MediaQuery.sizeOf(
+                                                                            context)
+                                                                        .height *
+                                                                    0.05,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                        flex: 5,
+                                                                        child: Center(
+                                                                            child: Text(
+                                                                          e.destName!,
+                                                                          style: TextStyle(
+                                                                              fontSize: Get.width * 0.03,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: AppColor.brawn),
+                                                                        ))),
+                                                                    Expanded(
+                                                                        flex: 2,
+                                                                        child:
+                                                                            Center(
+                                                                          child:
+                                                                              Text(
+                                                                            e.destPrice.toString(),
+                                                                            style: TextStyle(
+                                                                                fontSize: Get.width * 0.03,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: AppColor.brawn),
+                                                                          ),
+                                                                        )),
+                                                                    Expanded(
+                                                                        flex: 1,
+                                                                        child: Center(
+                                                                            child: IconButton(
+                                                                                onPressed: () {
+                                                                                  totalPrice -= e.destPrice!;
+                                                                                  requestLineList.remove(e);
+                                                                                  requests!.requestLines = requestLineList;
+                                                                                  controller.update();
+                                                                                },
+                                                                                icon: const Icon(Icons.delete)))),
+                                                                  ],
+                                                                ),
+                                                              )),
+                                                      isAdd
+                                                          ? Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child:
+                                                                      ContainerDropDownField(
+                                                                    // width: Get.width,
+                                                                    height: MediaQuery.sizeOf(context)
+                                                                            .height *
+                                                                        0.05,
+                                                                    prefixIcon:
+                                                                        CustomIcon(
+                                                                      assetPath:
+                                                                          'assets/images/destination.png',
+                                                                      size: Get
+                                                                              .width *
+                                                                          0.05,
+                                                                    ),
+                                                                    hintText:
+                                                                        'destination_path'
+                                                                            .tr,
+                                                                    labelText:
+                                                                        'destination_path'
+                                                                            .tr,
+                                                                    value:
+                                                                        sourcePathLineId,
+                                                                    color: AppColor
+                                                                        .black,
+                                                                    // isPIN: true,
+                                                                    hintcolor: AppColor
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    iconcolor:
+                                                                        AppColor
+                                                                            .black,
+                                                                    fontSize:
+                                                                        Get.width *
+                                                                            0.03,
+                                                                    onChanged:
+                                                                        (val) {
+                                                                      SourcePathLine sourcePathLine = sourcePathLineList.firstWhere(
+                                                                          (element) =>
+                                                                              element.destName ==
+                                                                              val,
+                                                                          orElse: () =>
+                                                                              SourcePathLine());
+                                                                      requestLineList
+                                                                          .add(
+                                                                              sourcePathLine);
+                                                                      totalPrice +=
+                                                                          sourcePathLine
+                                                                              .destPrice!;
+                                                                      requests!
+                                                                              .requestLines =
+                                                                          requestLineList;
+                                                                      isAdd =
+                                                                          false;
+                                                                      controller
+                                                                          .update();
+
+                                                                      // sourcePathLineList = jsonDecode(sourcePath);
+                                                                    },
+                                                                    validator:
+                                                                        (value) {
+                                                                      if (value ==
+                                                                          null) {
+                                                                        errorMessage =
+                                                                            'required_message'.trParams({
+                                                                          'field_name':
+                                                                              'destination_path'.tr
+                                                                        });
+                                                                        countErrors++;
+                                                                        return "";
+                                                                      }
+                                                                      return null;
+                                                                    },
+                                                                    items: sourcePathLineList
+                                                                        .map((e) => DropdownMenuItem<String>(
+                                                                              // value: e.id,
+                                                                              value: e.destName,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  Expanded(
+                                                                                    flex: 1,
+                                                                                    child: Align(
+                                                                                      alignment: Alignment.center,
+                                                                                      child: Text(
+                                                                                        (e.destName)!,
+                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: AppColor.black),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Expanded(
+                                                                                    flex: 1,
+                                                                                    child: Align(
+                                                                                      alignment: Alignment.center,
+                                                                                      child: Text(
+                                                                                        (e.destPrice.toString()),
+                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: AppColor.black),
+                                                                                      ),
+                                                                                    ),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ))
+                                                                        .toList(),
+                                                                  ),
+                                                                ),
+                                                                IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      isAdd =
+                                                                          false;
+                                                                      controller
+                                                                          .update();
+                                                                    },
+                                                                    icon: const Icon(
+                                                                        Icons
+                                                                            .cancel_sharp))
+                                                              ],
+                                                            )
+                                                          : Container()
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : Container(),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
-                          DropdownButtonFormField<String>(
-                            value: _firstValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _firstValue = value;
-                                _secondValue =
-                                    null; // clear the second dropdown
-                              });
-                            },
-                            items: carController.carList.map((option) {
-                              return DropdownMenuItem<String>(
-                                value: option.name,
-                                child: Text(option.name!),
-                              );
-                            }).toList(),
-                          ),
-                          SizedBox(height: 16.0),
-                          DropdownButtonFormField<String>(
-                            value: _secondValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _secondValue = value;
-                              });
-                            },
-                            items: sourcePathList.map((option) {
-                              return DropdownMenuItem<String>(
-                                value: option.sourcePathName,
-                                child: Text(option.sourcePathName!),
-                              );
-                            }).toList(),
-                          ),
                           requestLineList.isNotEmpty
                               ? Container(
                                   width: Get.width,
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                          173, 89, 31, 200),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(173, 89, 31, 200),
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(20),
                                           topRight: Radius.circular(20))),
@@ -856,14 +883,35 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text("Total Price :"),
+                                          Text("${'total_price'.tr} :"),
                                           Text("$totalPrice")
                                         ],
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: GestureDetector(
-                                          onTap: () {},
+                                          onTap: () async {
+                                            if (requests!.fromDate != null &&
+                                                requests!.toDate != null &&
+                                                requests!.monthName != null &&
+                                                requestLineList.isNotEmpty) {
+                                              print("opject oky");
+                                              requests!.state =
+                                                  RequestState.draft;
+                                              requests!.amoutTotal = totalPrice;
+                                              requests!.driverId =
+                                                  SharedPr.userObj!.id;
+                                              ResponseResult result =
+                                                  await controller
+                                                      .createRequest(
+                                                          Requests: requests!);
+                                              if (result.status) {
+                                                print('done=================');
+                                                Get.to(() =>
+                                                    const RequestListScreen());
+                                              } else {}
+                                            } else {}
+                                          },
                                           child: ButtonElevated(
                                               width: Get.width,
                                               text: 'save'.tr,
@@ -895,60 +943,5 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
       ),
     );
     return monthselcted;
-  }
-}
-
-class MyWidget extends StatefulWidget {
-  @override
-  _MyWidgetState createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  String? _firstValue;
-  String? _secondValue;
-
-  List<String> _firstOptions = ['Option 1', 'Option 2', 'Option 3'];
-  List<String> _secondOptions = [
-    'Sub-option 1',
-    'Sub-option 2',
-    'Sub-option 3'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DropdownButtonFormField<String>(
-          value: _firstValue,
-          onChanged: (value) {
-            setState(() {
-              _firstValue = value;
-              _secondValue = null; // clear the second dropdown
-            });
-          },
-          items: _firstOptions.map((option) {
-            return DropdownMenuItem<String>(
-              value: option,
-              child: Text(option),
-            );
-          }).toList(),
-        ),
-        SizedBox(height: 16.0),
-        DropdownButtonFormField<String>(
-          value: _secondValue,
-          onChanged: (value) {
-            setState(() {
-              _secondValue = value;
-            });
-          },
-          items: _secondOptions.map((option) {
-            return DropdownMenuItem<String>(
-              value: option,
-              child: Text(option),
-            );
-          }).toList(),
-        ),
-      ],
-    );
   }
 }

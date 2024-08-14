@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/config/app_enums.dart';
 import '../../../../core/utils/response_result.dart';
 import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_service.dart';
 import '../data/request.dart';
@@ -25,6 +26,7 @@ class RequestController extends GetxController {
   final int limit = 10;
   var hasMore = true.obs;
   var hasLess = false.obs;
+  RxList<Requests> dataSend = RxList<Requests>();
   TextEditingController searchProductController = TextEditingController();
   String? carid, sourcePathId, sourcePathLineId;
 
@@ -113,10 +115,13 @@ class RequestController extends GetxController {
       isLoading.value = true;
       print('========ELSE ===');
       result = await requestService.index();
+
       print(result);
       if (result is List) {
         requestList.clear();
         requestList.addAll(result as List<Requests>);
+        dataSend.value =
+            requestList.where((e) => e.state == RequestState.draft).toList();
         result = ResponseResult(
             status: true, message: "Successful".tr, data: result);
       } else {
@@ -150,19 +155,30 @@ class RequestController extends GetxController {
   // ========================================== [ START CREATE PRODUCT ] =============================================
   Future<dynamic> createRequest(
       {required Requests Requests, bool isFromHistory = false}) async {
+    await requestService.create(
+      obj: Requests,
+    );
+    return ResponseResult(
+        status: true, data: Requests, message: "Successful".tr);
+  }
+
+  Future<dynamic> createRequestRemotely(
+      {required List<Requests> Requests, bool isFromHistory = false}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (connectivityResult.contains(ConnectivityResult.wifi)) {
       var remoteResult =
           await requestService.createRequestRemotely(obj: Requests);
 
       if (remoteResult is int) {
-        Requests.id = remoteResult;
+        print("sending Successful");
+        // car.id = remoteResult;
 
-        await requestService.create(obj: Requests, isRemotelyAdded: true);
-        return ResponseResult(
-            status: true, data: Requests, message: "Successful".tr);
+        // await requestService.create(obj: car, isRemotelyAdded: true);
+        // return ResponseResult(
+        //     status: true, data: car, message: "Successful".tr);
       } else {
-        return ResponseResult(message: remoteResult);
+        print(remoteResult);
+        // return ResponseResult(message: remoteResult);
       }
     } else {
       return ResponseResult(message: "no_connection".tr);

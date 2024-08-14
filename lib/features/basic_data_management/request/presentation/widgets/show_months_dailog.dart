@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class MonthPickerDialog extends StatefulWidget {
   final int initialMonth;
 
-  MonthPickerDialog({required this.initialMonth});
+  const MonthPickerDialog({super.key, required this.initialMonth});
 
   @override
   _MonthPickerDialogState createState() => _MonthPickerDialogState();
@@ -41,7 +41,7 @@ class _MonthPickerDialogState extends State<MonthPickerDialog> {
                 Navigator.of(context).pop(_selectedMonth);
               },
               child: Padding(
-                padding: EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(4.0),
                 child: Text(
                   monthName(index + 1),
                   style: TextStyle(

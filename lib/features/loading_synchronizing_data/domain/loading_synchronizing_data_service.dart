@@ -11,7 +11,6 @@ import '../../../core/utils/general_local_db.dart';
 import '../../authentication/utils/handle_exception_helper.dart';
 import '../../authentication/utils/odoo_connection_helper.dart';
 import '../../basic_data_management/car/data/car.dart';
-import '../../basic_data_management/request/data/request.dart';
 
 import 'loading_synchronizing_data_repository.dart';
 
@@ -47,18 +46,19 @@ class LoadingSynchronizingDataService
   Future<dynamic> loadCars() async {
     try {
       print('load car :===================');
-      // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-      //   'model': OdooModels.product,
-      //   'method': 'search_read',
-      //   'args': [],
-      //   'kwargs': {
-      //     'context': {},
-      //     'domain': [
-      //       ['car_flag', '=', true],
-      //     ],
-      //     'fields': ['name'],
-      //   },
-      // });
+      var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.hremployee,
+        'method': 'search_read',
+        'args': [],
+        'kwargs': {
+          'context': {},
+          'domain': [
+            // ['car_flag', '=', true],
+          ],
+          // 'fields': ['name'],
+        },
+      });
+      print("result2===========$result2");
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
         'method': 'product_car_list',

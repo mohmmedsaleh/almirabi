@@ -15,6 +15,7 @@ class LocalDatabaseStructure {
         source_path_name TEXT,
         state TEXT,
         request_lines TEXT,
+        driver_id INTEGER,
         amout_total REAL
         """;
 //  FOREIGN KEY (carid) REFERENCES car(id),

@@ -246,8 +246,6 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
 
   _onPressed() {
     if (_formKey.currentState!.validate()) {
-      print('===============================================');
-      print('${dbNameController.text} ${urlController.text}');
       remoteDatabaseSettingController
           .checkDatabase(SubscriptionInfo(
               url: urlController.text, db: dbNameController.text))

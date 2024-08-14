@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../core/utils/define_type_function.dart';
 
 import '../../../core/utils/general_local_db.dart';
-import '../../basic_data_management/request/data/request.dart';
 
 import '../utils/fail_loading_dialog.dart';
 import 'loading_synchronizing_data_service.dart';
@@ -46,6 +45,8 @@ class LoadingDataController extends GetxController {
       // await loadingCustomer();
       // await loadingProductUnit();
       // await loadingPosSession();
+      // _instance = getLocalInstanceType<Requests>();
+      // _instance!.deleteData();
       update(['loading']);
     } catch (_) {
       failLoadingDialog();

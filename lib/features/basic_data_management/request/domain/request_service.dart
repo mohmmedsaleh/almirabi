@@ -1,8 +1,11 @@
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../../../core/config/app_odoo_models.dart';
 import '../../../../core/config/app_table_structure.dart';
 import '../../../../core/utils/general_local_db.dart';
 import '../../../authentication/utils/handle_exception_helper.dart';
+import '../../../authentication/utils/odoo_connection_helper.dart';
 import 'request_repository.dart';
 
 class RequestService extends RequestRepository {
@@ -103,21 +106,50 @@ class RequestService extends RequestRepository {
 
   // object can be map or class object
   Future createRequestRemotely({required obj}) async {
-    // try {
-    //   int result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-    //     'model': OdooModels.productTemplate,
-    //     'method': 'create',
-    //     'args': [obj is Map<String, dynamic> ? obj : obj.toJson()],
-    //     'kwargs': {},
-    //   });
-    //   // if (kDebugMode) {
-    //   //   print('createProductRemotely : $result');
-    //   // }
-    //   return result;
-    // } catch (e) {
-    //   return handleException(
-    //       exception: e, navigation: false, methodName: "createProductRemotely");
-    // }
+    try {
+      List listRequest = [];
+      for (var e in (obj as List)) {
+        continue;
+      }
+      print(listRequest.last);
+      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.requests,
+        'method': 'search_read',
+        'args': [],
+        'kwargs': {},
+      });
+      print("result=> $result");
+
+      var c = {
+        'id': null,
+        'product_car_id': 6289,
+        // 'from_date': '2024-03-01',
+        // 'to_date': '2024-03-31',
+        // 'month_name': 03,
+        'source_path_id': 3,
+        // 'pricing_driving_ids': [2],
+        // 'source_path_name':
+        //     ' دوادمي+سكاكا+عرعر+رفحه - Duwadmi+Skaka+Arar+Rafha',
+        // 'state': 'draft',
+        'request_lines': [7],
+        'driver_id': 541,
+        'amout_total': 500.0
+      };
+      var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.requests,
+        'method': 'create',
+        'args': [c],
+        'kwargs': {},
+      });
+      if (kDebugMode) {
+        print('createProductRemotely : $result2');
+      }
+      return result2;
+    } catch (e) {
+      print(e);
+      return handleException(
+          exception: e, navigation: false, methodName: "createProductRemotely");
+    }
   }
 
   @override
