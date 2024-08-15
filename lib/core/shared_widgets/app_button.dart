@@ -48,18 +48,19 @@ class ButtonElevated extends StatelessWidget {
               : null,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             iconData != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
+                      vertical: 10.0,
                     ),
                     child: CircleAvatar(
                       backgroundColor: AppColor.white,
                       child: Icon(
                         iconData,
                         color: AppColor.brawn,
+                        size: Get.width * 0.03,
                       ),
                     ),
                   )
