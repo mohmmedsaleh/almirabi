@@ -165,7 +165,8 @@ class RequestController extends GetxController {
   Future<dynamic> createRequestRemotely(
       {required List<Requests> Requests, bool isFromHistory = false}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult.contains(ConnectivityResult.wifi)) {
+
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult =
           await requestService.createRequestRemotely(obj: Requests);
 
@@ -190,7 +191,7 @@ class RequestController extends GetxController {
 // ========================================== [ START UPDATE PRODUCT ] =============================================
   Future<dynamic> updateRequest({required Requests Requests}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult = await requestService.updateRequestRemotely(
           id: Requests.id!, obj: Requests);
       if (remoteResult is! bool || remoteResult != true) {
@@ -230,7 +231,9 @@ class RequestController extends GetxController {
     if (requestList.isNotEmpty) {
       searchResults.clear();
       var result = await requestService.searchByState(query);
+      print(result);
       if (result is List) {
+        print(searchResults);
         searchResults.addAll(result as List<Requests>);
       }
       update();

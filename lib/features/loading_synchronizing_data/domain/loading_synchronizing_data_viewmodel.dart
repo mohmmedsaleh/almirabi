@@ -2,6 +2,7 @@
 
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/define_type_function.dart';
@@ -178,15 +179,18 @@ class LoadingDataController extends GetxController {
 
     loadTital.value = "Pos Category Loading";
     isLoadData.value = true;
+    var connectivityResult = await (Connectivity().checkConnectivity());
 
-    lengthRemote.value = 0;
-    var result = await loadingSynchronizingDataService.loadCars();
-    print('result : $result');
-    isLoadData.value = false;
-    if (result is List) {
-      loadTital.value = "Create Pos Category";
-      lengthRemote.value = result.length;
-      await saveInLocalDB<Car>(list: result as List<Car>);
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
+      lengthRemote.value = 0;
+      var result = await loadingSynchronizingDataService.loadCars();
+      print('result : $result');
+      isLoadData.value = false;
+      if (result is List) {
+        loadTital.value = "Create Pos Category";
+        lengthRemote.value = result.length;
+        await saveInLocalDB<Car>(list: result as List<Car>);
+      }
     }
     // List<PosCategory> list = await loadingSynchronizingDataService
     //     .loadPosCategoryBasedOnUser(posCategoriesIds: posCategoriesIds);
@@ -228,14 +232,18 @@ class LoadingDataController extends GetxController {
     isLoadData.value = true;
 
     lengthRemote.value = 0;
-    var result = await loadingSynchronizingDataService.loadSourcePath();
-    print('result : ${result.runtimeType}');
-    isLoadData.value = false;
-    if (result is List) {
-      loadTital.value = "Create Pos Category";
-      lengthRemote.value = result.length;
+    var connectivityResult = await (Connectivity().checkConnectivity());
 
-      await saveInLocalDB<SourcePath>(list: result as List<SourcePath>);
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
+      var result = await loadingSynchronizingDataService.loadSourcePath();
+      print('result : ${result.runtimeType}');
+      isLoadData.value = false;
+      if (result is List) {
+        loadTital.value = "Create Pos Category";
+        lengthRemote.value = result.length;
+
+        await saveInLocalDB<SourcePath>(list: result as List<SourcePath>);
+      }
     }
     // List<PosCategory> list = await loadingSynchronizingDataService
     //     .loadPosCategoryBasedOnUser(posCategoriesIds: posCategoriesIds);

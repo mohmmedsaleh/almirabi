@@ -235,5 +235,7 @@ var ar = {
   'add_new_requst': 'اضافه طلب جديد',
   'car_name': 'اسم السياره',
   'source_path': 'وجهه المصدر',
-  'total_price': 'اجمالي المبلغ'
+  'total_price': 'اجمالي المبلغ',
+  'requests': 'الطلبات',
+  'Almirabi': 'الميرابي'
 };

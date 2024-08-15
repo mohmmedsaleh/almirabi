@@ -1,4 +1,4 @@
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import '../../../core/config/app_shared_pr.dart';
 import '../../../core/utils/response_result.dart';
@@ -30,20 +30,26 @@ class DatabaseSettingController extends GetxController {
     if SocketException return You Don't have an Internet Connection
     else return Failed to connect with server
   */
-  Future<ResponseResult> checkDatabase(SubscriptionInfo subscriptionInfo) async {
+  Future<ResponseResult> checkDatabase(
+      SubscriptionInfo subscriptionInfo) async {
     isLoading.value = true;
     dynamic result;
+    var connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var checkConnectionResult = await RemoteDatabaseSettingService()
           .checkConnection(subscriptionInfo: subscriptionInfo);
 
       if (checkConnectionResult is bool && checkConnectionResult == true) {
         result = ResponseResult(status: true);
-             await SharedPr.setRemoteDatabaseInfo(
-          subscriptionInfo: subscriptionInfo);
+        await SharedPr.setRemoteDatabaseInfo(
+            subscriptionInfo: subscriptionInfo);
       } else {
-        result = ResponseResult(
-            message: "invalid_dborurl_message".tr);
+        result = ResponseResult(message: "invalid_dborurl_message".tr);
       }
+    } else {
+      result = ResponseResult(message: "no_connection".tr);
+    }
     isLoading.value = false;
     return result!;
   }

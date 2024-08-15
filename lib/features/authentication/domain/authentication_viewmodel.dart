@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:almirabi/features/authentication/domain/authentication_service.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/config/app_shared_pr.dart';
@@ -33,20 +34,25 @@ class AuthenticationController extends GetxController {
   Future<ResponseResult> authenticateUsingUsernameAndPassword(
       LoginInfo loginInfo) async {
     loading.value = true;
-    dynamic authResult = await authenticateService.authenticate(
-        visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    dynamic authResult;
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
+      authResult = await authenticateService.authenticate(
+          visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
 
-    if (authResult is User) {
-      await saveUserDataLocally(authResult: authResult);
-      SharedPr.setUserObj(userObj: authResult);
-      authResult = ResponseResult(
-          status: true, message: "Successful".tr, data: authResult);
+      if (authResult is User) {
+        await saveUserDataLocally(authResult: authResult);
+        SharedPr.setUserObj(userObj: authResult);
+        authResult = ResponseResult(
+            status: true, message: "Successful".tr, data: authResult);
 
-      await SharedPr.setUserObj(userObj: authResult.data);
+        await SharedPr.setUserObj(userObj: authResult.data);
+      } else {
+        authResult = ResponseResult(message: authResult);
+      }
     } else {
-      authResult = ResponseResult(message: authResult);
+      authResult = ResponseResult(message: "no_connection".tr);
     }
-
     loading.value = false;
     return authResult;
   }

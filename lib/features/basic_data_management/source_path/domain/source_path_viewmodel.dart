@@ -147,7 +147,7 @@ class SourcePathController extends GetxController {
   Future<dynamic> createRequest(
       {required SourcePath SourcePath, bool isFromHistory = false}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult =
           await sourcePathService.createSourcePathRemotely(obj: SourcePath);
 
@@ -170,7 +170,7 @@ class SourcePathController extends GetxController {
 // ========================================== [ START UPDATE PRODUCT ] =============================================
   Future<dynamic> updateRequest({required SourcePath SourcePath}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult = await sourcePathService.updateSourcePathRemotely(
           id: SourcePath.sourcePathId!, obj: SourcePath);
       if (remoteResult is! bool || remoteResult != true) {

@@ -110,7 +110,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                       flex: 1,
                       child: IconButton(
                           onPressed: () {
-                            Get.back();
+                            Get.offAll(() => RequestListScreen());
                           },
                           icon: CircleAvatar(
                               backgroundColor: AppColor.white,
@@ -907,8 +907,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                           Requests: requests!);
                                               if (result.status) {
                                                 print('done=================');
-                                                Get.to(() =>
-                                                    const RequestListScreen());
+                                                Get.offAll(
+                                                    () => RequestListScreen());
                                               } else {}
                                             } else {}
                                           },

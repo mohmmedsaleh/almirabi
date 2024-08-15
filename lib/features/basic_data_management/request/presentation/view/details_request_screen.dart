@@ -1,5 +1,6 @@
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
+import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -45,7 +46,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                   flex: 1,
                   child: IconButton(
                       onPressed: () {
-                        Get.back();
+                        Get.offAll(() => RequestListScreen());
                       },
                       icon: CircleAvatar(
                           backgroundColor: AppColor.white,

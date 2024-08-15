@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -108,9 +107,9 @@ class RPSCustomPainter extends CustomPainter {
 }
 
 class CustomBackGround extends StatelessWidget {
-  CustomBackGround({super.key, required this.child});
+  CustomBackGround({super.key, required this.child, this.height});
   Widget child;
-
+  double? height;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -118,8 +117,9 @@ class CustomBackGround extends StatelessWidget {
         CustomPaint(
           size: Size(
               Get.width,
-              Get.height *
-                  0.12), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+              height ??
+                  Get.height *
+                      0.12), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
           painter: RPSCustomPainter(),
         ),
         child

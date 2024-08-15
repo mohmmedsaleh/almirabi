@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
               visaNumber: visaNumberController.text,
               pinNumber: pinNumberController.text));
       if (responseResult.status) {
-        Get.to(() => const RequestListScreen());
+        Get.offAll(() => const RequestListScreen());
 
         // Get.to(() => const DashboardScreen());
         appSnackBar(

@@ -238,5 +238,8 @@ var en = {
   'price': 'Price',
   'add_new_requst': 'Add New Requst',
   'car_name': 'Car Name',
-  'source_path': 'Source Path', 'total_price': 'Total Price'
+  'source_path': 'Source Path',
+  'total_price': 'Total Price',
+  'requests': 'Requsts',
+  'Almirabi': 'Almirabi'
 };

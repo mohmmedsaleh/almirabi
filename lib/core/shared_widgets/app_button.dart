@@ -48,7 +48,9 @@ class ButtonElevated extends StatelessWidget {
               : null,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: iconData == null
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             iconData != null
                 ? Padding(

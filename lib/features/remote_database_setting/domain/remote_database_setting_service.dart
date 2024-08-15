@@ -12,45 +12,44 @@ class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
   static late OdooClient odooClient;
   static late OdooSession odooSession;
 
-  static Future instantiateOdooConnection({url, db, username, password}) async {
-    try {
-      // odooClient = OdooClient(url ?? hudaUrl);
-      // odooSession = await odooClient.authenticate(
-      //     db ?? "mydb", username ?? "admin", password ?? "admin");
+  // static Future instantiateOdooConnection({url, db, username, password}) async {
+  //   try {
+  //     // odooClient = OdooClient(url ?? hudaUrl);
+  //     // odooSession = await odooClient.authenticate(
+  //     //     db ?? "mydb", username ?? "admin", password ?? "admin");
 
-      // odooClient = OdooClient(url ?? amalUrl2);
-      // odooSession = await odooClient.authenticate(
-      //     db ?? "mydb", username ?? "admin", password ?? "admin");
+  //     // odooClient = OdooClient(url ?? amalUrl2);
+  //     // odooSession = await odooClient.authenticate(
+  //     //     db ?? "mydb", username ?? "admin", password ?? "admin");
 
-      odooClient = OdooClient(url ?? remoteURL);
-      odooSession = await odooClient.authenticate(db ?? remotedB,
-          username ?? remoteUsername, password ?? remotePassword);
+  //     odooClient = OdooClient(url);
+  //     odooSession = await odooClient.authenticate(
+  //         db, username ?? remoteUsername, password ?? remotePassword);
 
-      await SharedPr.setSessionId(
-          sessionId: "session_id=${odooSession.id}"); // output OdooSession
-      return true;
-    } on OdooException {
-      if (kDebugMode) {
-        // print('OdooException : ${e.toString()}');
-      }
-      return 'login_information_incorrect'.tr;
-    } catch (e) {
-      // if (kDebugMode) {
-      //   print('Exception : ${e.toString()}');
-      // }
-      return '${'failed_connect_server'.tr} - ${odooClient.baseURL}';
-      // throw Exception('${'failed_connect_server'.tr} - ${odooClient.baseURL}');
+  //     await SharedPr.setSessionId(
+  //         sessionId: "session_id=${odooSession.id}"); // output OdooSession
+  //     return true;
+  //   } on OdooException {
+  //     if (kDebugMode) {
+  //       // print('OdooException : ${e.toString()}');
+  //     }
+  //     return 'login_information_incorrect'.tr;
+  //   } catch (e) {
+  //     // if (kDebugMode) {
+  //     //   print('Exception : ${e.toString()}');
+  //     // }
+  //     return '${'failed_connect_server'.tr} - ${odooClient.baseURL}';
+  //     // throw Exception('${'failed_connect_server'.tr} - ${odooClient.baseURL}');
 
-      // return 'exception'.tr;
-      // return '${'failed_connect_server'.tr} - ${odooClient.baseURL}';
-    }
-  }
+  //     // return 'exception'.tr;
+  //     // return '${'failed_connect_server'.tr} - ${odooClient.baseURL}';
+  //   }
+  // }
 
   // ========================================== [ Check Connection ] =============================================
 
   @override
-  Future checkConnection(
-      {required SubscriptionInfo subscriptionInfo}) async {
+  Future checkConnection({required SubscriptionInfo subscriptionInfo}) async {
     try {
       print('${subscriptionInfo.url}/web/login?db=${subscriptionInfo.db}');
       http.Response resBody = await http.get(Uri.parse(
@@ -69,5 +68,4 @@ class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
   }
 
   // ========================================== [ Check Connection ] =============================================
-  
 }

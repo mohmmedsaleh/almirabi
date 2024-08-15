@@ -120,6 +120,32 @@ PreferredSizeWidget customAppBar(
                             }
                           });
                         }),
+                    buildUserMenuOption(
+                        icon: Icons.logout_rounded,
+                        label: "logout".tr,
+                        onTap: () async {
+                          await SharedPr.removeUserObj().then((value) {
+                            if (value) {
+                              OdooProjectOwnerConnectionHelper.odooSession =
+                                  null;
+                              Get.deleteAll();
+                              Get.offAll(() => const LoginScreen());
+                            }
+                          });
+                        }),
+                    buildUserMenuOption(
+                        icon: Icons.logout_rounded,
+                        label: "logout".tr,
+                        onTap: () async {
+                          await SharedPr.removeUserObj().then((value) {
+                            if (value) {
+                              OdooProjectOwnerConnectionHelper.odooSession =
+                                  null;
+                              Get.deleteAll();
+                              Get.offAll(() => const LoginScreen());
+                            }
+                          });
+                        }),
                   ],
                 );
               },

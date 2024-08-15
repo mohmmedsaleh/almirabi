@@ -147,7 +147,7 @@ class CarController extends GetxController {
   Future<dynamic> createCar(
       {required Car car, bool isFromHistory = false}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult = await carService.createCarRemotely(obj: car);
 
       if (remoteResult is int) {
@@ -169,7 +169,7 @@ class CarController extends GetxController {
 // ========================================== [ START UPDATE PRODUCT ] =============================================
   Future<dynamic> updateCar({required Car car}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.wifi)) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       var remoteResult =
           await carService.updateCarRemotely(id: car.id!, obj: car);
       if (remoteResult is! bool || remoteResult != true) {
