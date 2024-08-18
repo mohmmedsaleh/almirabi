@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
 import '../../../../../core/config/app_lists.dart';
-import '../../../../../core/shared_widgets/app_button.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../../core/shared_widgets/app_text_field.dart';
@@ -50,6 +49,7 @@ class _RequestListScreenState extends State<RequestListScreen>
   @override
   void dispose() {
     requestController.searchResults.clear();
+    requestController.searchRequstsController.text = '';
     _tabController.dispose();
     super.dispose();
   }
@@ -67,7 +67,7 @@ class _RequestListScreenState extends State<RequestListScreen>
         // No internet connection, switch back to "Requests" tab
         _tabController.index = 0; // Switch to the first tab
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
               content:
                   Text("No internet connection! Switching back to Requests.")),
         );
@@ -109,7 +109,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                     Expanded(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                            const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                         child: ContainerTextField(
                           readOnly: true,
                           hintcolor: AppColor.white,
@@ -120,7 +120,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                             color: AppColor.white,
                           ),
                           suffixIcon: requestController
-                                  .searchProductController.text.isNotEmpty
+                                  .searchRequstsController.text.isNotEmpty
                               ? Builder(builder: (iconContext) {
                                   return SizedBox(
                                     width: 100,
@@ -136,15 +136,14 @@ class _RequestListScreenState extends State<RequestListScreen>
                                               // if (isTrustedDevice) {
 
                                               requestController
-                                                  .searchProductController
+                                                  .searchRequstsController
                                                   .text = '';
                                               requestController.searchResults
                                                   .clear();
                                               requestController.update();
                                               filtterRequestByState(
                                                   context: iconContext,
-                                                  requests: requestController
-                                                      .requestList,
+                                                  isLoacl: true,
                                                   requestController:
                                                       requestController);
                                               requestController.update();
@@ -162,7 +161,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                                               //         .isTrustedDevice();
                                               // if (isTrustedDevice) {
                                               requestController
-                                                  .searchProductController
+                                                  .searchRequstsController
                                                   .text = '';
                                               requestController.searchResults
                                                   .clear();
@@ -186,13 +185,12 @@ class _RequestListScreenState extends State<RequestListScreen>
                                         //         .isTrustedDevice();
                                         // if (isTrustedDevice) {
                                         requestController
-                                            .searchProductController.text = '';
+                                            .searchRequstsController.text = '';
                                         requestController.searchResults.clear();
                                         requestController.update();
                                         filtterRequestByState(
                                             context: iconContext,
-                                            requests:
-                                                requestController.requestList,
+                                            isLoacl: true,
                                             requestController:
                                                 requestController);
                                         requestController.update();
@@ -214,7 +212,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                           borderRadius: 50,
                           fontSize: Get.width * 0.03,
                           maxLength: 20,
-                          controller: requestController.searchProductController,
+                          controller: requestController.searchRequstsController,
                         ),
                       ),
                     ),
@@ -277,7 +275,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                         SizedBox(
                           height: Get.height * 0.05,
                         ),
-                        requestController.searchProductController.text == ''
+                        requestController.searchRequstsController.text == ''
                             ? Wrap(
                                 direction: Axis.horizontal,
                                 children: [
@@ -321,7 +319,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                       Requests: requestController.dataSend);
                 },
                 icon: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         color: AppColor.brawn, shape: BoxShape.circle),
                     child: Icon(
@@ -333,7 +331,7 @@ class _RequestListScreenState extends State<RequestListScreen>
                   Get.to(() => AddEditRequestScreen());
                 },
                 icon: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         color: AppColor.brawn, shape: BoxShape.circle),
                     child: Icon(

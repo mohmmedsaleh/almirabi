@@ -72,23 +72,23 @@ class _MonthPickerDialogState extends State<MonthPickerDialog> {
 
 String monthName(int month) {
   switch (month) {
-    case 1:
+    case 01:
       return 'January';
-    case 2:
+    case 02:
       return 'February';
-    case 3:
+    case 03:
       return 'March';
-    case 4:
+    case 04:
       return 'April';
-    case 5:
+    case 05:
       return 'May';
-    case 6:
+    case 06:
       return 'June';
-    case 7:
+    case 07:
       return 'July';
-    case 8:
+    case 08:
       return 'August';
-    case 9:
+    case 09:
       return 'September';
     case 10:
       return 'October';

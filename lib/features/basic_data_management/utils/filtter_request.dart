@@ -1,4 +1,3 @@
-import 'package:almirabi/features/basic_data_management/request/data/request.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:popover/popover.dart';
@@ -8,7 +7,7 @@ import '../request/domain/request_viewmodel.dart';
 
 filtterRequestByState(
     {required BuildContext context,
-    required List<Requests> requests,
+    required bool isLoacl,
     required RequestController requestController}) {
   return showPopover(
     direction: PopoverDirection.bottom,
@@ -26,9 +25,14 @@ filtterRequestByState(
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
-                  requestController.searchByState(item.key.name);
-                  requestController.searchProductController.text =
-                      item.key.name;
+                  requestController.searchByState(item.key.name, isLoacl);
+                  if (isLoacl) {
+                    requestController.searchRequstsController.text =
+                        item.key.name;
+                  } else {
+                    requestController.searchReportsController.text =
+                        item.key.name;
+                  }
                 },
                 child: Text(
                   item.key.text,

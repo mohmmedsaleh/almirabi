@@ -8,10 +8,8 @@ import 'package:get/get.dart';
 import 'core/config/app_colors.dart';
 import 'core/config/app_messages_translation.dart';
 import 'core/config/app_shared_pr.dart';
-import 'core/config/network_connectivity_checker.dart';
 import 'core/utils/db_helper.dart';
 import 'features/basic_data_management/request/presentation/view/request_list_screen.dart';
-import 'features/remote_database_setting/domain/remote_database_setting_service.dart';
 import 'features/remote_database_setting/presentation/remote_database_screen.dart';
 
 void main() async {

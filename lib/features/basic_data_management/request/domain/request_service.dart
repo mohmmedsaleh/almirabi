@@ -107,38 +107,41 @@ class RequestService extends RequestRepository {
   // object can be map or class object
   Future createRequestRemotely({required obj}) async {
     try {
+      print('object=============================');
       List listRequest = [];
       for (var e in (obj as List)) {
-        continue;
+        listRequest.add(e.toJson(isRemotelyAdded: true));
       }
-      print(listRequest.last);
-      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.requests,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {},
-      });
-      print("result=> $result");
+      // print(listRequest.last);
+      // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.requests,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {},
+      // });
+      // print('object=============================');
+      // print("result=> $result");
 
-      var c = {
-        'id': null,
-        'product_car_id': 6289,
-        // 'from_date': '2024-03-01',
-        // 'to_date': '2024-03-31',
-        // 'month_name': 03,
-        'source_path_id': 3,
-        // 'pricing_driving_ids': [2],
-        // 'source_path_name':
-        //     ' دوادمي+سكاكا+عرعر+رفحه - Duwadmi+Skaka+Arar+Rafha',
-        // 'state': 'draft',
-        'request_lines': [7],
-        'driver_id': 541,
-        'amout_total': 500.0
-      };
+      // var c = {
+      //   // 'id': null,
+      //   'product_car_id': 6287,
+      //   'from_date': '2024-03-01',
+      //   'to_date': '2024-03-31',
+      //   'month_name': '03',
+      //   'source_path_id': 2,
+      //   // 'pricing_driving_ids': [2],
+      //   // 'source_path_name':
+      //   //     ' دوادمي+سكاكا+عرعر+رفحه - Duwadmi+Skaka+Arar+Rafha',
+      //   'state': 'draft',
+      //   'request_lines': [7],
+      //   'driver_id': 541,
+      //   // 'amout_total': 500.0
+      // };
+      // print(c);
       var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.requests,
         'method': 'create',
-        'args': [c],
+        'args': [listRequest.last],
         'kwargs': {},
       });
       if (kDebugMode) {

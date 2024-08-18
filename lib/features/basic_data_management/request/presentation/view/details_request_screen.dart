@@ -46,7 +46,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                   flex: 1,
                   child: IconButton(
                       onPressed: () {
-                        Get.offAll(() => RequestListScreen());
+                        Get.offAll(() => const RequestListScreen());
                       },
                       icon: CircleAvatar(
                           backgroundColor: AppColor.white,

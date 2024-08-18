@@ -1,9 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:odoo_rpc/odoo_rpc.dart';
-import '../../../core/config/app_shared_pr.dart';
-import '../../../core/config/app_urls.dart';
 import '../../authentication/utils/handle_exception_helper.dart';
 import '../data/subscription_info.dart';
 import 'remote_database_setting_repository.dart';

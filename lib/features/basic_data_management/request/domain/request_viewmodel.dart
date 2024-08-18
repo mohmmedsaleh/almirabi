@@ -16,6 +16,7 @@ class RequestController extends GetxController {
   var isLoading = false.obs;
   var hideMainScreen = false.obs;
   RxList<Requests> requestList = <Requests>[].obs;
+  RxList<Requests> reportsList = <Requests>[].obs;
   // RxList<Requests> pagingList = <Product>[].obs;
   // List<Requests> categoriesList = [];
   // List<Requests> unitsList = [];
@@ -27,7 +28,9 @@ class RequestController extends GetxController {
   var hasMore = true.obs;
   var hasLess = false.obs;
   RxList<Requests> dataSend = RxList<Requests>();
-  TextEditingController searchProductController = TextEditingController();
+  TextEditingController searchRequstsController = TextEditingController();
+  TextEditingController searchReportsController = TextEditingController();
+
   String? carid, sourcePathId, sourcePathLineId;
 
   @override
@@ -227,17 +230,19 @@ class RequestController extends GetxController {
     }
   }
 
-  Future<void> searchByState(String query) async {
-    if (requestList.isNotEmpty) {
-      searchResults.clear();
-      var result = await requestService.searchByState(query);
-      print(result);
-      if (result is List) {
-        print(searchResults);
-        searchResults.addAll(result as List<Requests>);
+  Future<void> searchByState(String query, bool isLoacl) async {
+    if (isLoacl) {
+      if (requestList.isNotEmpty) {
+        searchResults.clear();
+        var result = await requestService.searchByState(query);
+        print(result);
+        if (result is List) {
+          print(searchResults);
+          searchResults.addAll(result as List<Requests>);
+        }
+        update();
       }
-      update();
-    }
+    } else {}
   }
 
 // ============================================ [ SEARCH PRODUCT ] ===============================================

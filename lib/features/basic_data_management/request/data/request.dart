@@ -81,14 +81,15 @@ class Requests {
       }
     }
     // print(requestLines);
-    print(listId);
     data['id'] = id;
     data['product_car_id'] = car!.id;
     data['from_date'] = fromDate;
     data['to_date'] = toDate;
-    data['month_name'] = monthName;
+    data['month_name'] = '05';
     data['source_path_id'] = sourcePathId;
-    data['source_path_name'] = sourcePathName;
+    if (!isRemotelyAdded) {
+      data['source_path_name'] = sourcePathName;
+    }
     data['state'] = toState(state!);
     data['request_lines'] =
         isRemotelyAdded ? listId : js.json.encode(requestLines);

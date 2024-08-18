@@ -7,6 +7,7 @@ import 'package:popover/popover.dart';
 import '../../features/authentication/presentation/views/login_screen.dart';
 import '../../features/authentication/utils/odoo_connection_helper.dart';
 
+import '../../features/basic_data_management/request/presentation/view/reports_list_screen.dart';
 import '../config/app_colors.dart';
 import '../config/app_shared_pr.dart';
 import '../config/app_styles.dart';
@@ -74,7 +75,7 @@ PreferredSizeWidget customAppBar(
             showPopover(
               context: buildContext,
               width: Get.width * 0.3,
-              height: Get.height * 0.07,
+              height: Get.height * 0.14,
               backgroundColor: AppColor.white.withOpacity(0.5),
               bodyBuilder: (context) {
                 return Column(
@@ -107,31 +108,24 @@ PreferredSizeWidget customAppBar(
                     //         changePasswordDialog();
                     //       }
                     //     }),
+                    // buildUserMenuOption(
+                    //     icon: Icons.logout_rounded,
+                    //     label: "logout".tr,
+                    //     onTap: () async {
+                    //       await SharedPr.removeUserObj().then((value) {
+                    //         if (value) {
+                    //           OdooProjectOwnerConnectionHelper.odooSession =
+                    //               null;
+                    //           Get.deleteAll();
+                    //           Get.offAll(() => const LoginScreen());
+                    //         }
+                    //       });
+                    //     }),
                     buildUserMenuOption(
-                        icon: Icons.logout_rounded,
-                        label: "logout".tr,
+                        icon: Icons.insert_drive_file_outlined,
+                        label: "Reports".tr,
                         onTap: () async {
-                          await SharedPr.removeUserObj().then((value) {
-                            if (value) {
-                              OdooProjectOwnerConnectionHelper.odooSession =
-                                  null;
-                              Get.deleteAll();
-                              Get.offAll(() => const LoginScreen());
-                            }
-                          });
-                        }),
-                    buildUserMenuOption(
-                        icon: Icons.logout_rounded,
-                        label: "logout".tr,
-                        onTap: () async {
-                          await SharedPr.removeUserObj().then((value) {
-                            if (value) {
-                              OdooProjectOwnerConnectionHelper.odooSession =
-                                  null;
-                              Get.deleteAll();
-                              Get.offAll(() => const LoginScreen());
-                            }
-                          });
+                          Get.to(() => const ReportScreen());
                         }),
                     buildUserMenuOption(
                         icon: Icons.logout_rounded,

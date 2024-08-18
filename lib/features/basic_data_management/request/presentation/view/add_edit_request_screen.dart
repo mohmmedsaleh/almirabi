@@ -110,7 +110,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                       flex: 1,
                       child: IconButton(
                           onPressed: () {
-                            Get.offAll(() => RequestListScreen());
+                            Get.offAll(() => const RequestListScreen());
                           },
                           icon: CircleAvatar(
                               backgroundColor: AppColor.white,
@@ -341,8 +341,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                           2100, 12, 31),
                                                       height: Get.height / 3);
                                               if (fromDate != null) {
-                                                requests!.fromDate =
-                                                    fromDate.toString();
+                                                requests!.fromDate = fromDate
+                                                    .toString()
+                                                    .substring(0, 11);
                                               } else {
                                                 ///snakbar
                                               }
@@ -375,8 +376,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                           2100, 12, 31),
                                                       height: Get.height / 3);
                                               if (toDate != null) {
-                                                requests!.toDate =
-                                                    toDate.toString();
+                                                requests!.toDate = toDate
+                                                    .toString()
+                                                    .substring(0, 11);
                                               } else {
                                                 ///snakbar
                                               }
@@ -412,11 +414,17 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               month = await _selectMonth();
                                               print(month);
                                               if (month != null) {
-                                                requests!.monthName =
-                                                    month.toString();
+                                                if (month! < 10) {
+                                                  requests!.monthName =
+                                                      '0${month}';
+                                                } else {
+                                                  requests!.monthName =
+                                                      month.toString();
+                                                }
                                               } else {
                                                 ///snakbar
                                               }
+                                              print(requests!.monthName);
                                               controller.update();
                                             },
                                             child: ButtonElevated(
@@ -907,8 +915,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                           Requests: requests!);
                                               if (result.status) {
                                                 print('done=================');
-                                                Get.offAll(
-                                                    () => RequestListScreen());
+                                                Get.offAll(() =>
+                                                    const RequestListScreen());
                                               } else {}
                                             } else {}
                                           },
