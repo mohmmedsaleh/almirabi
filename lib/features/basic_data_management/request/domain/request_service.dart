@@ -141,7 +141,7 @@ class RequestService extends RequestRepository {
       var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.requests,
         'method': 'create',
-        'args': [listRequest.last],
+        'args': [listRequest],
         'kwargs': {},
       });
       if (kDebugMode) {

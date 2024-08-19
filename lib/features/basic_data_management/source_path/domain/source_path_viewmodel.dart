@@ -36,7 +36,6 @@ class SourcePathController extends GetxController {
   SourcePathData() async {
     var result = await displaySourcePathList(paging: false);
     sourcePathList.value = result.data;
-    print(sourcePathList.first.lins);
     // pagingList.value = result.data;
     update();
   }

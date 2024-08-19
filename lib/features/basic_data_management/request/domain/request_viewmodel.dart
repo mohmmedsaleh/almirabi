@@ -173,8 +173,9 @@ class RequestController extends GetxController {
       var remoteResult =
           await requestService.createRequestRemotely(obj: Requests);
 
-      if (remoteResult is int) {
+      if (remoteResult is List<int>) {
         print("sending Successful");
+        for (var i in Requests) {}
         // car.id = remoteResult;
 
         // await requestService.create(obj: car, isRemotelyAdded: true);
