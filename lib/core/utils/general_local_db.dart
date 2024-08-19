@@ -218,14 +218,31 @@ class GeneralLocalDB<T> {
     try {
       return await DbHelper.db!.update(
         tableName,
-        obj is Map<String, dynamic>
-            ? obj
-            : obj.toJson(isRemotelyAdded: isRemotelyAdded),
+        obj is Map<String, dynamic> ? obj : obj.toJson(),
         where: '$whereField = ?',
         whereArgs: [id],
       );
     } catch (e) {
       // print("create Exception : $e");
+      // throw Exception(e.toString());
+
+      throw handleException(
+          exception: e, navigation: false, methodName: "GeneralLocalDB update");
+    }
+  }
+
+  Future updatewhere(
+      {required dynamic id,
+      required obj,
+      required columnToUpdate,
+      required String whereField,
+      // bool isRemotelyAdded = false
+      bool isRemotelyAdded = true}) async {
+    try {
+      return await DbHelper.db!.execute(
+          'UPDATE $tableName SET $columnToUpdate WHERE $whereField = ?');
+    } catch (e) {
+      // print("updatewhere Exception : $e");
       // throw Exception(e.toString());
 
       throw handleException(

@@ -7,6 +7,7 @@ import '../../../../core/config/app_enums.dart';
 
 class Requests {
   int? id;
+  int? requestsId;
   Car? car;
   int? driverId;
   String? fromDate;
@@ -20,6 +21,7 @@ class Requests {
 
   Requests(
       {this.id,
+      this.requestsId,
       this.car,
       this.fromDate,
       this.driverId,
@@ -50,24 +52,33 @@ class Requests {
       linsList = [];
     }
     id = json['id'];
-    car = Car(id: json['product_car_id'], name: '');
+    requestsId = json['requests_id'];
+    car = Car(
+        id: json['product_car_id'] is List
+            ? json['product_car_id'].first
+            : json['product_car_id'],
+        name: '');
     fromDate = json['from_date'];
     toDate = json['to_date'];
     monthName = json['month_name'] is int
         ? json['month_name'].toString()
         : json['month_name'];
-    sourcePathId = json['source_path_id'];
+    sourcePathId = json['source_path_id'] is List
+        ? json['source_path_id'].first
+        : json['source_path_id'];
     sourcePathName = json['source_path_name'];
     state = fromState(json['state'].toString());
     requestLines = [];
+
     for (var element in linsList) {
       requestLines!.add(SourcePathLine(
-          destId: element['dest_id'],
-          destName: element['dest_name'],
-          destPrice: element['dest_price']));
+          destId: element is int ? element : element['dest_id'],
+          destName: element is int ? null : element['dest_name'],
+          destPrice: element is int ? null : element['dest_price']));
     }
 
-    driverId = json['driver_id'];
+    driverId =
+        json['driver_id'] is List ? json['driver_id'].first : json['driver_id'];
     amoutTotal = json['amout_total'];
   }
 
@@ -89,12 +100,14 @@ class Requests {
     data['source_path_id'] = sourcePathId;
     if (!isRemotelyAdded) {
       data['source_path_name'] = sourcePathName;
+      data['requests_id'] = requestsId;
     }
     data['state'] = toState(state!);
     data['request_lines'] =
         isRemotelyAdded ? listId : js.json.encode(requestLines);
     data['driver_id'] = driverId;
     data['amout_total'] = amoutTotal;
+    print('data ============ ${data}');
     return data;
   }
 

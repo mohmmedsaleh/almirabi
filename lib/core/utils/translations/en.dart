@@ -241,5 +241,9 @@ var en = {
   'source_path': 'Source Path',
   'total_price': 'Total Price',
   'requests': 'Requsts',
-  'Almirabi': 'Almirabi'
+  'Almirabi': 'Almirabi',
+  'draft': 'Draft',
+  'done_seended': 'Done Seended',
+  'confirm': 'Done confirm',
+  'done_cancel': 'Done Cancel'
 };

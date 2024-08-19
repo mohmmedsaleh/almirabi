@@ -17,5 +17,7 @@ class OdooModels {
   static const String uomUomMain = 'uom.uom';
   static const String uomUom = 'uom.uom.t';
   static const String requests = 'trnsp.route.drivers.requests';
+  static const String requestsLine = 'trnsp.route.drivers.requests.lines';
+
   static const String transfunctions = 'transp.xmlrpc.functions';
 }

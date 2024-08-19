@@ -1,5 +1,7 @@
 // ignore_for_file: type_literal_in_constant_pattern, unnecessary_type_check
 
+import 'dart:async';
+
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -9,6 +11,7 @@ import '../../../core/utils/define_type_function.dart';
 
 import '../../../core/utils/general_local_db.dart';
 
+import '../../basic_data_management/request/presentation/view/request_list_screen.dart';
 import '../utils/fail_loading_dialog.dart';
 import 'loading_synchronizing_data_service.dart';
 
@@ -24,6 +27,7 @@ class LoadingDataController extends GetxController {
   var countLoadData = RxMap();
   var lengthRemote = 0.obs;
   var isLoadData = false.obs;
+  var isLoading = false.obs;
   // CustomerController customerController = Get.put(CustomerController());
 
   GeneralLocalDB? _instance;
@@ -38,19 +42,29 @@ class LoadingDataController extends GetxController {
     super.onInit();
     print("onInit +++++");
     try {
+      loadingData();
       // await loadingPosCategoryIdsList();
-      await loadingCar();
       // await loadingRequest();
-      await loadingSourcePath();
       // await loadingProduct(posCategoriesIds: posCategoryIdsList);
       // await loadingCustomer();
       // await loadingProductUnit();
       // await loadingPosSession();
       // _instance = getLocalInstanceType<Requests>();
       // _instance!.deleteData();
-      update(['loading']);
+      update();
     } catch (_) {
       failLoadingDialog();
+    }
+  }
+
+  loadingData({bool islogin = true}) async {
+    isLoading.value = true;
+    await loadingCar();
+    // await loadingRequest();
+    await loadingSourcePath();
+    isLoading.value = false;
+    if (islogin) {
+      Get.offAll(() => const RequestListScreen());
     }
   }
 

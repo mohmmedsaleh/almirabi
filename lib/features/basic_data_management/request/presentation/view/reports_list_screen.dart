@@ -7,7 +7,8 @@ import '../../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../../core/shared_widgets/custom_app_bar.dart';
 import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../car/domain/car_viewmodel.dart';
-import '../../../utils/filtter_request.dart';
+import '../../../source_path/domain/source_path_viewmodel.dart';
+import '../../utils/filtter_request.dart';
 import '../../domain/request_viewmodel.dart';
 import 'request_list_screen.dart';
 
@@ -19,18 +20,19 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  late final LoadingDataController loadingDataController;
   late final RequestController requestController;
   late final CarController carController;
+  late final SourcePathController sourcePathController;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     requestController = Get.put(RequestController());
-    loadingDataController = Get.put(LoadingDataController());
     carController = Get.put(CarController());
+    sourcePathController = Get.put(SourcePathController());
     requestController.searchResults.clear();
+    requestController.getAllReports();
   }
 
   @override
@@ -283,15 +285,14 @@ class _ReportScreenState extends State<ReportScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SizedBox(
-                              height: Get.height * 0.05,
-                            ),
                             requestController.searchReportsController.text == ''
                                 ? Wrap(
                                     direction: Axis.horizontal,
                                     children: [
                                       ...requestController.reportsList
                                           .map((item) => card_data(
+                                                sourcePathController:
+                                                    sourcePathController,
                                                 carController: carController,
                                                 item: item,
                                               ))
@@ -302,6 +303,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                     children: [
                                       ...requestController.searchResults
                                           .map((item) => card_data(
+                                                sourcePathController:
+                                                    sourcePathController,
                                                 carController: carController,
                                                 item: item,
                                               ))

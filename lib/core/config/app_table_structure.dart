@@ -8,6 +8,7 @@ class LocalDatabaseStructure {
   static String requestStructure = """
         id INTEGER PRIMARY KEY,
         product_car_id INTEGER,    
+        requests_id INTEGER,  
         from_date TEXT,
         to_date TEXT,
         month_name INTEGER,

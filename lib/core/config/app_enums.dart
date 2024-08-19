@@ -6,7 +6,7 @@ enum RequestState {
   draft('draft'),
   closed('done_seended'),
   confirm('confirm'),
-  cancel('cancel');
+  cancel('done_cancel');
 
   const RequestState(this.text);
   final String text;

@@ -7,4 +7,9 @@ abstract class RequestRepository {
   Future create({required obj});
   Future update({required int id, required obj, required String whereField});
   Future search(String query);
+  Future updateWhere(
+      {required int id,
+      required obj,
+      required columnToUpdate,
+      required String whereField});
 }

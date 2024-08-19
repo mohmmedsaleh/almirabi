@@ -237,5 +237,9 @@ var ar = {
   'source_path': 'وجهه المصدر',
   'total_price': 'اجمالي المبلغ',
   'requests': 'الطلبات',
-  'Almirabi': 'الميرابي'
+  'Almirabi': 'الميرابي',
+  'draft': 'مسوده',
+  'done_seended': 'تم الارسال',
+  'confirm': 'تم الاعتماد',
+  'done_cancel': 'تم الالغاء'
 };

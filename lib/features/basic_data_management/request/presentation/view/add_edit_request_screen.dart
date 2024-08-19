@@ -909,6 +909,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               requests!.amoutTotal = totalPrice;
                                               requests!.driverId =
                                                   SharedPr.userObj!.id;
+                                              // print(requests!.toJson());
                                               ResponseResult result =
                                                   await controller
                                                       .createRequest(

@@ -2,6 +2,7 @@ import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/domain/request_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
+import 'package:almirabi/features/basic_data_management/source_path/domain/source_path_viewmodel.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,9 @@ import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
-import '../../../utils/filtter_request.dart';
+import '../../../car/data/car.dart';
+import '../../../source_path/data/source_path.dart';
+import '../../utils/filtter_request.dart';
 import '../../data/request.dart';
 import '../../domain/request_service.dart';
 import '../widgets/show_months_dailog.dart';
@@ -27,9 +30,9 @@ class RequestListScreen extends StatefulWidget {
 
 class _RequestListScreenState extends State<RequestListScreen>
     with SingleTickerProviderStateMixin {
-  late final LoadingDataController loadingDataController;
   late final RequestController requestController;
   late final CarController carController;
+  late final SourcePathController sourcePathController;
   late TabController _tabController;
 
   @override
@@ -38,8 +41,8 @@ class _RequestListScreenState extends State<RequestListScreen>
     super.initState();
     print('======initState===========');
     requestController = Get.put(RequestController());
-    loadingDataController = Get.put(LoadingDataController());
     carController = Get.put(CarController());
+    sourcePathController = Get.put(SourcePathController());
     RequestService.requestDataServiceInstance = null;
     RequestService.getInstance();
     _tabController = TabController(length: 2, vsync: this);
@@ -108,8 +111,8 @@ class _RequestListScreenState extends State<RequestListScreen>
                     // ),
                     Expanded(
                       child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 7),
                         child: ContainerTextField(
                           readOnly: true,
                           hintcolor: AppColor.white,
@@ -281,6 +284,8 @@ class _RequestListScreenState extends State<RequestListScreen>
                                 children: [
                                   ...requestController.requestList
                                       .map((item) => card_data(
+                                            sourcePathController:
+                                                sourcePathController,
                                             carController: carController,
                                             item: item,
                                           ))
@@ -291,6 +296,8 @@ class _RequestListScreenState extends State<RequestListScreen>
                                 children: [
                                   ...requestController.searchResults
                                       .map((item) => card_data(
+                                            sourcePathController:
+                                                sourcePathController,
                                             carController: carController,
                                             item: item,
                                           ))
@@ -316,7 +323,7 @@ class _RequestListScreenState extends State<RequestListScreen>
             IconButton(
                 onPressed: () {
                   requestController.createRequestRemotely(
-                      Requests: requestController.dataSend);
+                      requests: requestController.dataSend);
                 },
                 icon: Container(
                     padding: const EdgeInsets.all(5),
@@ -349,13 +356,20 @@ class card_data extends StatelessWidget {
   const card_data({
     super.key,
     required this.carController,
+    required this.sourcePathController,
     required this.item,
   });
 
   final CarController carController;
+  final SourcePathController sourcePathController;
   final Requests item;
+
   @override
   Widget build(BuildContext context) {
+    Car car = carController.carList.firstWhere((e) => e.id == item.car!.id);
+    SourcePath sourcePath = sourcePathController.sourcePathList
+        .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
+
     return InkWell(
       onTap: () {
         Get.to(() => DetailsRequestScreen(item: item));
@@ -394,7 +408,7 @@ class card_data extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${'car'.tr} : ${carController.carList.firstWhere((e) => e.id == item.car!.id).name}",
+                                  "${'car'.tr} : ${car.name ?? ''}",
                                   style: TextStyle(
                                       fontSize: Get.width * 0.03,
                                       color: AppColor.white),
@@ -446,7 +460,7 @@ class card_data extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          "${'from'.tr} : ${item.fromDate!.substring(0, 11)}",
+                          "${'from'.tr} : ${item.fromDate!.substring(0, 10)}",
                           style: TextStyle(
                               fontSize: Get.width * 0.03,
                               color: AppColor.white,
@@ -469,7 +483,7 @@ class card_data extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          "${'to'.tr} : ${item.toDate!.substring(0, 11)}",
+                          "${'to'.tr} : ${item.toDate!.substring(0, 10)}",
                           style: TextStyle(
                               fontSize: Get.width * 0.03,
                               color: AppColor.white,
@@ -491,7 +505,7 @@ class card_data extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          "${item.sourcePathName!.length > 17 ? '${item.sourcePathName!.substring(0, 17)}...' : item.sourcePathName} ",
+                          "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 17 ? '${sourcePath.sourcePathName!.substring(0, 17)}...' : sourcePath.sourcePathName} ",
                           style: TextStyle(
                               fontSize: Get.width * 0.03,
                               color: AppColor.white),
