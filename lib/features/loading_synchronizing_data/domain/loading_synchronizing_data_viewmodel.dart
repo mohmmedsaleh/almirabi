@@ -28,6 +28,7 @@ class LoadingDataController extends GetxController {
   var lengthRemote = 0.obs;
   var isLoadData = false.obs;
   var isLoading = false.obs;
+  bool fromReportScreen = false;
   // CustomerController customerController = Get.put(CustomerController());
 
   GeneralLocalDB? _instance;
@@ -36,6 +37,10 @@ class LoadingDataController extends GetxController {
   late LoadingSynchronizingDataService loadingSynchronizingDataService =
       LoadingSynchronizingDataService();
   List<int> posCategoryIdsList = [];
+
+  LoadingDataController({bool fromReportsScreen = false}) {
+    fromReportScreen = fromReportsScreen;
+  }
 
   @override
   Future<void> onInit() async {
@@ -63,7 +68,8 @@ class LoadingDataController extends GetxController {
     // await loadingRequest();
     await loadingSourcePath();
     isLoading.value = false;
-    if (islogin) {
+    print('fromReportScreen=====================>$fromReportScreen');
+    if (fromReportScreen == false) {
       Get.offAll(() => const RequestListScreen());
     }
   }

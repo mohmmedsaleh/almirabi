@@ -233,6 +233,7 @@ var en = {
   'from': 'from',
   'to': 'to',
   'requst_details': 'Requst Details',
+  'reports_details': 'Reports Details',
   'destination': 'Destination',
   'destination_path': 'Destination Path',
   'price': 'Price',
@@ -245,5 +246,6 @@ var en = {
   'draft': 'Draft',
   'done_seended': 'Done Seended',
   'confirm': 'Done confirm',
-  'done_cancel': 'Done Cancel'
+  'done_cancel': 'Done Cancel',
+  'data_isloading': 'the data is loading now ...'
 };

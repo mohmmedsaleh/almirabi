@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:almirabi/core/config/app_colors.dart';
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:almirabi/core/utils/response_result.dart';
@@ -16,6 +18,7 @@ import '../../../../../core/shared_widgets/app_button.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../../core/shared_widgets/app_drop_down_field.dart';
+import '../../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../source_path/data/source_path.dart';
 import '../../../source_path/data/source_path_line.dart';
 import '../../../source_path/domain/source_path_viewmodel.dart';
@@ -24,8 +27,8 @@ import '../widgets/show_months_dailog.dart';
 
 class AddEditRequestScreen extends StatefulWidget {
   Requests? objectToEdit;
-
-  AddEditRequestScreen({super.key, this.objectToEdit});
+  bool isAdd;
+  AddEditRequestScreen({super.key, this.objectToEdit, this.isAdd = true});
   @override
   State<AddEditRequestScreen> createState() => _AddEditRequestScreenState();
 }
@@ -87,6 +90,22 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
   getData() async {
     await carController.carData();
     await sourcePathController.SourcePathData();
+    if (!widget.isAdd) {
+      print(widget.objectToEdit!.car!.id);
+      carid = carController.carList
+          .firstWhere((e) => e.id == widget.objectToEdit!.car!.id)
+          .name;
+      sourcePathList = sourcePathController.sourcePathList
+          .where((e) => e.car!.id == widget.objectToEdit!.car!.id)
+          .toList();
+      sourcePathId = widget.objectToEdit!.sourcePathName;
+      requestLineList = widget.objectToEdit!.requestLines!;
+      SourcePath sourcePath = sourcePathController.sourcePathList.firstWhere(
+          (element) => element.sourcePathName == sourcePathId,
+          orElse: () => SourcePath());
+      sourcePathLineList = sourcePath.lins!;
+      print('sourcePathlist ');
+    }
     requestController.update();
   }
 
@@ -94,7 +113,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: customAppBar(headerBackground: true),
+        appBar: customAppBar(headerBackground: true, userOpstionShow: true),
         body: CustomBackGround(
             child: GetBuilder<RequestController>(builder: (controller) {
           print('=========================dddddddd==============0');
@@ -110,7 +129,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                       flex: 1,
                       child: IconButton(
                           onPressed: () {
-                            Get.offAll(() => const RequestListScreen());
+                            widget.isAdd
+                                ? Get.offAll(() => const RequestListScreen())
+                                : Get.back();
                           },
                           icon: CircleAvatar(
                               backgroundColor: AppColor.white,
@@ -158,13 +179,16 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         0.05,
                                     onTap: () {
                                       print('onTap==============');
+                                      if (widget.isAdd) {
+                                        requests!.sourcePathId = null;
+                                        requests!.sourcePathName = null;
+                                        requests!.requestLines = [];
+                                      }
                                       sourcePathId = null;
                                       carid = null;
                                       sourcePathList = [];
                                       requestLineList = [];
-                                      requests!.sourcePathId = null;
-                                      requests!.sourcePathName = null;
-                                      requests!.requestLines = [];
+
                                       sourcePathLineList = [];
                                       controller.update();
                                     },
@@ -253,9 +277,12 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                             sourcePathId = null;
                                             sourcePathLineList = [];
                                             requestLineList = [];
-                                            requests!.sourcePathId = null;
-                                            requests!.sourcePathName = null;
-                                            requests!.requestLines = [];
+                                            if (isAdd) {
+                                              requests!.sourcePathId = null;
+                                              requests!.sourcePathName = null;
+                                              requests!.requestLines = [];
+                                            }
+
                                             controller.update();
                                           },
                                           onChanged: (val) {
@@ -343,7 +370,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               if (fromDate != null) {
                                                 requests!.fromDate = fromDate
                                                     .toString()
-                                                    .substring(0, 11);
+                                                    .substring(0, 10);
                                               } else {
                                                 ///snakbar
                                               }
@@ -359,7 +386,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                           Text(requests!.fromDate != null
                                               ? requests!.fromDate
                                                   .toString()
-                                                  .substring(0, 11)
+                                                  .substring(0, 10)
                                               : '')
                                         ],
                                       ),
@@ -378,7 +405,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               if (toDate != null) {
                                                 requests!.toDate = toDate
                                                     .toString()
-                                                    .substring(0, 11);
+                                                    .substring(0, 10);
                                               } else {
                                                 ///snakbar
                                               }
@@ -394,7 +421,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                           Text(requests!.toDate != null
                                               ? requests!.toDate
                                                   .toString()
-                                                  .substring(0, 11)
+                                                  .substring(0, 10)
                                               : '')
                                         ],
                                       ),
@@ -472,7 +499,10 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                   iconcolor: AppColor.black,
                                                   fontSize: Get.width * 0.03,
                                                   onTap: () {
-                                                    requests!.requestLines = [];
+                                                    if (widget.isAdd) {
+                                                      requests!.requestLines =
+                                                          [];
+                                                    }
                                                   },
                                                   onChanged: (val) {
                                                     SourcePathLine
@@ -918,8 +948,19 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 print('done=================');
                                                 Get.offAll(() =>
                                                     const RequestListScreen());
-                                              } else {}
-                                            } else {}
+                                                appSnackBar(
+                                                    messageType:
+                                                        MessageTypes.success,
+                                                    message: 'Successful'.tr);
+                                              } else {
+                                                appSnackBar(
+                                                    message: result.message);
+                                              }
+                                            } else {
+                                              appSnackBar(
+                                                  message:
+                                                      'enter_required_info'.tr);
+                                            }
                                           },
                                           child: ButtonElevated(
                                               width: Get.width,

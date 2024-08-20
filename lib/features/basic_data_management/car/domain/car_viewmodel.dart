@@ -30,8 +30,8 @@ class CarController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    super.onInit();
     await carData();
+    super.onInit();
   }
 
   carData() async {

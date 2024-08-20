@@ -71,14 +71,18 @@ class GeneralLocalDB<T> {
   }
 
   Future<List<T>> index(
-      {int? offset, int? limit, bool fromLocal = true}) async {
+      {int? offset, int? limit, String? orderBy, bool fromLocal = true}) async {
     try {
       List<Map<String, dynamic>> result;
       if (offset != null) {
-        result =
-            await DbHelper.db!.query(tableName, offset: offset, limit: limit);
+        result = await DbHelper.db!
+            .query(tableName, offset: offset, orderBy: orderBy, limit: limit);
       } else {
-        result = await DbHelper.db!.query(tableName);
+        if (orderBy != null) {
+          result = await DbHelper.db!.query(tableName, orderBy: orderBy);
+        } else {
+          result = await DbHelper.db!.query(tableName);
+        }
       }
       if (kDebugMode) {
         print('$tableName index');
@@ -86,6 +90,7 @@ class GeneralLocalDB<T> {
       }
       return result.map((e) => fromJson(e)).toList();
     } catch (e) {
+      print(e);
       throw handleException(
           exception: e, navigation: false, methodName: "GeneralLocalDB index");
 
@@ -239,10 +244,11 @@ class GeneralLocalDB<T> {
       // bool isRemotelyAdded = false
       bool isRemotelyAdded = true}) async {
     try {
+      print('UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id');
       return await DbHelper.db!.execute(
-          'UPDATE $tableName SET $columnToUpdate WHERE $whereField = ?');
+          'UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id', obj);
     } catch (e) {
-      // print("updatewhere Exception : $e");
+      print("updatewhere Exception : $e");
       // throw Exception(e.toString());
 
       throw handleException(

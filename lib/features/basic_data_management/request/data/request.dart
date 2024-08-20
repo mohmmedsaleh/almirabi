@@ -41,7 +41,7 @@ class Requests {
         linsList =
             (js.json.decode(json['request_lines']) as List).cast<dynamic>();
 
-        print(linsList.runtimeType);
+        print(linsList);
         print("================lst.first.lins===================");
         print('linsList.runtimeType ${linsList.runtimeType}');
         print("================lst.first.lins===================");
@@ -51,6 +51,7 @@ class Requests {
     } else {
       linsList = [];
     }
+    print(json);
     id = json['id'];
     requestsId = json['requests_id'];
     car = Car(
@@ -69,7 +70,7 @@ class Requests {
     sourcePathName = json['source_path_name'];
     state = fromState(json['state'].toString());
     requestLines = [];
-
+    print("linsList :  $requestLines");
     for (var element in linsList) {
       requestLines!.add(SourcePathLine(
           destId: element is int ? element : element['dest_id'],

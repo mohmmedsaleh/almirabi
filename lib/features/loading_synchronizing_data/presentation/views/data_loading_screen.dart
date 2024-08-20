@@ -34,6 +34,9 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
                       color: AppColor.brawn,
                       backgroundColor: AppColor.black,
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text('data_isloading'.tr)
                   ],
                 ),

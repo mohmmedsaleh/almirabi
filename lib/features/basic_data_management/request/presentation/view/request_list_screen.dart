@@ -1,17 +1,28 @@
+import 'dart:convert';
+
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
+import 'package:almirabi/core/utils/response_result.dart';
 import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/domain/request_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
+import 'package:almirabi/features/basic_data_management/request/presentation/view/reports_list_screen.dart';
 import 'package:almirabi/features/basic_data_management/source_path/domain/source_path_viewmodel.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
+import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/config/app_lists.dart';
+import '../../../../../core/config/app_shared_pr.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
+import '../../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../../core/shared_widgets/app_text_field.dart';
+import '../../../../../core/shared_widgets/cusuom_app_drawer.dart';
+import '../../../../authentication/presentation/views/login_screen.dart';
+import '../../../../authentication/utils/odoo_connection_helper.dart';
 import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../car/data/car.dart';
 import '../../../source_path/data/source_path.dart';
@@ -47,6 +58,8 @@ class _RequestListScreenState extends State<RequestListScreen>
     RequestService.getInstance();
     _tabController = TabController(length: 2, vsync: this);
     getPagingList();
+    print(
+        '======initState=====${carController.carList}==${sourcePathController.sourcePathList}====');
   }
 
   @override
@@ -81,14 +94,40 @@ class _RequestListScreenState extends State<RequestListScreen>
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
     return SafeArea(
       child: Scaffold(
-        appBar: customAppBar(headerBackground: true),
+        appBar: AppBar(
+            backgroundColor: AppColor.brawn,
+            foregroundColor: AppColor.white,
+            actions: [
+              IconButton(
+                  onPressed: () async {
+                    await SharedPr.setLanguage(
+                        lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                  },
+                  icon: Icon(
+                    Icons.language,
+                  ))
+            ]),
+        drawer: CustomDrawer(),
         body: CustomBackGround(
-          // height: Get.height * 0.18,
+          height: Get.height * 0.18,
           child: GetBuilder<RequestController>(builder: (controller) {
             return Column(
               children: [
+                SizedBox(
+                  height: Get.height * 0.02,
+                ),
+                Center(
+                  child: Text(
+                    "requests".tr,
+                    style: TextStyle(
+                        fontSize: Get.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.white),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -276,33 +315,53 @@ class _RequestListScreenState extends State<RequestListScreen>
                     child: Column(
                       children: [
                         SizedBox(
-                          height: Get.height * 0.05,
+                          height: Get.height * 0.06,
                         ),
-                        requestController.searchRequstsController.text == ''
-                            ? Wrap(
-                                direction: Axis.horizontal,
-                                children: [
-                                  ...requestController.requestList
-                                      .map((item) => card_data(
-                                            sourcePathController:
-                                                sourcePathController,
-                                            carController: carController,
-                                            item: item,
-                                          ))
-                                ],
+                        carController.carList.isNotEmpty &&
+                                sourcePathController.sourcePathList.isNotEmpty
+                            ? requestController.searchRequstsController.text ==
+                                    ''
+                                ? Wrap(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      ...requestController.requestList
+                                          .map((item) => card_data(
+                                                sourcePathList:
+                                                    sourcePathController
+                                                        .sourcePathList,
+                                                carList: carController.carList,
+                                                item: item,
+                                              ))
+                                    ],
+                                  )
+                                : Wrap(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      ...requestController.searchResults
+                                          .map((item) => card_data(
+                                                sourcePathList:
+                                                    sourcePathController
+                                                        .sourcePathList,
+                                                carList: carController.carList,
+                                                item: item,
+                                              ))
+                                    ],
+                                  )
+                            : Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      color: AppColor.brawn,
+                                      backgroundColor: AppColor.black,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('data_isloading'.tr)
+                                  ],
+                                ),
                               )
-                            : Wrap(
-                                direction: Axis.horizontal,
-                                children: [
-                                  ...requestController.searchResults
-                                      .map((item) => card_data(
-                                            sourcePathController:
-                                                sourcePathController,
-                                            carController: carController,
-                                            item: item,
-                                          ))
-                                ],
-                              ),
                       ],
                     ),
                   ),
@@ -321,9 +380,18 @@ class _RequestListScreenState extends State<RequestListScreen>
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-                onPressed: () {
-                  requestController.createRequestRemotely(
-                      requests: requestController.dataSend);
+                onPressed: () async {
+                  ResponseResult responseResult =
+                      await requestController.createRequestRemotely(
+                          requests: requestController.dataSend);
+                  if (responseResult.status) {
+                    await requestController.requestData();
+                    appSnackBar(
+                        messageType: MessageTypes.success,
+                        message: 'Successful'.tr);
+                  } else {
+                    appSnackBar(message: responseResult.message);
+                  }
                 },
                 icon: Container(
                     padding: const EdgeInsets.all(5),
@@ -353,26 +421,34 @@ class _RequestListScreenState extends State<RequestListScreen>
 }
 
 class card_data extends StatelessWidget {
-  const card_data({
-    super.key,
-    required this.carController,
-    required this.sourcePathController,
-    required this.item,
-  });
-
-  final CarController carController;
-  final SourcePathController sourcePathController;
+  const card_data(
+      {super.key,
+      required this.carList,
+      required this.sourcePathList,
+      required this.item,
+      this.isRequst = true});
+  final List<Car> carList;
+  final List<SourcePath> sourcePathList;
   final Requests item;
-
+  final bool isRequst;
   @override
   Widget build(BuildContext context) {
-    Car car = carController.carList.firstWhere((e) => e.id == item.car!.id);
-    SourcePath sourcePath = sourcePathController.sourcePathList
-        .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
+    var car =
+        carList == [] ? Car() : carList.firstWhere((e) => e.id == item.car!.id);
+    var sourcePath = sourcePathList == []
+        ? SourcePath()
+        : sourcePathList
+            .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
+
+    print(sourcePath);
+    print(car);
 
     return InkWell(
       onTap: () {
-        Get.to(() => DetailsRequestScreen(item: item));
+        Get.to(() => DetailsRequestScreen(
+              item: item,
+              isRequst: isRequst,
+            ));
       },
       child: Padding(
         padding: const EdgeInsets.all(5.0),

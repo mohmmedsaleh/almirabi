@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         ),
         home: SharedPr.subscriptionDetailsObj?.url == null
             ? const RemoteDatabaseScreen()
-            : SharedPr.userObj!.name == null
+            : SharedPr.userObj?.name == null
                 ? const LoginScreen()
                 : const RequestListScreen());
   }

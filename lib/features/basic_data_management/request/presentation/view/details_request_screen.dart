@@ -10,10 +10,13 @@ import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../car/domain/car_viewmodel.dart';
 import '../../domain/request_viewmodel.dart';
 import '../widgets/show_months_dailog.dart';
+import 'add_edit_request_screen.dart';
+import 'reports_list_screen.dart';
 
 class DetailsRequestScreen extends StatefulWidget {
-  DetailsRequestScreen({super.key, required this.item});
+  DetailsRequestScreen({super.key, required this.item, this.isRequst = true});
   Requests item;
+  bool isRequst;
   @override
   State<DetailsRequestScreen> createState() => _DetailsRequestScreenState();
 }
@@ -32,7 +35,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: customAppBar(headerBackground: true),
+      appBar: customAppBar(headerBackground: true, userOpstionShow: true),
       body: CustomBackGround(
           child: GetBuilder<RequestController>(builder: (controller) {
         return Column(
@@ -46,7 +49,9 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                   flex: 1,
                   child: IconButton(
                       onPressed: () {
-                        Get.offAll(() => const RequestListScreen());
+                        widget.isRequst
+                            ? Get.offAll(() => const RequestListScreen())
+                            : Get.offAll(() => const ReportScreen());
                       },
                       icon: CircleAvatar(
                           backgroundColor: AppColor.white,
@@ -57,7 +62,9 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                   flex: 3,
                   child: Center(
                     child: Text(
-                      "requst_details".tr,
+                      widget.isRequst
+                          ? "requst_details".tr
+                          : 'reports_details'.tr,
                       style: TextStyle(
                           fontSize: Get.width * 0.05,
                           fontWeight: FontWeight.bold,
@@ -65,7 +72,20 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                     ),
                   ),
                 ),
-                Expanded(flex: 1, child: Container())
+                Expanded(
+                    flex: 1,
+                    child: widget.isRequst
+                        ? CircleAvatar(
+                            backgroundColor: AppColor.white,
+                            child: IconButton(
+                                onPressed: () {
+                                  Get.to(() => AddEditRequestScreen(
+                                        objectToEdit: widget.item,
+                                        isAdd: false,
+                                      ));
+                                },
+                                icon: Icon(Icons.edit)))
+                        : Container())
               ],
             ),
             // InkWell(
@@ -118,7 +138,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          "${'from'.tr} : ${widget.item.fromDate!.substring(0, 11)}",
+                          "${'from'.tr} : ${widget.item.fromDate!.substring(0, 10)}",
                           style: TextStyle(
                               fontSize: Get.width * 0.03,
                               color: AppColor.black,
@@ -143,7 +163,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          "${'to'.tr} : ${widget.item.toDate!.substring(0, 11)}",
+                          "${'to'.tr} : ${widget.item.toDate!.substring(0, 10)}",
                           style: TextStyle(
                               fontSize: Get.width * 0.03,
                               color: AppColor.black,

@@ -5,6 +5,7 @@ import '../../../../core/config/app_enums.dart';
 import '../../../../core/utils/response_result.dart';
 import '../../../authentication/utils/odoo_connection_helper.dart';
 import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_service.dart';
+import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../data/request.dart';
 import 'request_service.dart';
 
@@ -119,12 +120,13 @@ class RequestController extends GetxController {
     } else {
       isLoading.value = true;
       print('========ELSE ===');
-      result = await requestService.index();
+      result = await requestService.index(orderBy: 'id DESC');
 
       print(result);
       if (result is List) {
         requestList.clear();
         requestList.addAll(result as List<Requests>);
+        print(requestList[9].state);
         dataSend.value =
             requestList.where((e) => e.state == RequestState.draft).toList();
         dataRepots.value = requestList.where((e) {
@@ -193,8 +195,10 @@ class RequestController extends GetxController {
           await requestService.update(
               id: requests[i].id!, obj: requests[i], whereField: 'id');
         }
-        // car.id = remoteResult;
 
+        // car.id = remoteResult;
+        LoadingDataController loadingDataController =
+            Get.put(LoadingDataController());
         // await requestService.create(obj: car, isRemotelyAdded: true);
         print("save Successful");
         update();
@@ -202,7 +206,7 @@ class RequestController extends GetxController {
             status: true, data: requests, message: "Successful".tr);
       } else {
         print(remoteResult);
-        // return ResponseResult(message: remoteResult);
+        return ResponseResult(message: remoteResult);
       }
     } else {
       return ResponseResult(message: "no_connection".tr);
@@ -266,13 +270,15 @@ class RequestController extends GetxController {
                state TEXT,request_lines TEXT,driver_id INTEGER,amout_total REAL''');
         for (var i = 0; i < remoteResult.length; i++) {
           remoteResult[i].requestLines = [];
+          print(remoteResult[i].state);
+          Requests requests = Requests();
           await requestService.updateWhere(
               id: remoteResult[i].id!,
               obj: [
                 remoteResult[i].fromDate,
                 remoteResult[i].toDate,
                 remoteResult[i].monthName,
-                remoteResult[i].state
+                requests.toState(remoteResult[i].state!)
               ],
               whereField: 'requests_id',
               columnToUpdate:
@@ -287,6 +293,8 @@ class RequestController extends GetxController {
             }
           }
         }
+        LoadingDataController loadingDataController =
+            Get.put(LoadingDataController(fromReportsScreen: true));
         update();
         print('reportsList $reportsList');
 
@@ -299,7 +307,7 @@ class RequestController extends GetxController {
             status: true, data: remoteResult, message: "Successful".tr);
       } else {
         print(remoteResult.runtimeType);
-        // return ResponseResult(message: remoteResult);
+        return ResponseResult(message: remoteResult);
       }
     } else {
       return ResponseResult(message: "no_connection".tr);

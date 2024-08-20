@@ -29,11 +29,18 @@ class SourcePathController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    super.onInit();
     await SourcePathData();
+    super.onInit();
   }
 
   SourcePathData() async {
+    var result = await displaySourcePathList(paging: false);
+    sourcePathList.value = result.data;
+    // pagingList.value = result.data;
+    update();
+  }
+
+  SourcePathDataFromServer() async {
     var result = await displaySourcePathList(paging: false);
     sourcePathList.value = result.data;
     // pagingList.value = result.data;

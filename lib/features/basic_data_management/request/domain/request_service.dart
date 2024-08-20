@@ -55,11 +55,12 @@ class RequestService extends RequestRepository {
   }
 
   @override
-  Future index({int? offset, int? limit}) async {
+  Future index({int? offset, int? limit, String? orderBy}) async {
     _generalLocalDBInstance =
         GeneralLocalDB.getInstance<Requests>(fromJsonFun: Requests.fromJson)
             as GeneralLocalDB<Requests>?;
-    return await _generalLocalDBInstance!.index(offset: offset, limit: limit);
+    return await _generalLocalDBInstance!
+        .index(offset: offset, limit: limit, orderBy: orderBy);
   }
 
   @override

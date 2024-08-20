@@ -229,6 +229,7 @@ var ar = {
   'from': 'من',
   'to': 'الى',
   'requst_details': 'تفاصيل الطلب',
+  'reports_details': 'تفاصيل التقرير',
   'destination': 'الوجهات',
   'destination_path': 'مسار الوجهه',
   'price': 'السعر',
@@ -241,5 +242,6 @@ var ar = {
   'draft': 'مسوده',
   'done_seended': 'تم الارسال',
   'confirm': 'تم الاعتماد',
-  'done_cancel': 'تم الالغاء'
+  'done_cancel': 'تم الالغاء',
+  'data_isloading': 'جاري تحميل البيانات حاليا ...'
 };

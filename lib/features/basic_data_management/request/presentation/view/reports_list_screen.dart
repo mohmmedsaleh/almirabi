@@ -1,10 +1,15 @@
+import 'package:almirabi/core/utils/response_result.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
+import '../../../../../core/config/app_enums.dart';
+import '../../../../../core/config/app_shared_pr.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
+import '../../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../../core/shared_widgets/custom_app_bar.dart';
+import '../../../../../core/shared_widgets/cusuom_app_drawer.dart';
 import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../car/domain/car_viewmodel.dart';
 import '../../../source_path/domain/source_path_viewmodel.dart';
@@ -32,7 +37,16 @@ class _ReportScreenState extends State<ReportScreen> {
     carController = Get.put(CarController());
     sourcePathController = Get.put(SourcePathController());
     requestController.searchResults.clear();
-    requestController.getAllReports();
+    getAllReports();
+  }
+
+  getAllReports() async {
+    ResponseResult result = await requestController.getAllReports();
+    if (result.status) {
+      appSnackBar(messageType: MessageTypes.success, message: 'Successful'.tr);
+    } else {
+      appSnackBar(message: result.message);
+    }
   }
 
   @override
@@ -46,42 +60,34 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            appBar: customAppBar(headerBackground: true, userOpstionShow: true),
+            appBar: AppBar(
+                backgroundColor: AppColor.brawn,
+                foregroundColor: AppColor.white,
+                actions: [
+                  IconButton(
+                      onPressed: () async {
+                        await SharedPr.setLanguage(
+                            lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                      },
+                      icon: Icon(Icons.language))
+                ]),
+            drawer: CustomDrawer(),
             body: CustomBackGround(
               height: Get.height * 0.18,
               child: GetBuilder<RequestController>(builder: (controller) {
                 return Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(
-                              onPressed: () {
-                                requestController.searchResults.clear();
-                                requestController.searchReportsController.text =
-                                    '';
-                                Get.offAll(() => const RequestListScreen());
-                              },
-                              icon: CircleAvatar(
-                                  backgroundColor: AppColor.white,
-                                  child: const Icon(
-                                      Icons.arrow_back_ios_new_outlined))),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Center(
-                            child: Text(
-                              "Reports".tr,
-                              style: TextStyle(
-                                  fontSize: Get.width * 0.05,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColor.white),
-                            ),
-                          ),
-                        ),
-                        Expanded(flex: 1, child: Container())
-                      ],
+                    SizedBox(
+                      height: Get.height * 0.02,
+                    ),
+                    Center(
+                      child: Text(
+                        "Reports".tr,
+                        style: TextStyle(
+                            fontSize: Get.width * 0.05,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.white),
+                      ),
                     ),
                     // InkWell(
                     //   onTap: () {
@@ -249,7 +255,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: Get.height * 0.05,
+                      height: Get.height * 0.06,
                     ),
 
                     // TabBar(
@@ -285,31 +291,58 @@ class _ReportScreenState extends State<ReportScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            requestController.searchReportsController.text == ''
-                                ? Wrap(
-                                    direction: Axis.horizontal,
-                                    children: [
-                                      ...requestController.reportsList
-                                          .map((item) => card_data(
-                                                sourcePathController:
-                                                    sourcePathController,
-                                                carController: carController,
-                                                item: item,
-                                              ))
-                                    ],
+                            carController.carList.isNotEmpty &&
+                                    sourcePathController
+                                        .sourcePathList.isNotEmpty
+                                ? requestController
+                                            .searchReportsController.text ==
+                                        ''
+                                    ? Wrap(
+                                        direction: Axis.horizontal,
+                                        children: [
+                                          ...requestController.reportsList
+                                              .map((item) => card_data(
+                                                    sourcePathList:
+                                                        sourcePathController
+                                                            .sourcePathList,
+                                                    carList:
+                                                        carController.carList,
+                                                    item: item,
+                                                    isRequst: false,
+                                                  ))
+                                        ],
+                                      )
+                                    : Wrap(
+                                        direction: Axis.horizontal,
+                                        children: [
+                                          ...requestController.searchResults
+                                              .map((item) => card_data(
+                                                    sourcePathList:
+                                                        sourcePathController
+                                                            .sourcePathList,
+                                                    carList:
+                                                        carController.carList,
+                                                    item: item,
+                                                    isRequst: false,
+                                                  ))
+                                        ],
+                                      )
+                                : Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          color: AppColor.brawn,
+                                          backgroundColor: AppColor.black,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text('data_isloading'.tr)
+                                      ],
+                                    ),
                                   )
-                                : Wrap(
-                                    direction: Axis.horizontal,
-                                    children: [
-                                      ...requestController.searchResults
-                                          .map((item) => card_data(
-                                                sourcePathController:
-                                                    sourcePathController,
-                                                carController: carController,
-                                                item: item,
-                                              ))
-                                    ],
-                                  ),
                           ],
                         ),
                       ),
