@@ -16,8 +16,10 @@ import '../domain/remote_database_setting_viewmodel.dart';
 
 class RemoteDatabaseScreen extends StatefulWidget {
   final bool changeConnectionInfo;
+  final SubscriptionInfo? subscriptionInfo;
 
-  const RemoteDatabaseScreen({super.key, this.changeConnectionInfo = false});
+  const RemoteDatabaseScreen(
+      {super.key, this.changeConnectionInfo = false, this.subscriptionInfo});
 
   @override
   State<RemoteDatabaseScreen> createState() => _RemoteDatabaseScreenState();
@@ -37,6 +39,11 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.changeConnectionInfo) {
+      dbNameController.text = widget.subscriptionInfo!.db!;
+      urlController.text = widget.subscriptionInfo!.url!;
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       keyFocusNode.requestFocus();
     });
@@ -220,10 +227,8 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
                                   Expanded(
                                     child: ButtonElevated(
                                         text: 'back'.tr,
-                                        width:
-                                            MediaQuery.sizeOf(context).width /
-                                                3.5,
-                                        borderColor: AppColor.shadepurple,
+                                        borderRadius: 20,
+                                        backgroundColor: AppColor.brawn,
                                         onPressed: () async {
                                           Get.back();
                                         }),

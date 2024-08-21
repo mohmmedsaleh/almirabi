@@ -119,20 +119,16 @@ class RequestController extends GetxController {
       // }
     } else {
       isLoading.value = true;
-      print('========ELSE ===');
       result = await requestService.index(orderBy: 'id DESC');
 
-      print(result);
       if (result is List) {
         requestList.clear();
         requestList.addAll(result as List<Requests>);
-        print(requestList[9].state);
         dataSend.value =
             requestList.where((e) => e.state == RequestState.draft).toList();
         dataRepots.value = requestList.where((e) {
           return e.state == RequestState.closed;
         }).toList();
-        print('dataRepots $dataRepots');
         result = ResponseResult(
             status: true, message: "Successful".tr, data: result);
       } else {
@@ -182,30 +178,26 @@ class RequestController extends GetxController {
       await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
       var remoteResult =
           await requestService.createRequestRemotely(obj: requests);
-      print(remoteResult);
-      print(remoteResult.runtimeType);
-      if (remoteResult is List) {
-        print("sending Successful");
-        for (var i = 0; i < requests.length; i++) {
-          requests[i].requestsId = remoteResult[i];
-          requests[i].state = RequestState.closed;
-          var remoteRequestLine =
-              await requestService.createRequestLineRemotely(obj: requests[i]);
 
-          await requestService.update(
-              id: requests[i].id!, obj: requests[i], whereField: 'id');
-        }
+      if (remoteResult is List) {
+        // for (var i = 0; i < requests.length; i++) {
+        //   requests[i].requestsId = remoteResult[i];
+        //   requests[i].state = RequestState.closed;
+        //   var remoteRequestLine =
+        //       await requestService.createRequestLineRemotely(obj: requests[i]);
+
+        //   await requestService.update(
+        //       id: requests[i].id!, obj: requests[i], whereField: 'id');
+        // }
 
         // car.id = remoteResult;
         LoadingDataController loadingDataController =
             Get.put(LoadingDataController());
         // await requestService.create(obj: car, isRemotelyAdded: true);
-        print("save Successful");
         update();
         return ResponseResult(
             status: true, data: requests, message: "Successful".tr);
       } else {
-        print(remoteResult);
         return ResponseResult(message: remoteResult);
       }
     } else {
@@ -217,22 +209,10 @@ class RequestController extends GetxController {
 
 // ========================================== [ START UPDATE PRODUCT ] =============================================
   Future<dynamic> updateRequest({required Requests Requests}) async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!connectivityResult.contains(ConnectivityResult.none)) {
-      var remoteResult = await requestService.updateRequestRemotely(
-          id: Requests.id!, obj: Requests);
-      if (remoteResult is! bool || remoteResult != true) {
-        return ResponseResult(message: "error");
-      } else {
-        await requestService.update(
-            id: Requests.id!, obj: Requests, whereField: 'id');
-        return ResponseResult(
-            status: true, data: Requests, message: "Successful".tr);
-      }
-      //
-    } else {
-      return ResponseResult(message: "no_connection".tr);
-    }
+    await requestService.update(
+        id: Requests.id!, obj: Requests, whereField: 'id');
+    return ResponseResult(
+        status: true, data: Requests, message: "Successful".tr);
   }
 
 // ========================================== [ END UPDATE PRODUCT ] =============================================
@@ -262,18 +242,13 @@ class RequestController extends GetxController {
       await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
       var remoteResult = await requestService.indexRemotly(obj: dataRepots);
       reportsList.clear();
+
       if (remoteResult is List<Requests>) {
-        print("get Successful $remoteResult");
-        print('''  id INTEGER PRIMARY KEY,product_car_id INTEGER, 
-               requests_id INTEGER,  from_date TEXT,to_date TEXT,month_name INTEGER,
-               source_path_id INTEGER, source_path_name TEXT,
-               state TEXT,request_lines TEXT,driver_id INTEGER,amout_total REAL''');
+        print(remoteResult.length);
         for (var i = 0; i < remoteResult.length; i++) {
-          remoteResult[i].requestLines = [];
-          print(remoteResult[i].state);
           Requests requests = Requests();
           await requestService.updateWhere(
-              id: remoteResult[i].id!,
+              id: remoteResult[i].requestsId!,
               obj: [
                 remoteResult[i].fromDate,
                 remoteResult[i].toDate,
@@ -283,20 +258,20 @@ class RequestController extends GetxController {
               whereField: 'requests_id',
               columnToUpdate:
                   ' from_date = ?, to_date = ?, month_name = ? , state = ? ');
-          for (var element in requestList) {
-            if (element.requestsId == remoteResult[i].id!) {
-              element.fromDate = remoteResult[i].fromDate;
-              element.toDate = remoteResult[i].toDate;
-              element.monthName = remoteResult[i].monthName;
-              element.state = remoteResult[i].state;
-              reportsList.add(element);
-            }
-          }
+          // for (var element in requestList) {
+          //   if (element.requestsId == remoteResult[i].id!) {
+          //     element.fromDate = remoteResult[i].fromDate;
+          //     element.toDate = remoteResult[i].toDate;
+          //     element.monthName = remoteResult[i].monthName;
+          //     element.state = remoteResult[i].state;
+
+          // }
+          // }
         }
+        reportsList.addAll(remoteResult);
         LoadingDataController loadingDataController =
             Get.put(LoadingDataController(fromReportsScreen: true));
         update();
-        print('reportsList $reportsList');
 
         // // car.id = remoteResult;
 
@@ -306,7 +281,6 @@ class RequestController extends GetxController {
         return ResponseResult(
             status: true, data: remoteResult, message: "Successful".tr);
       } else {
-        print(remoteResult.runtimeType);
         return ResponseResult(message: remoteResult);
       }
     } else {
@@ -319,9 +293,7 @@ class RequestController extends GetxController {
       if (requestList.isNotEmpty) {
         searchResults.clear();
         var result = await requestService.searchByState(query);
-        print(result);
         if (result is List) {
-          print(searchResults);
           searchResults.addAll(result as List<Requests>);
         }
         update();

@@ -79,9 +79,6 @@ class AuthenticationController extends GetxController {
     } else {
       await _generalLocalDBinstance!.create(obj: authResult);
     }
-    bool userExist2 = await _generalLocalDBinstance!
-        .checkRowExists(val: authResult.id, whereKey: 'driver_id');
-    print("object");
   }
 
   // ========================================== [ AUTHENTICATE ] =============================================

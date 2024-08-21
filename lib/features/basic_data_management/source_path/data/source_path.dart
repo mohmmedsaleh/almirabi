@@ -24,11 +24,6 @@ class SourcePath {
         linsList = json['lines'];
       } else if (json['lines'] is String) {
         linsList = (js.json.decode(json['lines']) as List).cast<dynamic>();
-
-        print(linsList.runtimeType);
-        print("================lst.first.lins===================");
-        print('linsList.runtimeType ${linsList.runtimeType}');
-        print("================lst.first.lins===================");
       } else {
         linsList = [];
       }
@@ -45,7 +40,6 @@ class SourcePath {
           destName: element['dest_name'],
           destPrice: element['dest_price']));
     }
-    print(lins!.first.destName);
     json['from_date'];
   }
 
@@ -56,9 +50,6 @@ class SourcePath {
     data['source_path_name'] = sourcePathName;
     data['product_car_id'] = car!.id;
     data['lines'] = js.json.encode(lins);
-    print("================lst.first.lins===================");
-    print(data['lines']);
-    print("=================lst.first.lins==================");
 
     return data;
   }

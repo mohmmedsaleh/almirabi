@@ -50,7 +50,6 @@ class _RequestListScreenState extends State<RequestListScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('======initState===========');
     requestController = Get.put(RequestController());
     carController = Get.put(CarController());
     sourcePathController = Get.put(SourcePathController());
@@ -58,8 +57,6 @@ class _RequestListScreenState extends State<RequestListScreen>
     RequestService.getInstance();
     _tabController = TabController(length: 2, vsync: this);
     getPagingList();
-    print(
-        '======initState=====${carController.carList}==${sourcePathController.sourcePathList}====');
   }
 
   @override
@@ -433,15 +430,19 @@ class card_data extends StatelessWidget {
   final bool isRequst;
   @override
   Widget build(BuildContext context) {
-    var car =
-        carList == [] ? Car() : carList.firstWhere((e) => e.id == item.car!.id);
-    var sourcePath = sourcePathList == []
-        ? SourcePath()
-        : sourcePathList
-            .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
-
-    print(sourcePath);
-    print(car);
+    var car = item.car!.name != ''
+        ? item.car!
+        : carList == []
+            ? Car()
+            : carList.firstWhere((e) => e.id == item.car!.id);
+    var sourcePath = item.sourcePathId != null && item.sourcePathName != null
+        ? SourcePath(
+            sourcePathId: item.sourcePathId,
+            sourcePathName: item.sourcePathName)
+        : sourcePathList == []
+            ? SourcePath()
+            : sourcePathList
+                .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
 
     return InkWell(
       onTap: () {
@@ -484,7 +485,7 @@ class card_data extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${'car'.tr} : ${car.name ?? ''}",
+                                  "${'car'.tr} : ${car.name! ?? ''}",
                                   style: TextStyle(
                                       fontSize: Get.width * 0.03,
                                       color: AppColor.white),

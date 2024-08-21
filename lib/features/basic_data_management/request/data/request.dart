@@ -41,25 +41,19 @@ class Requests {
       } else if (json['request_lines'] is String) {
         linsList =
             (js.json.decode(json['request_lines']) as List).cast<dynamic>();
-
-        print(linsList);
-        print("================lst.first.lins===================");
-        print('linsList.runtimeType ${linsList.runtimeType}');
-        print("================lst.first.lins===================");
       } else {
         linsList = [];
       }
     } else {
       linsList = [];
     }
-    print(json);
     id = json['id'];
     requestsId = json['requests_id'];
     car = Car(
         id: json['product_car_id'] is List
             ? json['product_car_id'].first
             : json['product_car_id'],
-        name: '');
+        name: json['product_car_name'] ?? '');
     fromDate = json['from_date'];
     toDate = json['to_date'];
     monthName = json['month_name'] is int
@@ -71,12 +65,14 @@ class Requests {
     sourcePathName = json['source_path_name'];
     state = fromState(json['state'].toString());
     requestLines = [];
-    print("linsList :  $requestLines");
     for (var element in linsList) {
       requestLines!.add(SourcePathLine(
-          destId: element is int ? element : element['dest_id'],
-          destName: element is int ? null : element['dest_name'],
-          destPrice: element is int ? null : element['dest_price']));
+          destId:
+              fromTemblet ? element['destination_path_id'] : element['dest_id'],
+          destName: fromTemblet
+              ? element['destination_path_name']
+              : element['dest_name'],
+          destPrice: fromTemblet ? element['price'] : element['dest_price']));
     }
 
     driverId =
@@ -85,7 +81,6 @@ class Requests {
   }
 
   Map<String, dynamic> toJson({bool isRemotelyAdded = false}) {
-    print("toJson =============================");
     final Map<String, dynamic> data = <String, dynamic>{};
     List listId = [];
     if (isRemotelyAdded) {
@@ -94,7 +89,7 @@ class Requests {
       }
     }
     // print(requestLines);
-    data['id'] = id;
+    // data['id'] = id;
     data['product_car_id'] = car!.id;
     data['from_date'] = fromDate;
     data['to_date'] = toDate;
@@ -106,10 +101,10 @@ class Requests {
     }
     data['state'] = toState(state!);
     data['request_lines'] =
-        isRemotelyAdded ? listId : js.json.encode(requestLines);
+        // isRemotelyAdded ? listId :
+        js.json.encode(requestLines);
     data['driver_id'] = driverId;
     data['amout_total'] = amoutTotal;
-    print('data ============ ${data}');
     return data;
   }
 

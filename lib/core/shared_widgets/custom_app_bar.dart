@@ -8,6 +8,7 @@ import '../../features/authentication/presentation/views/login_screen.dart';
 import '../../features/authentication/utils/odoo_connection_helper.dart';
 
 import '../../features/basic_data_management/request/presentation/view/reports_list_screen.dart';
+import '../../features/remote_database_setting/presentation/remote_database_screen.dart';
 import '../config/app_colors.dart';
 import '../config/app_shared_pr.dart';
 import '../config/app_styles.dart';
@@ -207,6 +208,21 @@ PreferredSizeWidget customAppBar(
                 children: [
                   buildUserMenu(),
                   buildWelcomeMessage(),
+                ],
+              ),
+            if (SharedPr.userObj == null &&
+                Get.currentRoute != '/RemoteDatabaseScreen')
+              Row(
+                children: [
+                  HeaderIcons(
+                      icon: Icons.settings,
+                      darkBackground: headerBackground,
+                      onTap: () async {
+                        Get.to(() => RemoteDatabaseScreen(
+                              subscriptionInfo: SharedPr.subscriptionDetailsObj,
+                              changeConnectionInfo: true,
+                            ));
+                      }),
                 ],
               ),
             Row(

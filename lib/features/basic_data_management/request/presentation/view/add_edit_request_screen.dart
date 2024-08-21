@@ -6,6 +6,7 @@ import 'package:almirabi/core/utils/response_result.dart';
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
+import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
     await carController.carData();
     await sourcePathController.SourcePathData();
     if (!widget.isAdd) {
-      print(widget.objectToEdit!.car!.id);
       carid = carController.carList
           .firstWhere((e) => e.id == widget.objectToEdit!.car!.id)
           .name;
@@ -102,15 +102,19 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
           .where((e) => e.car!.id == widget.objectToEdit!.car!.id)
           .toList();
       sourcePathId = widget.objectToEdit!.sourcePathName;
-      requestLineList = widget.objectToEdit!.requestLines!;
+      requestLineList.addAll(widget.objectToEdit!.requestLines!);
       SourcePath sourcePath = sourcePathController.sourcePathList.firstWhere(
           (element) => element.sourcePathName == sourcePathId,
           orElse: () => SourcePath());
       sourcePathLineList = sourcePath.lins!;
-      fromDateTextController=widget.objectToEdit!.fromDate;
-      toDateTextController=widget.objectToEdit!.toDate;
-      monthTextController=widget.objectToEdit!.monthName;
-      print('sourcePathlist ');
+      carTextController = Car(id: widget.objectToEdit!.car!.id, name: carid);
+      sourcePathTextController = SourcePath(
+          sourcePathId: widget.objectToEdit!.sourcePathId,
+          sourcePathName: widget.objectToEdit!.sourcePathName);
+      fromDateTextController = widget.objectToEdit!.fromDate;
+      toDateTextController = widget.objectToEdit!.toDate;
+      monthTextController = widget.objectToEdit!.monthName;
+      totalPrice = widget.objectToEdit!.amoutTotal!;
     }
     requestController.update();
   }
@@ -122,7 +126,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
         appBar: customAppBar(headerBackground: true, userOpstionShow: true),
         body: CustomBackGround(
             child: GetBuilder<RequestController>(builder: (controller) {
-          print('=========================dddddddd==============0');
           return Container(
             child: Column(
               children: [
@@ -184,7 +187,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                     height: MediaQuery.sizeOf(context).height *
                                         0.05,
                                     onTap: () {
-                                      print('onTap==============');
                                       if (widget.isAdd) {
                                         sourcePathTextController = null;
                                       }
@@ -210,7 +212,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                     iconcolor: AppColor.black,
                                     fontSize: Get.width * 0.03,
                                     onChanged: (val) {
-                                      print('onChanged==============');
                                       Car car = carController.carList
                                           .firstWhere(
                                               (element) => element.name == val,
@@ -301,15 +302,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                             SourcePath());
 
                                             if (sourcePath.lins!.isNotEmpty) {
-                                              print(
-                                                  '===============in==========');
                                               sourcePathLineList =
                                                   sourcePath.lins!;
-                                              print(sourcePathLineList.length);
-                                              print(requestLineList.length);
                                             } else {
-                                              print(
-                                                  '===============out==========');
                                               sourcePathLineList =
                                                   sourcePath.lins!;
                                               //snake bar
@@ -335,8 +330,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                             return null;
                                           },
                                           items: sourcePathList.map((e) {
-                                            print(
-                                                " =============> ${e.sourcePathName}");
                                             return DropdownMenuItem<String>(
                                               // value: e.id,
                                               value: e.sourcePathName,
@@ -444,7 +437,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               //       PickerType.months,
                                               // );
                                               month = await _selectMonth();
-                                              print(month);
                                               if (month != null) {
                                                 if (month! < 10) {
                                                   monthTextController =
@@ -456,7 +448,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               } else {
                                                 ///snakbar
                                               }
-                                              print(requests!.monthName);
                                               controller.update();
                                             },
                                             child: ButtonElevated(
@@ -768,7 +759,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                                                 onPressed: () {
                                                                                   totalPrice -= e.destPrice!;
                                                                                   requestLineList.remove(e);
-                                                                                  requests!.requestLines = requestLineList;
+                                                                                  // requests!.requestLines = requestLineList;
                                                                                   controller.update();
                                                                                 },
                                                                                 icon: const Icon(Icons.delete)))),
@@ -828,9 +819,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                                       totalPrice +=
                                                                           sourcePathLine
                                                                               .destPrice!;
-                                                                      requests!
-                                                                              .requestLines =
-                                                                          requestLineList;
+                                                                      // requests!
+                                                                      //         .requestLines =
+                                                                      //     requestLineList;
                                                                       isAdd =
                                                                           false;
                                                                       controller
@@ -944,7 +935,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 sourcePathTextController
                                                         ?.sourcePathName !=
                                                     null) {
-                                              print("opject oky");
                                               requests = Requests(
                                                   state: RequestState.draft,
                                                   amoutTotal: totalPrice,
@@ -963,16 +953,31 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                   sourcePathName:
                                                       sourcePathTextController!
                                                           .sourcePathName);
-
+                                              ResponseResult result;
                                               // print(requests!.toJson());
-                                              ResponseResult result =
-                                                  await controller
-                                                      .createRequest(
-                                                          Requests: requests!);
+                                              if (widget.isAdd) {
+                                                result = await controller
+                                                    .createRequest(
+                                                        Requests: requests!);
+                                              } else {
+                                                requests!.id =
+                                                    widget.objectToEdit!.id;
+                                                result = await controller
+                                                    .updateRequest(
+                                                        Requests: requests!);
+                                              }
+
                                               if (result.status) {
-                                                print('done=================');
-                                                Get.offAll(() =>
-                                                    const RequestListScreen());
+                                                await requestController
+                                                    .requestData();
+                                                widget.isAdd
+                                                    ? Get.offAll(() =>
+                                                        const RequestListScreen())
+                                                    : Get.off(() =>
+                                                        DetailsRequestScreen(
+                                                          item: requests!,
+                                                        ));
+
                                                 appSnackBar(
                                                     messageType:
                                                         MessageTypes.success,

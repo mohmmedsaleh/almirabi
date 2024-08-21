@@ -38,7 +38,7 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             accountName: Text(
-              '${SharedPr.userObj!.name ?? ''}',
+              '${SharedPr.userObj?.name ?? ''}',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.width * 0.035),
@@ -53,23 +53,25 @@ class CustomDrawer extends StatelessWidget {
                 height: Get.height * 0.04,
                 child: CircleAvatar(
                   backgroundColor: AppColor.white,
-                  child: SharedPr.userObj!.image_1920 != ''
-                      ? isSvg(SharedPr.userObj!.image_1920!)
-                          ? SvgPicture.memory(
-                              base64.decode(SharedPr.userObj!.image_1920!),
-                              clipBehavior: Clip.antiAlias,
-                              fit: BoxFit.fill,
+                  child: SharedPr.userObj != null
+                      ? SharedPr.userObj!.image_1920 != ''
+                          ? isSvg(SharedPr.userObj!.image_1920!)
+                              ? SvgPicture.memory(
+                                  base64.decode(SharedPr.userObj!.image_1920!),
+                                  clipBehavior: Clip.antiAlias,
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.memory(
+                                  base64Decode(SharedPr.userObj!.image_1920!),
+                                  // clipBehavior: Clip.antiAlias,
+                                  fit: BoxFit.fill,
+                                )
+                          : Icon(
+                              color: AppColor.black,
+                              Icons.account_circle,
+                              size: Get.height * 0.04,
                             )
-                          : Image.memory(
-                              base64Decode(SharedPr.userObj!.image_1920!),
-                              // clipBehavior: Clip.antiAlias,
-                              fit: BoxFit.fill,
-                            )
-                      : Icon(
-                          color: AppColor.black,
-                          Icons.account_circle,
-                          size: Get.height * 0.04,
-                        ),
+                      : Container(),
                 ),
               ),
             ),
@@ -100,7 +102,6 @@ class CustomDrawer extends StatelessWidget {
                     // Handle item tap
                     var connectivityResult =
                         await (Connectivity().checkConnectivity());
-                    print(connectivityResult);
                     if (connectivityResult.contains(ConnectivityResult.none)) {
                       // No internet connection, switch back to "Requests" tab
                       Get.back();

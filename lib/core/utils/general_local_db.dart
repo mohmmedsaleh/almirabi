@@ -90,7 +90,6 @@ class GeneralLocalDB<T> {
       }
       return result.map((e) => fromJson(e)).toList();
     } catch (e) {
-      print(e);
       throw handleException(
           exception: e, navigation: false, methodName: "GeneralLocalDB index");
 
@@ -178,7 +177,6 @@ class GeneralLocalDB<T> {
 
   Future<int> createList({required List recordsList}) async {
     const batchSize = 10; // Adjust this size as needed
-    print('hrllo============== $tableName');
     return await DbHelper.db!.transaction((txn) async {
       int affectedRows = 0;
       try {
@@ -244,11 +242,9 @@ class GeneralLocalDB<T> {
       // bool isRemotelyAdded = false
       bool isRemotelyAdded = true}) async {
     try {
-      print('UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id');
       return await DbHelper.db!.execute(
           'UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id', obj);
     } catch (e) {
-      print("updatewhere Exception : $e");
       // throw Exception(e.toString());
 
       throw handleException(

@@ -48,7 +48,6 @@ class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
   @override
   Future checkConnection({required SubscriptionInfo subscriptionInfo}) async {
     try {
-      print('${subscriptionInfo.url}/web/login?db=${subscriptionInfo.db}');
       http.Response resBody = await http.get(Uri.parse(
           '${subscriptionInfo.url}/web/login?db=${subscriptionInfo.db}'));
       if (resBody.statusCode == 200) {

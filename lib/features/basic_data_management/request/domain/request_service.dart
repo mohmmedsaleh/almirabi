@@ -116,25 +116,25 @@ class RequestService extends RequestRepository {
       for (var e in (obj as List<Requests>)) {
         listRequest.add(e.requestsId);
       }
-      print(obj);
-      print(listRequest);
+
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.requests,
-        'method': 'search_read',
-        'args': [],
+        'model': OdooModels.transfunctions,
+        'method': 'return_driver_requests',
+        'args': [listRequest],
         'kwargs': {
-          'context': {},
-          'domain': [
-            ['id', 'in', listRequest]
-          ],
+          // 'context': {},
+          // 'domain': [
+          //   ['id', 'in', listRequest]
+          // ],
         },
       });
       if (kDebugMode) {
-        print('createProductRemotely : $result');
+        print('indexRemotly : $result');
       }
-      return ((result as List).map((e) => Requests.fromJson(e)).toList());
+      return ((result as List)
+          .map((e) => Requests.fromJson(e, fromTemblet: true))
+          .toList());
     } catch (e) {
-      print(e);
       return handleException(
           exception: e, navigation: false, methodName: "indexRemotly");
     }
@@ -143,12 +143,12 @@ class RequestService extends RequestRepository {
   // object can be map or class object
   Future createRequestRemotely({required obj}) async {
     try {
-      print('object=============================');
       List listRequest = [];
       for (var e in (obj as List<Requests>)) {
         e.state = RequestState.closed;
         listRequest.add(e.toJson(isRemotelyAdded: true));
       }
+
       // print(listRequest.last);
       // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
       //   'model': OdooModels.requests,
@@ -157,7 +157,6 @@ class RequestService extends RequestRepository {
       //   'kwargs': {},
       // });
       // print('object=============================');
-      print("result=> $listRequest");
 
       // var c = {
       //   // 'id': null,
@@ -176,25 +175,23 @@ class RequestService extends RequestRepository {
       // };
       // print(c);
       var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.requests,
-        'method': 'create',
+        'model': OdooModels.transfunctions,
+        'method': 'create_driver_request',
         'args': [listRequest],
         'kwargs': {},
       });
       if (kDebugMode) {
-        print('createProductRemotely : $result2');
+        print('createRequestRemotely : $result2');
       }
-      return result2;
+      return 'result2';
     } catch (e) {
-      print(e);
       return handleException(
-          exception: e, navigation: false, methodName: "createProductRemotely");
+          exception: e, navigation: false, methodName: "createRequestRemotely");
     }
   }
 
   Future createRequestLineRemotely({required obj}) async {
     try {
-      print('object==========aaa===================');
       // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
       //   'model': OdooModels.transfunctions,
       //   'method': 'source_path_all',
@@ -211,7 +208,6 @@ class RequestService extends RequestRepository {
       });
       // print('object=============================');
       // print("result=> $listRequest");
-      print("result===========> $result");
 
       // var c = {
       //   // 'id': null,
@@ -251,7 +247,6 @@ class RequestService extends RequestRepository {
       }
       return result3;
     } catch (e) {
-      print(e);
       return handleException(
           exception: e,
           navigation: false,

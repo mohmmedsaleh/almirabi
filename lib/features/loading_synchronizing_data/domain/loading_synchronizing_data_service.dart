@@ -45,20 +45,18 @@ class LoadingSynchronizingDataService
   @override
   Future<dynamic> loadCars() async {
     try {
-      print('load car :===================');
-      var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.hremployee,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {
-          'context': {},
-          'domain': [
-            // ['car_flag', '=', true],
-          ],
-          // 'fields': ['name'],
-        },
-      });
-      print("result2===========$result2");
+      // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.hremployee,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {
+      //     'context': {},
+      //     'domain': [
+      //       // ['car_flag', '=', true],
+      //     ],
+      //     // 'fields': ['name'],
+      //   },
+      // });
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
         'method': 'product_car_list',
@@ -68,7 +66,6 @@ class LoadingSynchronizingDataService
       if (result is bool) {
         return result;
       }
-      print('result :=>>> $result');
 
       return result is bool
           ? <Car>[]
@@ -80,14 +77,10 @@ class LoadingSynchronizingDataService
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
-      print(e);
       return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
-      print(e);
       return handleException(
-          exception: e,
-          navigation: false,
-          methodName: "loadUserPosSettingInfo");
+          exception: e, navigation: false, methodName: "loadCars");
     }
   }
 
@@ -148,8 +141,6 @@ class LoadingSynchronizingDataService
   @override
   Future<dynamic> loadSourcePath() async {
     try {
-      print('load SourcePath :===========${SharedPr.userObj!}========');
-
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
         'method': 'source_path_all',
@@ -159,7 +150,6 @@ class LoadingSynchronizingDataService
       if (result is bool) {
         return result;
       }
-      print('result : $result');
       return result.isEmpty
           ? <SourcePath>[]
           : (result as List).map((e) => SourcePath.fromJson(e)).toList();
@@ -170,14 +160,10 @@ class LoadingSynchronizingDataService
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
-      print(e);
       return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
-      print(e);
       return handleException(
-          exception: e,
-          navigation: false,
-          methodName: "loadUserPosSettingInfo");
+          exception: e, navigation: false, methodName: "loadSourcePath");
     }
   }
   // @override

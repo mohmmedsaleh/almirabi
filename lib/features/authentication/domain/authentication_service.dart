@@ -46,7 +46,6 @@ class AuthenticationService implements AuthenticationRepository {
         'args': [visaNumber, pinNumber],
         'kwargs': {},
       });
-      print("object=========== : $result");
       if (result is bool) {
         return 'user_not_found'.tr;
       }
@@ -65,10 +64,8 @@ class AuthenticationService implements AuthenticationRepository {
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
-      print(e);
       return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
-      print(e);
       // return "exception".tr;
       return e.toString().replaceFirst('Exception: ', '');
     }

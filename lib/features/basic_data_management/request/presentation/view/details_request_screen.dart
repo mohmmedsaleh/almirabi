@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
+import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../car/domain/car_viewmodel.dart';
@@ -74,7 +75,8 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                 ),
                 Expanded(
                     flex: 1,
-                    child: widget.isRequst
+                    child: widget.isRequst &&
+                            widget.item.state == RequestState.draft
                         ? CircleAvatar(
                             backgroundColor: AppColor.white,
                             child: IconButton(
@@ -104,7 +106,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                   size: Get.width * 0.1,
                 ),
                 Text(
-                    '${carController.carList.firstWhere((e) => e.id == widget.item.car!.id).name}'),
+                    '${widget.item.car!.name != '' ? widget.item.car!.name : carController.carList.firstWhere((e) => e.id == widget.item.car!.id).name}'),
               ],
             ),
             Row(
@@ -189,7 +191,7 @@ class _DetailsRequestScreenState extends State<DetailsRequestScreen> {
                 Expanded(
                   flex: 5,
                   child: Text(
-                    "${widget.item.sourcePathName!.length > 17 ? '${widget.item.sourcePathName!.substring(0, 17)}...' : widget.item.sourcePathName} ",
+                    "${widget.item.sourcePathName != null ? widget.item.sourcePathName!.length > 17 ? '${widget.item.sourcePathName!.substring(0, 17)}...' : widget.item.sourcePathName : ''} ",
                     style: TextStyle(
                         fontSize: Get.width * 0.03, color: AppColor.black),
                   ),

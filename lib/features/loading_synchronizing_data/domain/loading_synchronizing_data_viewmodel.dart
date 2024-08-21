@@ -45,7 +45,6 @@ class LoadingDataController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    print("onInit +++++");
     try {
       loadingData();
       // await loadingPosCategoryIdsList();
@@ -68,7 +67,6 @@ class LoadingDataController extends GetxController {
     // await loadingRequest();
     await loadingSourcePath();
     isLoading.value = false;
-    print('fromReportScreen=====================>$fromReportScreen');
     if (fromReportScreen == false) {
       Get.offAll(() => const RequestListScreen());
     }
@@ -193,7 +191,6 @@ class LoadingDataController extends GetxController {
 
   // [ LOADING POS CATEGORIES ] ===============================================================
   Future<void> loadingCar() async {
-    print('=====================');
     isLoad.value = true;
     loadText.value = 'PosCategories Loading';
 
@@ -204,7 +201,6 @@ class LoadingDataController extends GetxController {
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       lengthRemote.value = 0;
       var result = await loadingSynchronizingDataService.loadCars();
-      print('result : $result');
       isLoadData.value = false;
       if (result is List) {
         loadTital.value = "Create Pos Category";
@@ -244,7 +240,6 @@ class LoadingDataController extends GetxController {
   // }
 
   Future<void> loadingSourcePath() async {
-    print('=====================');
     isLoad.value = true;
     loadText.value = 'PosCategories Loading';
 
@@ -256,7 +251,6 @@ class LoadingDataController extends GetxController {
 
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       var result = await loadingSynchronizingDataService.loadSourcePath();
-      print('result : ${result.runtimeType}');
       isLoadData.value = false;
       if (result is List) {
         loadTital.value = "Create Pos Category";
@@ -381,7 +375,6 @@ class LoadingDataController extends GetxController {
 //   }
 
   saveInLocalDB<T>({required List<T> list}) async {
-    print("==============getLocalInstanceType=====================");
     _instance = getLocalInstanceType<T>();
     // if (kDebugMode) {
     //   print("saveInLocalDB _instance : $_instance");
@@ -395,7 +388,6 @@ class LoadingDataController extends GetxController {
     // if (kDebugMode) {
     //   print('_instance list : $_instance');
     // }
-    print(_instance);
     _instance!.deleteData();
     if (list.isNotEmpty) {
       await _instance!.createList(recordsList: list);
