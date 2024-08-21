@@ -28,6 +28,7 @@ class Requests {
       this.toDate,
       this.monthName,
       this.sourcePathId,
+      this.sourcePathName,
       this.state,
       this.requestLines,
       this.amoutTotal});

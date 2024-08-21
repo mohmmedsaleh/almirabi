@@ -52,10 +52,13 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
   int pagesNumber = 0;
   bool isAdd = false;
   double totalPrice = 0.0;
+  String? monthTextController;
   int? month;
   String? _firstValue;
   String? _secondValue;
-  DateTime? fromDate, toDate;
+  String? fromDateTextController, toDateTextController;
+  Car? carTextController;
+  SourcePath? sourcePathTextController;
   // List<ProductUnit> productUnitList = [];
   back() async {
     // requestController.object = null;
@@ -104,6 +107,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
           (element) => element.sourcePathName == sourcePathId,
           orElse: () => SourcePath());
       sourcePathLineList = sourcePath.lins!;
+      fromDateTextController=widget.objectToEdit!.fromDate;
+      toDateTextController=widget.objectToEdit!.toDate;
+      monthTextController=widget.objectToEdit!.monthName;
       print('sourcePathlist ');
     }
     requestController.update();
@@ -180,9 +186,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                     onTap: () {
                                       print('onTap==============');
                                       if (widget.isAdd) {
-                                        requests!.sourcePathId = null;
-                                        requests!.sourcePathName = null;
-                                        requests!.requestLines = [];
+                                        sourcePathTextController = null;
                                       }
                                       sourcePathId = null;
                                       carid = null;
@@ -221,8 +225,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                       } else {
                                         //snakbar
                                       }
-
-                                      requests!.car = car;
+                                      carTextController = car;
+                                      // requests!.car = car;
                                       controller.update();
                                     },
                                     validator: (value) {
@@ -278,9 +282,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                             sourcePathLineList = [];
                                             requestLineList = [];
                                             if (isAdd) {
-                                              requests!.sourcePathId = null;
-                                              requests!.sourcePathName = null;
-                                              requests!.requestLines = [];
+                                              sourcePathTextController = null;
                                             }
 
                                             controller.update();
@@ -312,10 +314,12 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                   sourcePath.lins!;
                                               //snake bar
                                             }
-                                            requests!.sourcePathId =
-                                                sourcePath.sourcePathId;
-                                            requests!.sourcePathName =
-                                                sourcePath.sourcePathName;
+                                            sourcePathTextController =
+                                                sourcePath;
+                                            // requests!.sourcePathId =
+                                            //     sourcePath.sourcePathId;
+                                            // requests!.sourcePathName =
+                                            //     sourcePath.sourcePathName;
                                             controller.update();
                                             // sourcePathLineList = jsonDecode(sourcePath);
                                           },
@@ -359,7 +363,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
-                                              fromDate =
+                                              DateTime? fromdate =
                                                   await showDatePickerDialog(
                                                       context: context,
                                                       minDate:
@@ -367,10 +371,11 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                       maxDate: DateTime(
                                                           2100, 12, 31),
                                                       height: Get.height / 3);
-                                              if (fromDate != null) {
-                                                requests!.fromDate = fromDate
-                                                    .toString()
-                                                    .substring(0, 10);
+                                              if (fromdate != null) {
+                                                fromDateTextController =
+                                                    fromdate
+                                                        .toString()
+                                                        .substring(0, 10);
                                               } else {
                                                 ///snakbar
                                               }
@@ -383,8 +388,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 // iconData: Icons.add,
                                                 borderRadius: 25),
                                           ),
-                                          Text(requests!.fromDate != null
-                                              ? requests!.fromDate
+                                          Text(fromDateTextController != null
+                                              ? fromDateTextController
                                                   .toString()
                                                   .substring(0, 10)
                                               : '')
@@ -394,7 +399,7 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
-                                              final toDate =
+                                              final todate =
                                                   await showDatePickerDialog(
                                                       context: context,
                                                       minDate:
@@ -402,8 +407,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                       maxDate: DateTime(
                                                           2100, 12, 31),
                                                       height: Get.height / 3);
-                                              if (toDate != null) {
-                                                requests!.toDate = toDate
+                                              if (todate != null) {
+                                                toDateTextController = todate
                                                     .toString()
                                                     .substring(0, 10);
                                               } else {
@@ -418,8 +423,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 // iconData: Icons.add,
                                                 borderRadius: 25),
                                           ),
-                                          Text(requests!.toDate != null
-                                              ? requests!.toDate
+                                          Text(toDateTextController != null
+                                              ? toDateTextController
                                                   .toString()
                                                   .substring(0, 10)
                                               : '')
@@ -442,10 +447,10 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               print(month);
                                               if (month != null) {
                                                 if (month! < 10) {
-                                                  requests!.monthName =
+                                                  monthTextController =
                                                       '0${month}';
                                                 } else {
-                                                  requests!.monthName =
+                                                  monthTextController =
                                                       month.toString();
                                                 }
                                               } else {
@@ -461,9 +466,9 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 // iconData: Icons.add,
                                                 borderRadius: 25),
                                           ),
-                                          Text(requests!.monthName != null
+                                          Text(monthTextController != null
                                               ? monthName(int.parse(
-                                                  requests!.monthName!))
+                                                  monthTextController!))
                                               : '')
                                         ],
                                       ),
@@ -500,8 +505,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                   fontSize: Get.width * 0.03,
                                                   onTap: () {
                                                     if (widget.isAdd) {
-                                                      requests!.requestLines =
-                                                          [];
+                                                      // requests!.requestLines =
+                                                      //     [];
                                                     }
                                                   },
                                                   onChanged: (val) {
@@ -519,8 +524,8 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                         .add(sourcePathLine);
                                                     totalPrice = sourcePathLine
                                                         .destPrice!;
-                                                    requests!.requestLines =
-                                                        requestLineList;
+                                                    // requests!.requestLines =
+                                                    //     requestLineList;
                                                     controller.update();
 
                                                     // sourcePathLineList = jsonDecode(sourcePath);
@@ -929,16 +934,36 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: GestureDetector(
                                           onTap: () async {
-                                            if (requests!.fromDate != null &&
-                                                requests!.toDate != null &&
-                                                requests!.monthName != null &&
-                                                requestLineList.isNotEmpty) {
+                                            if (fromDateTextController !=
+                                                    null &&
+                                                toDateTextController != null &&
+                                                monthTextController != null &&
+                                                requestLineList.isNotEmpty &&
+                                                carTextController?.name !=
+                                                    null &&
+                                                sourcePathTextController
+                                                        ?.sourcePathName !=
+                                                    null) {
                                               print("opject oky");
-                                              requests!.state =
-                                                  RequestState.draft;
-                                              requests!.amoutTotal = totalPrice;
-                                              requests!.driverId =
-                                                  SharedPr.userObj!.id;
+                                              requests = Requests(
+                                                  state: RequestState.draft,
+                                                  amoutTotal: totalPrice,
+                                                  driverId:
+                                                      SharedPr.userObj!.id,
+                                                  car: carTextController,
+                                                  sourcePathId:
+                                                      sourcePathTextController!
+                                                          .sourcePathId,
+                                                  fromDate:
+                                                      fromDateTextController,
+                                                  requestLines: requestLineList,
+                                                  toDate: toDateTextController,
+                                                  monthName:
+                                                      monthTextController,
+                                                  sourcePathName:
+                                                      sourcePathTextController!
+                                                          .sourcePathName);
+
                                               // print(requests!.toJson());
                                               ResponseResult result =
                                                   await controller
