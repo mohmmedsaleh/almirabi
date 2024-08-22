@@ -247,5 +247,7 @@ var en = {
   'done_seended': 'Done Seended',
   'confirm': 'Done confirm',
   'done_cancel': 'Done Cancel',
-  'data_isloading': 'the data is loading now ...'
+  'data_isloading': 'the data is loading now ...',
+  'date_match_error':
+      '''The month you entered doesn't match with start date or end date'''
 };

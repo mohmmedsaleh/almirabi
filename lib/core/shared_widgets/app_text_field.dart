@@ -22,7 +22,7 @@ class ContainerTextField extends StatelessWidget {
   double? width;
   double? height;
   double? borderRadius;
-  Color? color, hintcolor, iconcolor, borderColor;
+  Color? color, hintcolor, iconcolor, borderColor, backgroundColor;
   double? fontSize;
   double? horizontal;
   double? vertical;
@@ -56,6 +56,7 @@ class ContainerTextField extends StatelessWidget {
       this.width,
       this.height,
       this.borderRadius = 20,
+      this.backgroundColor,
       this.fontSize,
       this.textAlign = TextAlign.start,
       this.color,
@@ -87,6 +88,8 @@ class ContainerTextField extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.bold),
         decoration: InputDecoration(
+            filled: true,
+            fillColor: backgroundColor,
             labelText:
                 isAddOrEdit != null && isAddOrEdit == true ? labelText : null,
             counterText: "",

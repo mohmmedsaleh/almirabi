@@ -356,6 +356,59 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
+                                              // final date =
+                                              //     await showDatePickerDialog(
+                                              //   context: context,
+                                              //   minDate: DateTime(1990, 1, 1),
+                                              //   maxDate: DateTime(2100, 12, 31),
+                                              //   height: Get.height / 3,
+                                              //   initialPickerType:
+                                              //       PickerType.months,
+                                              // );
+                                              month = await _selectMonth();
+                                              if (month != null) {
+                                                if (month! < 10) {
+                                                  monthTextController =
+                                                      '0${month}';
+                                                } else {
+                                                  monthTextController =
+                                                      month.toString();
+                                                }
+                                                fromDateTextController =
+                                                    DateTime(
+                                                            DateTime.now().year,
+                                                            month!,
+                                                            1)
+                                                        .toString()
+                                                        .substring(0, 10);
+                                                toDateTextController = DateTime(
+                                                        DateTime.now().year,
+                                                        month! + 1,
+                                                        0)
+                                                    .toString()
+                                                    .substring(0, 10);
+                                              } else {
+                                                ///snakbar
+                                              }
+                                              controller.update();
+                                            },
+                                            child: ButtonElevated(
+                                                width: Get.width / 4,
+                                                text: 'month'.tr,
+                                                backgroundColor: AppColor.brawn,
+                                                // iconData: Icons.add,
+                                                borderRadius: 25),
+                                          ),
+                                          Text(monthTextController != null
+                                              ? monthName(int.parse(
+                                                  monthTextController!))
+                                              : '')
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
                                               DateTime? fromdate =
                                                   await showDatePickerDialog(
                                                       context: context,
@@ -420,46 +473,6 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                               ? toDateTextController
                                                   .toString()
                                                   .substring(0, 10)
-                                              : '')
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              // final date =
-                                              //     await showDatePickerDialog(
-                                              //   context: context,
-                                              //   minDate: DateTime(1990, 1, 1),
-                                              //   maxDate: DateTime(2100, 12, 31),
-                                              //   height: Get.height / 3,
-                                              //   initialPickerType:
-                                              //       PickerType.months,
-                                              // );
-                                              month = await _selectMonth();
-                                              if (month != null) {
-                                                if (month! < 10) {
-                                                  monthTextController =
-                                                      '0${month}';
-                                                } else {
-                                                  monthTextController =
-                                                      month.toString();
-                                                }
-                                              } else {
-                                                ///snakbar
-                                              }
-                                              controller.update();
-                                            },
-                                            child: ButtonElevated(
-                                                width: Get.width / 4,
-                                                text: 'month'.tr,
-                                                backgroundColor: AppColor.brawn,
-                                                // iconData: Icons.add,
-                                                borderRadius: 25),
-                                          ),
-                                          Text(monthTextController != null
-                                              ? monthName(int.parse(
-                                                  monthTextController!))
                                               : '')
                                         ],
                                       ),
@@ -935,56 +948,69 @@ class _AddEditRequestScreenState extends State<AddEditRequestScreen> {
                                                 sourcePathTextController
                                                         ?.sourcePathName !=
                                                     null) {
-                                              requests = Requests(
-                                                  state: RequestState.draft,
-                                                  amoutTotal: totalPrice,
-                                                  driverId:
-                                                      SharedPr.userObj!.id,
-                                                  car: carTextController,
-                                                  sourcePathId:
-                                                      sourcePathTextController!
-                                                          .sourcePathId,
-                                                  fromDate:
-                                                      fromDateTextController,
-                                                  requestLines: requestLineList,
-                                                  toDate: toDateTextController,
-                                                  monthName:
-                                                      monthTextController,
-                                                  sourcePathName:
-                                                      sourcePathTextController!
-                                                          .sourcePathName);
-                                              ResponseResult result;
-                                              // print(requests!.toJson());
-                                              if (widget.isAdd) {
-                                                result = await controller
-                                                    .createRequest(
-                                                        Requests: requests!);
-                                              } else {
-                                                requests!.id =
-                                                    widget.objectToEdit!.id;
-                                                result = await controller
-                                                    .updateRequest(
-                                                        Requests: requests!);
-                                              }
+                                              if (toDateTextController!
+                                                          .substring(5, 7) ==
+                                                      monthTextController &&
+                                                  fromDateTextController!
+                                                          .substring(5, 7) ==
+                                                      monthTextController) {
+                                                requests = Requests(
+                                                    state: RequestState.draft,
+                                                    amoutTotal: totalPrice,
+                                                    driverId:
+                                                        SharedPr.userObj!.id,
+                                                    car: carTextController,
+                                                    sourcePathId:
+                                                        sourcePathTextController!
+                                                            .sourcePathId,
+                                                    fromDate:
+                                                        fromDateTextController,
+                                                    requestLines:
+                                                        requestLineList,
+                                                    toDate:
+                                                        toDateTextController,
+                                                    monthName:
+                                                        monthTextController,
+                                                    sourcePathName:
+                                                        sourcePathTextController!
+                                                            .sourcePathName);
+                                                ResponseResult result;
+                                                // print(requests!.toJson());
+                                                if (widget.isAdd) {
+                                                  result = await controller
+                                                      .createRequest(
+                                                          Requests: requests!);
+                                                } else {
+                                                  requests!.id =
+                                                      widget.objectToEdit!.id;
+                                                  result = await controller
+                                                      .updateRequest(
+                                                          Requests: requests!);
+                                                }
 
-                                              if (result.status) {
-                                                await requestController
-                                                    .requestData();
-                                                widget.isAdd
-                                                    ? Get.offAll(() =>
-                                                        const RequestListScreen())
-                                                    : Get.off(() =>
-                                                        DetailsRequestScreen(
-                                                          item: requests!,
-                                                        ));
+                                                if (result.status) {
+                                                  await requestController
+                                                      .requestData();
+                                                  widget.isAdd
+                                                      ? Get.offAll(() =>
+                                                          const RequestListScreen())
+                                                      : Get.off(() =>
+                                                          DetailsRequestScreen(
+                                                            item: requests!,
+                                                          ));
 
-                                                appSnackBar(
-                                                    messageType:
-                                                        MessageTypes.success,
-                                                    message: 'Successful'.tr);
+                                                  appSnackBar(
+                                                      messageType:
+                                                          MessageTypes.success,
+                                                      message: 'Successful'.tr);
+                                                } else {
+                                                  appSnackBar(
+                                                      message: result.message);
+                                                }
                                               } else {
                                                 appSnackBar(
-                                                    message: result.message);
+                                                    message:
+                                                        'date_match_error'.tr);
                                               }
                                             } else {
                                               appSnackBar(
