@@ -22,11 +22,11 @@ class HeaderIcons extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           border: Border.all(
-              color: !darkBackground ? AppColor.purple.withOpacity(0.4) : Colors.transparent,
+              color: !darkBackground ? AppColor.brawn : Colors.transparent,
               width: 1)),
       child: IconButton(
         icon: Icon(icon),
-        color: !darkBackground ? AppColor.purple.withOpacity(0.7) : AppColor.white,
+        color: !darkBackground ? AppColor.brawn : AppColor.white,
         iconSize: Get.height * 0.025,
         onPressed: onTap,
       ),

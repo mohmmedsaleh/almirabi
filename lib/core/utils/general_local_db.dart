@@ -246,7 +246,7 @@ class GeneralLocalDB<T> {
           'UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id', obj);
     } catch (e) {
       // throw Exception(e.toString());
-
+      print(e);
       throw handleException(
           exception: e, navigation: false, methodName: "GeneralLocalDB update");
     }

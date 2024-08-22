@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/config/app_enums.dart';
 import '../../../../core/config/app_odoo_models.dart';
@@ -131,9 +132,12 @@ class RequestService extends RequestRepository {
       if (kDebugMode) {
         print('indexRemotly : $result');
       }
-      return ((result as List)
-          .map((e) => Requests.fromJson(e, fromTemblet: true))
-          .toList());
+
+      return result is List
+          ? (result
+              .map((e) => Requests.fromJson(e, fromTemblet: true))
+              .toList())
+          : 'failed_connect_server'.tr;
     } catch (e) {
       return handleException(
           exception: e, navigation: false, methodName: "indexRemotly");
@@ -174,16 +178,67 @@ class RequestService extends RequestRepository {
       //   // 'amout_total': 500.0
       // };
       // print(c);
+      print([listRequest.first]);
+      // var x = [
+      //   {
+      //     'product_car_id': 6287,
+      //     'from_date': 2024 - 08 - 12,
+      //     'to_date': 2024 - 08 - 14,
+      //     'month_name': 05,
+      //     'source_path_id': 2,
+      //     'state': 'closed',
+      //     'request_lines': [
+      //       {
+      //         "dest_id": 2,
+      //         "dest_name": "عفيف+دوادمي+سكاكا+عرعر - Afif+Duwadmi+Skaka+Arar",
+      //         "dest_price": 4000.0
+      //       },
+      //       {
+      //         "dest_id": 2,
+      //         "dest_name": "عفيف+دوادمي+سكاكا+عرعر - Afif+Duwadmi+Skaka+Arar",
+      //         "dest_price": 4000.0
+      //       }
+      //     ],
+      //     'driver_id': 541,
+      //     'amout_total': 8000.0
+      //   }
+      // ];
+      // var request_data = [
+      //   {
+      //     'product_car_id': 6287,
+      //     'from_date': '2024-08-12',
+      //     'to_date': '2024-08-14',
+      //     'month_name': '05',
+      //     'source_path_id': 2,
+      //     // 'source_path_name': 'أفلاج - Aflaj',
+      //     'state': 'draft',
+      //     'request_lines': [
+      //       {
+      //         "dest_id": 2,
+      //         "dest_name": "عفيف+دوادمي+سكاكا+عرعر - Afif+Duwadmi+Skaka+Arar",
+      //         "dest_price": 4000.0
+      //       },
+      //       {
+      //         "dest_id": 2,
+      //         "dest_name": "عفيف+دوادمي+سكاكا+عرعر - Afif+Duwadmi+Skaka+Arar",
+      //         "dest_price": 4000.0
+      //       }
+      //     ],
+      //     'driver_id': 541,
+      //     'amout_total': 4000.0
+      //   }
+      // ];
       var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
         'method': 'create_driver_request',
         'args': [listRequest],
         'kwargs': {},
       });
+
       if (kDebugMode) {
         print('createRequestRemotely : $result2');
       }
-      return 'result2';
+      return result2 is List ? result2 : 'failed_connect_server'.tr;
     } catch (e) {
       return handleException(
           exception: e, navigation: false, methodName: "createRequestRemotely");

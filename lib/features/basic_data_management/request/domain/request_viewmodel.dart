@@ -180,15 +180,19 @@ class RequestController extends GetxController {
           await requestService.createRequestRemotely(obj: requests);
 
       if (remoteResult is List) {
-        // for (var i = 0; i < requests.length; i++) {
-        //   requests[i].requestsId = remoteResult[i];
-        //   requests[i].state = RequestState.closed;
-        //   var remoteRequestLine =
-        //       await requestService.createRequestLineRemotely(obj: requests[i]);
+        Requests requestObj = Requests();
+        for (var i = 0; i < requests.length; i++) {
+          requests[i].requestsId = remoteResult[i];
+          requests[i].state = RequestState.closed;
+          // var remoteRequestLine =
+          //     await requestService.createRequestLineRemotely(obj: requests[i]);
 
-        //   await requestService.update(
-        //       id: requests[i].id!, obj: requests[i], whereField: 'id');
-        // }
+          await requestService.updateWhere(
+              id: requests[i].id!,
+              columnToUpdate: ' requests_id = ? , state = ? ',
+              obj: [remoteResult[i], requestObj.toState(RequestState.closed)],
+              whereField: 'id');
+        }
 
         // car.id = remoteResult;
         LoadingDataController loadingDataController =
@@ -245,15 +249,15 @@ class RequestController extends GetxController {
 
       if (remoteResult is List<Requests>) {
         print(remoteResult.length);
+        Requests requestObj = Requests();
         for (var i = 0; i < remoteResult.length; i++) {
-          Requests requests = Requests();
           await requestService.updateWhere(
               id: remoteResult[i].requestsId!,
               obj: [
                 remoteResult[i].fromDate,
                 remoteResult[i].toDate,
                 remoteResult[i].monthName,
-                requests.toState(remoteResult[i].state!)
+                requestObj.toState(remoteResult[i].state!)
               ],
               whereField: 'requests_id',
               columnToUpdate:
@@ -298,7 +302,18 @@ class RequestController extends GetxController {
         }
         update();
       }
-    } else {}
+    } else {
+      if (reportsList.isNotEmpty) {
+        searchResults.clear();
+        Requests request = Requests();
+        var result =
+            reportsList.where((e) => e.state == request.fromState(query));
+        if (result is List) {
+          searchResults.addAll(result as List<Requests>);
+        }
+        update();
+      }
+    }
   }
 
 // ============================================ [ SEARCH PRODUCT ] ===============================================

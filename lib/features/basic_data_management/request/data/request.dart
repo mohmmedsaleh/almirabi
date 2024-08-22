@@ -85,7 +85,7 @@ class Requests {
     List listId = [];
     if (isRemotelyAdded) {
       for (var element in requestLines!) {
-        listId.add(element.destId);
+        listId.add(element.toJson());
       }
     }
     // print(requestLines);
@@ -101,8 +101,7 @@ class Requests {
     }
     data['state'] = toState(state!);
     data['request_lines'] =
-        // isRemotelyAdded ? listId :
-        js.json.encode(requestLines);
+        isRemotelyAdded ? listId : js.json.encode(requestLines);
     data['driver_id'] = driverId;
     data['amout_total'] = amoutTotal;
     return data;
