@@ -194,7 +194,7 @@ PreferredSizeWidget customAppBar(
       // padding: const EdgeInsets.all(15),
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
-        color: headerBackground ? AppColor.brawn : Colors.transparent,
+        color: headerBackground ? Color(0XFF3967d7) : Colors.transparent,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),

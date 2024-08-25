@@ -761,18 +761,18 @@ class CustomBack extends StatelessWidget {
 //     );
 //   }
 // }
-class test extends StatefulWidget {
+class RemoteDatabaseScreen2 extends StatefulWidget {
   final bool changeConnectionInfo;
   final SubscriptionInfo? subscriptionInfo;
 
-  const test(
+  const RemoteDatabaseScreen2(
       {super.key, this.changeConnectionInfo = false, this.subscriptionInfo});
 
   @override
-  State<test> createState() => _testState();
+  State<RemoteDatabaseScreen2> createState() => _RemoteDatabaseScreen2State();
 }
 
-class _testState extends State<test> {
+class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   DatabaseSettingController remoteDatabaseSettingController =
       Get.put(DatabaseSettingController.getInstance());
   TextEditingController dbNameController = TextEditingController();
@@ -804,165 +804,174 @@ class _testState extends State<test> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: Column(
-        children: [
-          CustomBack(
-            height: MediaQuery.of(context).size.height * 0.17,
-            color: Color(0XFF3967d7),
-            child: Center(
-              child: CustomIcon(
-                assetPath: 'assets/images/image.png',
-                size: Get.width * 0.3,
-                color: AppColor.white,
-              ),
-            ),
-          ),
-          Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: Get.height * 0.1),
-                Text(
-                  'remote_connection_information'.tr,
-                  style: TextStyle(
-                      fontSize: Get.width * 0.05,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0XFF3967d7)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: Get.height * 0.02),
-                      Text(
-                        'dbName'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: dbNameController,
-                        backgroundColor: AppColor.white,
-                        prefixIcon: CustomIcon(
-                            size: Get.width * 0.05,
-                            padding: 10,
-                            color: Color(0XFF3967d7),
-                            assetPath: 'assets/images/database-storage.png'),
-                        hintText: 'dbName'.tr,
-                        labelText: 'dbName'.tr,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message'
-                                .trParams({'field_name': 'dbName'.tr});
-
-                            return "";
-                          }
-
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.03),
-                      Text(
-                        'url'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: urlController,
-                        backgroundColor: AppColor.white,
-                        prefixIcon: Icon(
-                          Icons.http_outlined,
-                          color: Color(0XFF3967d7),
-                        ),
-                        hintText: 'url'.tr,
-                        labelText: 'url'.tr,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message_f'
-                                .trParams({'field_name': 'url'.tr});
-                            return "";
-                          }
-                          // if (value.isNotEmpty) {
-                          //   var message = ValidatorHelper.passWordValidation(value: value);
-                          //   if (message == "") {
-                          //     return null;
-                          //   }
-                          //   errorMessage = message;
-                          //   return "";
-                          // }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.1),
-                      Obx(() {
-                        if (remoteDatabaseSettingController.isLoading.value) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: AppColor.white,
-                              backgroundColor: AppColor.black,
-                            ),
-                          );
-                        } else {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: ButtonElevated(
-                                    borderRadius: 20,
-                                    text: 'connect'.tr,
-                                    backgroundColor: Color(0XFF3967d7),
-                                    onPressed: _onPressed),
-                              ),
-                              if (widget.changeConnectionInfo)
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              if (widget.changeConnectionInfo)
-                                Expanded(
-                                  child: ButtonElevated(
-                                      text: 'back'.tr,
-                                      borderRadius: 20,
-                                      backgroundColor: Color(0XFF3967d7),
-                                      onPressed: () async {
-                                        Get.back();
-                                      }),
-                                ),
-                            ],
-                          );
-                        }
-                      }),
-                    ],
+    return Scaffold(
+      backgroundColor: AppColor.white,
+      body: SingleChildScrollView(
+        child: Container(
+          color: AppColor.white,
+          child: Column(
+            children: [
+              CustomBack(
+                height: MediaQuery.of(context).size.height * 0.2,
+                color: Color(0XFF3967d7),
+                child: Center(
+                  child: CustomIcon(
+                    assetPath: 'assets/images/image.png',
+                    size: Get.width * 0.3,
+                    padding: 30,
+                    color: AppColor.white,
                   ),
                 ),
-              ],
-            ),
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: Get.height * 0.2),
+                    Text(
+                      'remote_connection_information'.tr,
+                      style: TextStyle(
+                          fontSize: Get.width * 0.05,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0XFF3967d7)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: Get.height * 0.05),
+                          Text(
+                            'dbName'.tr,
+                            style: TextStyle(
+                                fontSize: Get.width * 0.03,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.black),
+                          ),
+                          SizedBox(height: Get.height * 0.01),
+                          ContainerTextField(
+                            controller: dbNameController,
+                            backgroundColor: AppColor.white,
+                            prefixIcon: CustomIcon(
+                                size: Get.width * 0.05,
+                                padding: 10,
+                                color: Color(0XFF3967d7),
+                                assetPath:
+                                    'assets/images/database-storage.png'),
+                            hintText: 'dbName'.tr,
+                            labelText: 'dbName'.tr,
+                            width: Get.width,
+                            height: MediaQuery.sizeOf(context).height * 0.05,
+                            hintcolor: AppColor.black.withOpacity(0.5),
+                            iconcolor: AppColor.black,
+                            color: AppColor.black,
+                            fontSize: Get.width * 0.03,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                errorMessage = 'required_message'
+                                    .trParams({'field_name': 'dbName'.tr});
+
+                                return "";
+                              }
+
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.03),
+                          Text(
+                            'url'.tr,
+                            style: TextStyle(
+                                fontSize: Get.width * 0.03,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.black),
+                          ),
+                          SizedBox(height: Get.height * 0.01),
+                          ContainerTextField(
+                            controller: urlController,
+                            backgroundColor: AppColor.white,
+                            prefixIcon: Icon(
+                              Icons.http_outlined,
+                              color: Color(0XFF3967d7),
+                            ),
+                            hintText: 'url'.tr,
+                            labelText: 'url'.tr,
+                            width: Get.width,
+                            height: MediaQuery.sizeOf(context).height * 0.05,
+                            hintcolor: AppColor.black.withOpacity(0.5),
+                            iconcolor: AppColor.black,
+                            color: AppColor.black,
+                            fontSize: Get.width * 0.03,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                errorMessage = 'required_message_f'
+                                    .trParams({'field_name': 'url'.tr});
+                                return "";
+                              }
+                              // if (value.isNotEmpty) {
+                              //   var message = ValidatorHelper.passWordValidation(value: value);
+                              //   if (message == "") {
+                              //     return null;
+                              //   }
+                              //   errorMessage = message;
+                              //   return "";
+                              // }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.1),
+                          Obx(() {
+                            if (remoteDatabaseSettingController
+                                .isLoading.value) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColor.white,
+                                  backgroundColor: AppColor.black,
+                                ),
+                              );
+                            } else {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: ButtonElevated(
+                                        borderRadius: 20,
+                                        text: 'connect'.tr,
+                                        backgroundColor: Color(0XFF3967d7),
+                                        onPressed: _onPressed),
+                                  ),
+                                  if (widget.changeConnectionInfo)
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  if (widget.changeConnectionInfo)
+                                    Expanded(
+                                      child: ButtonElevated(
+                                          text: 'back'.tr,
+                                          borderRadius: 20,
+                                          backgroundColor: Color(0XFF3967d7),
+                                          onPressed: () async {
+                                            Get.back();
+                                          }),
+                                    ),
+                                ],
+                              );
+                            }
+                          }),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-    ));
+    );
   }
 
   _onPressed() {
@@ -978,7 +987,7 @@ class _testState extends State<test> {
           );
           await SharedPr.removeUserObj();
           // Get.to(() => const EmployeesListScreen());
-          Get.to(() => const LoginScreen());
+          Get.to(() => const LoginScreen2());
         } else {
           appSnackBar(
             message: value.message!,

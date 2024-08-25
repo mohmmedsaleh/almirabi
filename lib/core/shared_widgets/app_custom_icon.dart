@@ -5,14 +5,14 @@ class CustomIcon extends StatelessWidget {
   final String assetPath;
   final double size;
   final double padding;
-  final Color color;
+  final Color? color;
 
   const CustomIcon(
       {super.key,
       required this.assetPath,
       required this.size,
       this.padding = 6,
-      this.color = Colors.black});
+      this.color});
 
   @override
   Widget build(BuildContext context) {

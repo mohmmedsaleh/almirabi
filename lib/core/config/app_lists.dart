@@ -12,15 +12,15 @@ var messageTypesIcon = {
 var stateList = {
   // MessageTypes.warning: [Icons.warning_amber_outlined, Colors.grey[900]!],
   RequestState.draft: [
-    "assets/images/draft-button.png",
+    "assets/images/draft.png",
   ],
   RequestState.closed: [
-    "assets/images/send-mail.png",
+    "assets/images/send.png",
   ],
   RequestState.confirm: [
-    "assets/images/check-mark.png",
+    "assets/images/confirm.png",
   ],
   RequestState.cancel: [
-    "assets/images/cancelled.png",
+    "assets/images/cancel.png",
   ],
 };

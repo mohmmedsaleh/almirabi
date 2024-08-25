@@ -54,11 +54,10 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'Tajawal',
               ),
         ),
-        home: test());
-    //  SharedPr.subscriptionDetailsObj?.url == null
-    //     ? const RemoteDatabaseScreen()
-    //     : SharedPr.userObj?.name == null
-    //         ? const LoginScreen()
-    //         : const RequestListScreen());
+        home: SharedPr.subscriptionDetailsObj?.url == null
+            ? const RemoteDatabaseScreen2()
+            : SharedPr.userObj?.name == null
+                ? const LoginScreen2()
+                : const RequestListScreen2());
   }
 }

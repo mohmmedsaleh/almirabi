@@ -31,7 +31,7 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(
-                      color: AppColor.brawn,
+                      color: Color(0XFF3967d7),
                       backgroundColor: AppColor.black,
                     ),
                     SizedBox(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:almirabi/core/shared_widgets/app_custom_icon.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,12 +16,10 @@ import 'app_snack_bar.dart';
 import 'custom_app_bar.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({
-    super.key,
-  });
+  CustomDrawer({super.key, required this.currentRoute});
+  final String currentRoute;
   @override
   Widget build(BuildContext context) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -32,7 +31,7 @@ class CustomDrawer extends StatelessWidget {
               gradient: LinearGradient(
                 end: Alignment.topLeft,
                 colors: [
-                  AppColor.brawn,
+                  Color(0XFF3967d7),
                   const Color.fromRGBO(173, 89, 31, 200),
                 ],
               ),
@@ -86,18 +85,20 @@ class CustomDrawer extends StatelessWidget {
           currentRoute == '/ReportScreen'
               ? Container()
               : ListTile(
-                  leading: Icon(
-                    Icons.insert_drive_file_outlined,
-                    color: AppColor.brawn,
-                    size: MediaQuery.of(context).size.width * 0.1,
-                  ),
+                  leading: CustomIcon(
+                      assetPath: 'assets/images/report.png',
+                      color: Color(0XFF3967d7),
+                      size: MediaQuery.of(context).size.height * 0.03),
                   title: Text(
                     "Reports".tr,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.width * 0.04),
+                        fontSize: MediaQuery.of(context).size.width * 0.03),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: MediaQuery.of(context).size.height * 0.03,
+                  ),
                   onTap: () async {
                     // Handle item tap
                     var connectivityResult =
@@ -121,18 +122,20 @@ class CustomDrawer extends StatelessWidget {
           currentRoute == '/RequestListScreen'
               ? Container()
               : ListTile(
-                  leading: Icon(
-                    Icons.insert_drive_file_outlined,
-                    color: AppColor.brawn,
-                    size: MediaQuery.of(context).size.width * 0.1,
-                  ),
+                  leading: CustomIcon(
+                      assetPath: 'assets/images/request.png',
+                      color: Color(0XFF3967d7),
+                      size: MediaQuery.of(context).size.height * 0.03),
                   title: Text(
                     "requests".tr,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.width * 0.04),
+                        fontSize: MediaQuery.of(context).size.width * 0.03),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: MediaQuery.of(context).size.height * 0.03,
+                  ),
                   onTap: () {
                     // Handle item tap
                     Get.to(() => const RequestListScreen()); // Close the drawer
@@ -142,16 +145,19 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.logout_rounded,
-              color: AppColor.brawn,
-              size: MediaQuery.of(context).size.width * 0.1,
+              color: Color(0XFF3967d7),
+              size: MediaQuery.of(context).size.height * 0.03,
             ),
             title: Text(
               "logout".tr,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: MediaQuery.of(context).size.width * 0.04),
+                  fontSize: MediaQuery.of(context).size.width * 0.03),
             ),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+              size: MediaQuery.of(context).size.height * 0.03,
+            ),
             onTap: () async {
               await SharedPr.removeUserObj().then((value) {
                 if (value) {

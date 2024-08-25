@@ -71,7 +71,9 @@ class _ReportScreenState extends State<ReportScreen> {
                       },
                       icon: Icon(Icons.language))
                 ]),
-            drawer: CustomDrawer(),
+            drawer: CustomDrawer(
+              currentRoute: '/ReportScreen',
+            ),
             body: CustomBackGround(
               height: Get.height * 0.18,
               child: GetBuilder<RequestController>(builder: (controller) {

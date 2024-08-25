@@ -249,5 +249,5 @@ var en = {
   'done_cancel': 'Done Cancel',
   'data_isloading': 'the data is loading now ...',
   'date_match_error':
-      '''The month you entered doesn't match with start date or end date'''
+      '''The month you entered doesn't match with start date or end date''',
 };
