@@ -68,7 +68,7 @@ class LoadingDataController extends GetxController {
     await loadingSourcePath();
     isLoading.value = false;
     if (fromReportScreen == false) {
-      Get.offAll(() => const RequestListScreen());
+      Get.offAll(() => const RequestListScreen2());
     }
   }
 

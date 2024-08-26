@@ -625,7 +625,7 @@ class CustomBack extends StatelessWidget {
               height ??
                   Get.height *
                       0.12), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-          painter: RPSback(color: color),
+          painter: RPSback2(color: color),
         ),
         child ?? Container()
       ],
@@ -1032,6 +1032,58 @@ class RPSback extends CustomPainter {
         size.height * 1.1665333,
         size.width * -0.0027667,
         size.height * 0.6699667);
+    path_0.close();
+
+    canvas.drawPath(path_0, paint_fill_0);
+
+    // Layer 1
+
+    Paint paint_stroke_0 = Paint()
+      ..color = const Color.fromARGB(255, 33, 150, 243)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    canvas.drawPath(path_0, paint_stroke_0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class RPSback2 extends CustomPainter {
+  RPSback2({required this.color});
+
+  final Color? color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Layer 1
+
+    Paint paint_fill_0 = Paint()
+      ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    Path path_0 = Path();
+    path_0.moveTo(0, size.height * -0.0033333);
+    path_0.quadraticBezierTo(
+        0, size.height * 0.4966667, 0, size.height * 0.6633333);
+    path_0.cubicTo(
+        size.width * 0.1664583,
+        size.height * 1.1162500,
+        size.width * 0.8410417,
+        size.height * 1.1008333,
+        size.width * 0.9991667,
+        size.height * 0.6666667);
+    path_0.quadraticBezierTo(size.width * 0.9995833, size.height * 0.4991667,
+        size.width * 1.0008333, size.height * -0.0033333);
+    path_0.lineTo(0, size.height * -0.0033333);
     path_0.close();
 
     canvas.drawPath(path_0, paint_fill_0);

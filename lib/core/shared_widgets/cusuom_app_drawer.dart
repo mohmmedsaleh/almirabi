@@ -113,7 +113,7 @@ class CustomDrawer extends StatelessWidget {
                       //           )),
                       // );
                     } else {
-                      Get.to(() => const ReportScreen());
+                      Get.to(() => const ReportScreen2());
                     }
                     // Close the drawer
                   },
@@ -138,7 +138,8 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   onTap: () {
                     // Handle item tap
-                    Get.to(() => const RequestListScreen()); // Close the drawer
+                    Get.to(
+                        () => const RequestListScreen2()); // Close the drawer
                   },
                 ),
           currentRoute == '/RequestListScreen' ? Container() : Divider(),

@@ -175,34 +175,38 @@ class RequestController extends GetxController {
 
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       OdooProjectOwnerConnectionHelper.odooSession = null;
-      await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
-      var remoteResult =
-          await requestService.createRequestRemotely(obj: requests);
+      if (requests.isNotEmpty) {
+        await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
+        var remoteResult =
+            await requestService.createRequestRemotely(obj: requests);
 
-      if (remoteResult is List) {
-        Requests requestObj = Requests();
-        for (var i = 0; i < requests.length; i++) {
-          requests[i].requestsId = remoteResult[i];
-          requests[i].state = RequestState.closed;
-          // var remoteRequestLine =
-          //     await requestService.createRequestLineRemotely(obj: requests[i]);
+        if (remoteResult is List) {
+          Requests requestObj = Requests();
+          for (var i = 0; i < requests.length; i++) {
+            requests[i].requestsId = remoteResult[i];
+            requests[i].state = RequestState.closed;
+            // var remoteRequestLine =
+            //     await requestService.createRequestLineRemotely(obj: requests[i]);
 
-          await requestService.updateWhere(
-              id: requests[i].id!,
-              columnToUpdate: ' requests_id = ? , state = ? ',
-              obj: [remoteResult[i], requestObj.toState(RequestState.closed)],
-              whereField: 'id');
+            await requestService.updateWhere(
+                id: requests[i].id!,
+                columnToUpdate: ' requests_id = ? , state = ? ',
+                obj: [remoteResult[i], requestObj.toState(RequestState.closed)],
+                whereField: 'id');
+          }
+
+          // car.id = remoteResult;
+          LoadingDataController loadingDataController =
+              Get.put(LoadingDataController());
+          // await requestService.create(obj: car, isRemotelyAdded: true);
+          update();
+          return ResponseResult(
+              status: true, data: requests, message: "Successful".tr);
+        } else {
+          return ResponseResult(message: remoteResult);
         }
-
-        // car.id = remoteResult;
-        LoadingDataController loadingDataController =
-            Get.put(LoadingDataController());
-        // await requestService.create(obj: car, isRemotelyAdded: true);
-        update();
-        return ResponseResult(
-            status: true, data: requests, message: "Successful".tr);
       } else {
-        return ResponseResult(message: remoteResult);
+        return ResponseResult(message: 'empty_list'.tr);
       }
     } else {
       return ResponseResult(message: "no_connection".tr);
@@ -306,11 +310,12 @@ class RequestController extends GetxController {
       if (reportsList.isNotEmpty) {
         searchResults.clear();
         Requests request = Requests();
-        var result =
-            reportsList.where((e) => e.state == request.fromState(query));
-        if (result is List) {
-          searchResults.addAll(result as List<Requests>);
-        }
+        var result = reportsList
+            .where((e) => e.state == request.fromState(query))
+            .toList();
+
+        searchResults.addAll(result as List<Requests>);
+
         update();
       }
     }

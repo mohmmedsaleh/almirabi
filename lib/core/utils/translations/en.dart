@@ -238,6 +238,7 @@ var en = {
   'destination_path': 'Destination Path',
   'price': 'Price',
   'add_new_requst': 'Add New Requst',
+  'edit_requst': 'Edit Requst',
   'car_name': 'Car Name',
   'source_path': 'Source Path',
   'total_price': 'Total Price',

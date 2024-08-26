@@ -126,7 +126,7 @@ PreferredSizeWidget customAppBar(
                         icon: Icons.insert_drive_file_outlined,
                         label: "Reports".tr,
                         onTap: () async {
-                          Get.to(() => const ReportScreen());
+                          Get.to(() => const ReportScreen2());
                         }),
                     buildUserMenuOption(
                         icon: Icons.logout_rounded,
@@ -194,6 +194,9 @@ PreferredSizeWidget customAppBar(
       // padding: const EdgeInsets.all(15),
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
+        border: Border.all(
+          color: headerBackground ? Color(0XFF3967d7) : Colors.transparent,
+        ),
         color: headerBackground ? Color(0XFF3967d7) : Colors.transparent,
       ),
       child: Padding(

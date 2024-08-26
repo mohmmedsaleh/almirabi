@@ -98,14 +98,14 @@ class ContainerDropDownField extends StatelessWidget {
                 : OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(
-                      color: AppColor.brawn,
+                      color: Color(0XFF3967d7),
                     )),
             border: isPIN!
                 ? InputBorder.none
                 : OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(
-                      color: AppColor.brawn,
+                      color: Color(0XFF3967d7),
                     )),
             prefixIcon: prefixIcon,
             contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),

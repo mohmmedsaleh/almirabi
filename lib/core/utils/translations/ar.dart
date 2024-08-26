@@ -234,6 +234,7 @@ var ar = {
   'destination_path': 'مسار الوجهه',
   'price': 'السعر',
   'add_new_requst': 'اضافه طلب جديد',
+  'edit_requst': 'تعديل الطلب ',
   'car_name': 'اسم السياره',
   'source_path': 'وجهه المصدر',
   'total_price': 'اجمالي المبلغ',
