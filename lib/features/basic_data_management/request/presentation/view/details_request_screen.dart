@@ -408,6 +408,7 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
             SizedBox(
               height: Get.height * 0.03,
             ),
+
             Text(
                 '${'month'.tr} : ${monthName(int.parse(widget.item.monthName!))}'),
             SizedBox(
@@ -428,14 +429,15 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: AppColor.white),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: AppColor.white, shape: BoxShape.circle),
+                            color: Color(0xffc3c3c6).withOpacity(0.5),
+                            shape: BoxShape.circle),
                         child: Icon(Icons.date_range_outlined,
                             color: AppColor.black.withOpacity(0.5),
                             size: Get.width * 0.05),
@@ -470,14 +472,15 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: AppColor.white),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: AppColor.white, shape: BoxShape.circle),
+                            color: Color(0xffc3c3c6).withOpacity(0.5),
+                            shape: BoxShape.circle),
                         child: Icon(Icons.date_range_outlined,
                             color: AppColor.black.withOpacity(0.5),
                             size: Get.width * 0.05),
@@ -535,14 +538,15 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: AppColor.white),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: AppColor.white, shape: BoxShape.circle),
+                            color: Color(0xffc3c3c6).withOpacity(0.5),
+                            shape: BoxShape.circle),
                         child: CustomIcon(
                             padding: 0,
                             assetPath: 'assets/images/delivery-truck.png',
@@ -580,14 +584,15 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: AppColor.white),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: AppColor.white, shape: BoxShape.circle),
+                            color: Color(0xffc3c3c6).withOpacity(0.5),
+                            shape: BoxShape.circle),
                         child: Icon(Icons.location_on,
                             color: AppColor.black.withOpacity(0.5),
                             size: Get.width * 0.05),
@@ -744,24 +749,31 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("destination".tr,
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.04,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0XFF3967d7))),
-                                Text("${widget.item.amoutTotal}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.04,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0XFF3967d7))),
-                              ],
-                            ),
+                          Center(
+                            child: Text("destination".tr,
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.04,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0XFF3967d7))),
                           ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text("destination".tr,
+                          //           style: TextStyle(
+                          //               fontSize: Get.width * 0.04,
+                          //               fontWeight: FontWeight.bold,
+                          //               color: Color(0XFF3967d7))),
+                          //       Text("${widget.item.amoutTotal}",
+                          //           style: TextStyle(
+                          //               fontSize: Get.width * 0.04,
+                          //               fontWeight: FontWeight.bold,
+                          //               color: Color(0XFF3967d7))),
+                          //     ],
+                          //   ),
+                          // ),
                           // Container(
                           //   width: Get.width,
                           //   height: MediaQuery.sizeOf(context).height * 0.05,
@@ -917,6 +929,20 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                           //         ],
                           //       ),
                           //     )),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text("${widget.item.amoutTotal}",
+                                    style: TextStyle(
+                                        fontSize: Get.width * 0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0XFF3967d7))),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

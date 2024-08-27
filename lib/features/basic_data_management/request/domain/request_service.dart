@@ -149,10 +149,15 @@ class RequestService extends RequestRepository {
     try {
       List listRequest = [];
       for (var e in (obj as List<Requests>)) {
+        if (int.parse(e.monthName!) < 10) {
+          e.monthName = '0${e.monthName!}';
+        } else {
+          e.monthName = e.monthName!.toString();
+        }
         e.state = RequestState.closed;
         listRequest.add(e.toJson(isRemotelyAdded: true));
       }
-
+      print(listRequest);
       // print(listRequest.last);
       // var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
       //   'model': OdooModels.requests,
@@ -240,6 +245,7 @@ class RequestService extends RequestRepository {
       }
       return result2 is List ? result2 : 'failed_connect_server'.tr;
     } catch (e) {
+      print(e);
       return handleException(
           exception: e, navigation: false, methodName: "createRequestRemotely");
     }

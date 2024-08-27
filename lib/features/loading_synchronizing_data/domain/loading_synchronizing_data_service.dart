@@ -66,10 +66,11 @@ class LoadingSynchronizingDataService
       if (result is bool) {
         return result;
       }
-
-      return result is bool
-          ? <Car>[]
-          : (result as List).map((e) => Car.fromJson(e)).toList();
+      print(result);
+      return 'result';
+      // is bool
+      // ? <Car>[]
+      // : (result as List).map((e) => Car.fromJson(e)).toList();
     } on OdooSessionExpiredException {
       // OdooProjectOwnerConnectionHelper.sessionClosed = true;
       // if (kDebugMode) {

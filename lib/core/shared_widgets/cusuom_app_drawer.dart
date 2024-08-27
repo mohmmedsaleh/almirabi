@@ -164,7 +164,7 @@ class CustomDrawer extends StatelessWidget {
                 if (value) {
                   OdooProjectOwnerConnectionHelper.odooSession = null;
                   Get.deleteAll();
-                  Get.offAll(() => const LoginScreen());
+                  Get.offAll(() => const LoginScreen2());
                 }
               }); // Close the drawer
             },

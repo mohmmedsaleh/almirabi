@@ -33,7 +33,7 @@ class RequestController extends GetxController {
   RxList<Requests> dataRepots = RxList<Requests>();
   TextEditingController searchRequstsController = TextEditingController();
   TextEditingController searchReportsController = TextEditingController();
-
+  String? filtterRequstBy, filtterReportBy;
   String? carid, sourcePathId, sourcePathLineId;
 
   @override

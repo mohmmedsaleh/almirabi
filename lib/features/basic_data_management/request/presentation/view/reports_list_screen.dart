@@ -427,136 +427,140 @@ class _ReportScreen2State extends State<ReportScreen2> {
                     context: context,
                     backgroundColor: AppColor.white,
                     builder: (BuildContext context) {
-                      return Container(
-                        height: Get.height * 0.1,
-                        padding: EdgeInsets.all(16.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Center(
-                            //   child: Text(
-                            //     'filtter_by'.tr,
-                            //     style: TextStyle(
-                            //         fontSize: Get.width * 0.04,
-                            //         color: Color(0XFF3967d7)),
-                            //   ),
-                            // ),
-                            requestController
-                                    .searchReportsController.text.isNotEmpty
-                                ? IconButton(
-                                    onPressed: () async {
-                                      // bool
-                                      //     isTrustedDevice =
-                                      //     await MacAddressHelper
-                                      //         .isTrustedDevice();
-                                      // if (isTrustedDevice) {
-                                      Navigator.of(context).pop();
-                                      requestController
-                                          .searchReportsController.text = '';
-                                      filtterBy = null;
-
-                                      requestController.searchResults.clear();
-                                      requestController.update();
-                                      // }
-                                    },
-                                    icon: Icon(
-                                      Icons.cancel_outlined,
-                                      color: AppColor.black,
-                                    ))
-                                : Container(),
-                            Expanded(
-                              child: ContainerDropDownField(
-                                width: Get.width,
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                onTap: () {
-                                  requestController
-                                      .searchRequstsController.text = '';
-                                  requestController.searchResults.clear();
-                                  requestController.update();
-                                },
-                                // prefixIcon: CustomIcon(
-                                //   assetPath: 'assets/images/delivery-truck.png',
-                                //   size: Get.width * 0.05,
-                                // ),
-                                hintText: 'filtter_by'.tr,
-                                labelText: 'filtter_by'.tr,
-                                value: filtterBy,
-                                color: AppColor.black,
-                                // isPIN: true,
-                                hintcolor: AppColor.black.withOpacity(0.5),
-                                iconcolor: AppColor.black,
-                                fontSize: Get.width * 0.03,
-                                onChanged: (val) {
-                                  Navigator.of(context).pop();
-                                  requestController.searchByState(val, false);
-                                  requestController
-                                      .searchReportsController.text = val;
-
-                                  filtterBy = val;
-                                  requestController.update();
-                                },
-                                validator: (value) {
-                                  // if (value == null) {
-                                  //   // errorMessage = 'required_message'
-                                  //   //     .trParams({'field_name': 'car_name'.tr});
-                                  //   // countErrors++;
-                                  //   return "";
-                                  // }
-                                  return null;
-                                },
-                                items: stateList.entries
-                                    .map((e) => DropdownMenuItem<String>(
-                                          // value: e.id,
-                                          value: e.key.name,
-                                          child: Center(
-                                              child: Text(
-                                            (e.key.toString()),
-                                            style: TextStyle(
-                                                fontSize: Get.width * 0.03,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColor.black),
-                                          )),
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
-                            // ...stateList.entries.map((e) => InkWell(
-                            //       onTap: () {
-                            //         Navigator.of(context).pop();
-                            //         requestController.searchByState(
-                            //             e.key.name, true);
-                            //         requestController.searchRequstsController
-                            //             .text = e.key.name;
-                            //       },
-                            //       child: Container(
-                            //         margin: EdgeInsets.all(5),
-                            //         decoration: BoxDecoration(
-                            //             color: AppColor.backgroundTable,
-                            //             borderRadius: BorderRadius.circular(20)),
-                            //         child: Row(
-                            //           children: [
-                            //             Expanded(
-                            //               flex: 1,
-                            //               child: CustomIcon(
-                            //                   assetPath: e.value[0],
-                            //                   size: Get.width * 0.1),
-                            //             ),
-                            //             Expanded(
-                            //               flex: 3,
-                            //               child: Row(
-                            //                 mainAxisAlignment:
-                            //                     MainAxisAlignment.center,
-                            //                 children: [Text(e.key.toString())],
-                            //               ),
-                            //             )
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ))
-                          ],
-                        ),
+                      return FilterState(
+                        isLoacl: false,
+                        requestController: requestController,
                       );
+                      //   return Container(
+                      //     height: Get.height * 0.1,
+                      //     padding: EdgeInsets.all(16.0),
+                      //     child: Row(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         // Center(
+                      //         //   child: Text(
+                      //         //     'filtter_by'.tr,
+                      //         //     style: TextStyle(
+                      //         //         fontSize: Get.width * 0.04,
+                      //         //         color: Color(0XFF3967d7)),
+                      //         //   ),
+                      //         // ),
+                      //         requestController
+                      //                 .searchReportsController.text.isNotEmpty
+                      //             ? IconButton(
+                      //                 onPressed: () async {
+                      //                   // bool
+                      //                   //     isTrustedDevice =
+                      //                   //     await MacAddressHelper
+                      //                   //         .isTrustedDevice();
+                      //                   // if (isTrustedDevice) {
+                      //                   Navigator.of(context).pop();
+                      //                   requestController
+                      //                       .searchReportsController.text = '';
+                      //                   filtterBy = null;
+
+                      //                   requestController.searchResults.clear();
+                      //                   requestController.update();
+                      //                   // }
+                      //                 },
+                      //                 icon: Icon(
+                      //                   Icons.cancel_outlined,
+                      //                   color: AppColor.black,
+                      //                 ))
+                      //             : Container(),
+                      //         Expanded(
+                      //           child: ContainerDropDownField(
+                      //             width: Get.width,
+                      //             height:
+                      //                 MediaQuery.sizeOf(context).height * 0.05,
+                      //             onTap: () {
+                      //               requestController
+                      //                   .searchRequstsController.text = '';
+                      //               requestController.searchResults.clear();
+                      //               requestController.update();
+                      //             },
+                      //             // prefixIcon: CustomIcon(
+                      //             //   assetPath: 'assets/images/delivery-truck.png',
+                      //             //   size: Get.width * 0.05,
+                      //             // ),
+                      //             hintText: 'filtter_by'.tr,
+                      //             labelText: 'filtter_by'.tr,
+                      //             value: filtterBy,
+                      //             color: AppColor.black,
+                      //             // isPIN: true,
+                      //             hintcolor: AppColor.black.withOpacity(0.5),
+                      //             iconcolor: AppColor.black,
+                      //             fontSize: Get.width * 0.03,
+                      //             onChanged: (val) {
+                      //               Navigator.of(context).pop();
+                      //               requestController.searchByState(val, false);
+                      //               requestController
+                      //                   .searchReportsController.text = val;
+
+                      //               filtterBy = val;
+                      //               requestController.update();
+                      //             },
+                      //             validator: (value) {
+                      //               // if (value == null) {
+                      //               //   // errorMessage = 'required_message'
+                      //               //   //     .trParams({'field_name': 'car_name'.tr});
+                      //               //   // countErrors++;
+                      //               //   return "";
+                      //               // }
+                      //               return null;
+                      //             },
+                      //             items: stateList.entries
+                      //                 .map((e) => DropdownMenuItem<String>(
+                      //                       // value: e.id,
+                      //                       value: e.key.name,
+                      //                       child: Center(
+                      //                           child: Text(
+                      //                         (e.key.toString()),
+                      //                         style: TextStyle(
+                      //                             fontSize: Get.width * 0.03,
+                      //                             fontWeight: FontWeight.bold,
+                      //                             color: AppColor.black),
+                      //                       )),
+                      //                     ))
+                      //                 .toList(),
+                      //           ),
+                      //         ),
+                      //         // ...stateList.entries.map((e) => InkWell(
+                      //         //       onTap: () {
+                      //         //         Navigator.of(context).pop();
+                      //         //         requestController.searchByState(
+                      //         //             e.key.name, true);
+                      //         //         requestController.searchRequstsController
+                      //         //             .text = e.key.name;
+                      //         //       },
+                      //         //       child: Container(
+                      //         //         margin: EdgeInsets.all(5),
+                      //         //         decoration: BoxDecoration(
+                      //         //             color: AppColor.backgroundTable,
+                      //         //             borderRadius: BorderRadius.circular(20)),
+                      //         //         child: Row(
+                      //         //           children: [
+                      //         //             Expanded(
+                      //         //               flex: 1,
+                      //         //               child: CustomIcon(
+                      //         //                   assetPath: e.value[0],
+                      //         //                   size: Get.width * 0.1),
+                      //         //             ),
+                      //         //             Expanded(
+                      //         //               flex: 3,
+                      //         //               child: Row(
+                      //         //                 mainAxisAlignment:
+                      //         //                     MainAxisAlignment.center,
+                      //         //                 children: [Text(e.key.toString())],
+                      //         //               ),
+                      //         //             )
+                      //         //           ],
+                      //         //         ),
+                      //         //       ),
+                      //         //     ))
+                      //       ],
+                      //     ),
+                      //   );
                     },
                   );
                 },
@@ -676,7 +680,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircularProgressIndicator(
-                              color: AppColor.brawn,
+                              color: Color(0XFF3967d7),
                               backgroundColor: AppColor.black,
                             ),
                             SizedBox(

@@ -19,6 +19,6 @@ void failLoadingDialog() {
       secondaryOnPressed: () async {
         await DBHelper.dropDBTable(isDeleteBasicData: true);
         await DBHelper.createDBTables();
-        Get.offAll(() => const LoginScreen());
+        Get.offAll(() => const LoginScreen2());
       });
 }

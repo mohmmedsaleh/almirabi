@@ -251,4 +251,6 @@ var en = {
   'data_isloading': 'the data is loading now ...',
   'date_match_error':
       '''The month you entered doesn't match with start date or end date''',
+  'send_all': 'Send All',
+  'add_requst': 'Add Requst'
 };

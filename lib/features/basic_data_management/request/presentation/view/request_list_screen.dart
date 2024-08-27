@@ -613,7 +613,7 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
   late final RequestController requestController;
   late final CarController carController;
   late final SourcePathController sourcePathController;
-  String? filtterBy;
+
   // late TabController _tabController;
 
   @override
@@ -661,169 +661,51 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0XFFfafafa),
-      appBar: AppBar(
-          backgroundColor: AppColor.white,
-          foregroundColor: Color(0XFF3967d7),
-          title: Center(
-            child: Text(
-              "requests".tr,
-              style: TextStyle(
-                  fontSize: Get.width * 0.05,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0XFF3967d7)),
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () async {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: AppColor.white,
-                  builder: (BuildContext context) {
-                    return Container(
-                      height: Get.height * 0.2,
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Center(
-                              //   child: Text(
-                              //     'filtter_by'.tr,
-                              //     style: TextStyle(
-                              //         fontSize: Get.width * 0.04,
-                              //         color: Color(0XFF3967d7)),
-                              //   ),
-                              // ),
-                              requestController
-                                      .searchRequstsController.text.isNotEmpty
-                                  ? IconButton(
-                                      onPressed: () async {
-                                        // bool
-                                        //     isTrustedDevice =
-                                        //     await MacAddressHelper
-                                        //         .isTrustedDevice();
-                                        // if (isTrustedDevice) {
-                                        Navigator.of(context).pop();
-                                        requestController
-                                            .searchRequstsController.text = '';
-                                        filtterBy = null;
-                                        requestController.searchResults.clear();
-                                        requestController.update();
-                                        // }
-                                      },
-                                      icon: Icon(
-                                        Icons.cancel_outlined,
-                                        color: AppColor.black,
-                                      ))
-                                  : Container(),
-                              Expanded(
-                                child: ContainerDropDownField(
-                                  width: Get.width,
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.05,
-                                  onTap: () {
-                                    requestController
-                                        .searchRequstsController.text = '';
-                                    requestController.searchResults.clear();
-                                    requestController.update();
-                                  },
-                                  // prefixIcon: CustomIcon(
-                                  //   assetPath: 'assets/images/delivery-truck.png',
-                                  //   size: Get.width * 0.05,
-                                  // ),
-                                  hintText: 'filtter_by'.tr,
-                                  labelText: 'filtter_by'.tr,
-                                  value: filtterBy,
-                                  color: AppColor.black,
-                                  // isPIN: true,
-                                  hintcolor: AppColor.black.withOpacity(0.5),
-                                  iconcolor: AppColor.black,
-                                  fontSize: Get.width * 0.03,
-                                  onChanged: (val) {
-                                    filtterBy = val;
-                                  },
-                                  validator: (value) {
-                                    // if (value == null) {
-                                    //   // errorMessage = 'required_message'
-                                    //   //     .trParams({'field_name': 'car_name'.tr});
-                                    //   // countErrors++;
-                                    //   return "";
-                                    // }
-                                    return null;
-                                  },
-                                  items: stateList.entries
-                                      .map((e) => DropdownMenuItem<String>(
-                                            // value: e.id,
-                                            value: e.key.name,
-                                            child: Center(
-                                                child: Text(
-                                              (e.key.toString()),
-                                              style: TextStyle(
-                                                  fontSize: Get.width * 0.03,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColor.black),
-                                            )),
-                                          ))
-                                      .toList(),
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (filtterBy != null) {
-                                Navigator.of(context).pop();
-                                requestController.searchByState(
-                                    filtterBy!, true);
-                                requestController.searchRequstsController.text =
-                                    filtterBy!;
-                                requestController.update();
-                              }
-                            },
-                            child: Container(
-                              width: Get.width,
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(0XFF3967d7).withOpacity(0.2)),
-                              child: Center(
-                                  child: Text(
-                                'filtter_by'.tr,
-                                style: TextStyle(
-                                    color: AppColor.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Get.width * 0.04),
-                              )),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-              icon: FaIcon(
-                FontAwesomeIcons.sliders,
+    return GetBuilder<RequestController>(builder: (controller) {
+      return Scaffold(
+        backgroundColor: Color(0XFFfafafa),
+        appBar: AppBar(
+            backgroundColor: AppColor.white,
+            foregroundColor: Color(0XFF3967d7),
+            title: Center(
+              child: Text(
+                "requests".tr,
+                style: TextStyle(
+                    fontSize: Get.width * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0XFF3967d7)),
               ),
             ),
-            IconButton(
-              onPressed: () async {
-                await SharedPr.setLanguage(
-                    lang: SharedPr.lang == 'en' ? 'ar' : 'en');
-              },
-              icon: Icon(Icons.language),
-            ),
-          ]),
-      drawer: CustomDrawer(
-        currentRoute: '/RequestListScreen',
-      ),
-      body: GetBuilder<RequestController>(builder: (controller) {
-        return SingleChildScrollView(
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: AppColor.white,
+                    builder: (BuildContext context) {
+                      return FilterState(
+                        isLoacl: true,
+                        requestController: requestController,
+                      );
+                    },
+                  );
+                },
+                icon: FaIcon(
+                  FontAwesomeIcons.sliders,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await SharedPr.setLanguage(
+                      lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                },
+                icon: Icon(Icons.language),
+              ),
+            ]),
+        drawer: CustomDrawer(
+          currentRoute: '/RequestListScreen',
+        ),
+        body: SingleChildScrollView(
             child: Column(
           children: [
             Container(
@@ -900,7 +782,7 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircularProgressIndicator(
-                          color: AppColor.brawn,
+                          color: Color(0XFF3967d7),
                           backgroundColor: AppColor.black,
                         ),
                         SizedBox(
@@ -911,49 +793,83 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                     ),
                   )
           ],
-        ));
-      }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          IconButton(
-              onPressed: () async {
-                ResponseResult responseResult =
-                    await requestController.createRequestRemotely(
-                        requests: requestController.dataSend);
-                if (responseResult.status) {
-                  await requestController.requestData();
-                  appSnackBar(
-                      messageType: MessageTypes.success,
-                      message: 'Successful'.tr);
-                } else {
-                  appSnackBar(message: responseResult.message);
-                }
-              },
-              icon: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Color(0XFF3967d7), shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.send,
-                    color: AppColor.white,
-                  ))),
-          IconButton(
-              onPressed: () {
-                Get.to(() => AddEditRequestScreen2());
-              },
-              icon: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Color(0XFF3967d7), shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.add,
-                    color: AppColor.white,
-                  ))),
-        ],
-      ),
-    );
+        )),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            requestController.dataSend.isNotEmpty
+                ? IconButton(
+                    onPressed: () async {
+                      ResponseResult responseResult =
+                          await requestController.createRequestRemotely(
+                              requests: requestController.dataSend);
+                      if (responseResult.status) {
+                        await requestController.requestData();
+                        appSnackBar(
+                            messageType: MessageTypes.success,
+                            message: 'Successful'.tr);
+                      } else {
+                        appSnackBar(message: responseResult.message);
+                      }
+                    },
+                    icon: Container(
+                        width: Get.width * 0.3,
+                        height: Get.width * 0.1,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color(0XFF3967d7),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('send_all'.tr,
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.03,
+                                    color: AppColor.white)),
+                            Icon(
+                              Icons.send,
+                              size: Get.width * 0.04,
+                              color: AppColor.white,
+                            ),
+                          ],
+                        )))
+                : Container(
+                    width: Get.width * 0.3,
+                  ),
+            IconButton(
+                onPressed: () {
+                  Get.to(() => AddEditRequestScreen2());
+                },
+                icon: Container(
+                    width: Get.width * 0.3,
+                    height: Get.width * 0.1,
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Color(0XFF3967d7),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'add_requst'.tr,
+                          style: TextStyle(
+                              fontSize: Get.width * 0.03,
+                              color: AppColor.white),
+                        ),
+                        Icon(
+                          Icons.add,
+                          size: Get.width * 0.05,
+                          color: AppColor.white,
+                        )
+                      ],
+                    ))),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -1022,7 +938,7 @@ class card_data2 extends StatelessWidget {
                           color: AppColor.backgroundTable,
                           borderRadius: BorderRadius.circular(15)),
                       child: CustomIcon(
-                          padding: 0,
+                          padding: 4,
                           size: Get.width * 0.1,
                           assetPath: stateList[item.state]!.first),
                     ),
@@ -1073,7 +989,7 @@ class card_data2 extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 17 ? '${sourcePath.sourcePathName!.substring(0, 17)}...' : sourcePath.sourcePathName} ",
+                            "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
                             style: TextStyle(
                                 fontSize: Get.width * 0.03,
                                 color: AppColor.grey),

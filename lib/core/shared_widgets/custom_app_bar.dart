@@ -137,7 +137,7 @@ PreferredSizeWidget customAppBar(
                               OdooProjectOwnerConnectionHelper.odooSession =
                                   null;
                               Get.deleteAll();
-                              Get.offAll(() => const LoginScreen());
+                              Get.offAll(() => const LoginScreen2());
                             }
                           });
                         }),
@@ -221,7 +221,7 @@ PreferredSizeWidget customAppBar(
                       icon: Icons.settings,
                       darkBackground: headerBackground,
                       onTap: () async {
-                        Get.to(() => RemoteDatabaseScreen(
+                        Get.to(() => RemoteDatabaseScreen2(
                               subscriptionInfo: SharedPr.subscriptionDetailsObj,
                               changeConnectionInfo: true,
                             ));

@@ -7,11 +7,13 @@ class HeaderIcons extends StatelessWidget {
   final IconData icon;
   final Function()? onTap;
   final bool darkBackground;
+  final double? height;
 
   const HeaderIcons(
       {super.key,
       required this.icon,
       required this.onTap,
+      this.height,
       this.darkBackground = false});
 
   @override
@@ -27,7 +29,7 @@ class HeaderIcons extends StatelessWidget {
       child: IconButton(
         icon: Icon(icon),
         color: !darkBackground ? AppColor.brawn : AppColor.white,
-        iconSize: Get.height * 0.025,
+        iconSize: height ?? Get.height * 0.025,
         onPressed: onTap,
       ),
     );
