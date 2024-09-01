@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:almirabi/features/basic_data_management/car/data/car.dart';
+import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,6 +70,23 @@ class SharedPr {
     return true;
   }
 
+  static Future<bool> updateUserObj({required User updateData}) async {
+    User user = User(
+        id: userObj!.id,
+        name: userObj!.name,
+        image_1920: userObj!.image_1920,
+        sourcePath: SourcePath(
+            sourcePathId: updateData.sourcePath!.sourcePathId,
+            sourcePathName: updateData.sourcePath!.sourcePathName,
+            car: Car(
+                id: updateData.sourcePath!.car!.id,
+                name: updateData.sourcePath!.car!.name),
+            lins: updateData.sourcePath!.lins));
+    String convertedUserObj = jsonEncode(user.toJson());
+    await _prefs!.setString('userObj', convertedUserObj);
+    _userObj = convertedUserObj;
+    return true;
+  }
   // ============================ [ USER OBJECT INFO ] ====================================
 
   static Future<bool> setSessionId({required String sessionId}) async {

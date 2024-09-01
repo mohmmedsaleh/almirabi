@@ -1,6 +1,8 @@
 // ignore_for_file: type_literal_in_constant_pattern
 
+import 'package:almirabi/features/authentication/data/user.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
@@ -43,7 +45,7 @@ class LoadingSynchronizingDataService
   }
 
   @override
-  Future<dynamic> loadCars() async {
+  Future<dynamic> loadData() async {
     try {
       // var result2 = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
       //   'model': OdooModels.hremployee,
@@ -66,11 +68,10 @@ class LoadingSynchronizingDataService
       if (result is bool) {
         return result;
       }
-      print(result);
-      return 'result';
-      // is bool
-      // ? <Car>[]
-      // : (result as List).map((e) => Car.fromJson(e)).toList();
+      print('product_car_list : $result');
+      return result is bool
+          ? <User>[]
+          : (result as List).map((e) => User.fromJson(e)).toList();
     } on OdooSessionExpiredException {
       // OdooProjectOwnerConnectionHelper.sessionClosed = true;
       // if (kDebugMode) {
@@ -85,6 +86,21 @@ class LoadingSynchronizingDataService
     }
   }
 
+  @override
+  Future updateData(
+      {required int id,
+      required obj,
+      required columnToUpdate,
+      required String whereField}) async {
+    GeneralLocalDB<User>? _generalLocalDBInstance =
+        GeneralLocalDB.getInstance<User>(fromJsonFun: User.fromJson)
+            as GeneralLocalDB<User>?;
+    return await _generalLocalDBInstance!.updatewhere(
+        id: id,
+        obj: obj,
+        whereField: whereField,
+        columnToUpdate: columnToUpdate);
+  }
   // @override
   // Future<dynamic> loadRequest() async {
   //   try {

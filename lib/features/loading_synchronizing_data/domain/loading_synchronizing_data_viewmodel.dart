@@ -1,12 +1,15 @@
 // ignore_for_file: type_literal_in_constant_pattern, unnecessary_type_check
 
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:almirabi/features/authentication/data/user.dart';
 import 'package:almirabi/features/basic_data_management/car/data/car.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
+import '../../../core/config/app_shared_pr.dart';
 import '../../../core/utils/define_type_function.dart';
 
 import '../../../core/utils/general_local_db.dart';
@@ -63,7 +66,7 @@ class LoadingDataController extends GetxController {
 
   loadingData({bool islogin = true}) async {
     isLoading.value = true;
-    await loadingCar();
+    await loadData();
     // await loadingRequest();
     // await loadingSourcePath();
     isLoading.value = false;
@@ -190,22 +193,37 @@ class LoadingDataController extends GetxController {
 //   }
 
   // [ LOADING POS CATEGORIES ] ===============================================================
-  Future<void> loadingCar() async {
+  Future<void> loadData() async {
     isLoad.value = true;
     loadText.value = 'PosCategories Loading';
 
     loadTital.value = "Pos Category Loading";
     isLoadData.value = true;
     var connectivityResult = await (Connectivity().checkConnectivity());
-
+    print('result =>');
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       lengthRemote.value = 0;
-      var result = await loadingSynchronizingDataService.loadCars();
+      var result = await loadingSynchronizingDataService.loadData();
+      print('result => $result');
       isLoadData.value = false;
-      if (result is List) {
+      if (result is List<User>) {
         loadTital.value = "Create Pos Category";
         lengthRemote.value = result.length;
-        await saveInLocalDB<Car>(list: result as List<Car>);
+
+        loadingSynchronizingDataService.updateData(
+            id: SharedPr.userObj!.id!,
+            obj: [
+              result.first.sourcePath!.sourcePathId,
+              result.first.sourcePath!.sourcePathName,
+              result.first.sourcePath!.car!.id,
+              result.first.sourcePath!.car!.name,
+              json.encode(result.first.sourcePath!.lins),
+            ],
+            columnToUpdate:
+                ' source_path_id = ? , source_path_name = ? , car_id = ? , car_name = ? , lines = ? ',
+            whereField: 'driver_id');
+        await SharedPr.updateUserObj(updateData: result.first);
+        // await saveInLocalDB<Car>(list: result as List<Car>);
       }
     }
     // List<PosCategory> list = await loadingSynchronizingDataService

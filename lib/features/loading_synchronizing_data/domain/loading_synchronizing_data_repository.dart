@@ -1,5 +1,5 @@
 abstract class LoadingSynchronizingDataRepository {
-  Future loadCars();
+  Future loadData();
   Future loadSourcePath();
   // Future loadCurrentUserPosSettingInfo({
   //   required int posSettingId,

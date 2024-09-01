@@ -39,7 +39,7 @@ class AuthenticationController extends GetxController {
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       authResult = await authenticateService.authenticate(
           visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
-
+      print(authResult);
       if (authResult is User) {
         await saveUserDataLocally(authResult: authResult);
         SharedPr.setUserObj(userObj: authResult);

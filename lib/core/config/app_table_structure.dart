@@ -55,6 +55,11 @@ class LocalDatabaseStructure {
   static String userStructure = """
         driver_id INTEGER PRIMARY KEY,
         driver_name TEXT,
+        source_path_id INTEGER ,
+        source_path_name TEXT,
+        car_id INTEGER,
+        car_name TEXT,
+        lines TEXT,
         image TEXT
         """;
 

@@ -20,6 +20,7 @@ import '../../../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../../core/shared_widgets/app_drop_down_field.dart';
 import '../../../../../core/shared_widgets/app_snack_bar.dart';
+import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../../remote_database_setting/presentation/remote_database_screen.dart';
 import '../../../source_path/data/source_path.dart';
 import '../../../source_path/data/source_path_line.dart';
@@ -1121,6 +1122,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
   getData() async {
     await carController.carData();
     await sourcePathController.SourcePathData();
+
     if (!widget.isAdd) {
       carid = carController.carList
           .firstWhere((e) => e.id == widget.objectToEdit!.car!.id)
@@ -1142,6 +1144,14 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
       toDateTextController = widget.objectToEdit!.toDate;
       monthTextController = widget.objectToEdit!.monthName;
       totalPrice = widget.objectToEdit!.amoutTotal!;
+    } else {
+      sourcePathLineList = SharedPr.userObj!.sourcePath!.lins!;
+      carTextController = Car(
+          id: SharedPr.userObj!.sourcePath!.car!.id!,
+          name: SharedPr.userObj!.sourcePath!.car!.name!);
+      sourcePathTextController = SourcePath(
+          sourcePathId: SharedPr.userObj!.sourcePath!.sourcePathId,
+          sourcePathName: SharedPr.userObj!.sourcePath!.sourcePathName);
     }
     requestController.update();
   }
@@ -1218,470 +1228,694 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Column(
                                 children: [
-                                  ContainerDropDownField(
-                                    width: Get.width,
-                                    height: MediaQuery.sizeOf(context).height *
-                                        0.05,
-                                    onTap: () {
-                                      if (widget.isAdd) {
-                                        sourcePathTextController = null;
-                                      }
-                                      sourcePathId = null;
-                                      carid = null;
-                                      sourcePathList = [];
-                                      requestLineList = [];
+                                  // ContainerDropDownField(
+                                  //   width: Get.width,
+                                  //   height: MediaQuery.sizeOf(context).height *
+                                  //       0.05,
+                                  //   onTap: () {
+                                  //     if (widget.isAdd) {
+                                  //       sourcePathTextController = null;
+                                  //     }
+                                  //     sourcePathId = null;
+                                  //     carid = null;
+                                  //     sourcePathList = [];
+                                  //     requestLineList = [];
 
-                                      sourcePathLineList = [];
-                                      controller.update();
-                                    },
-                                    prefixIcon: CustomIcon(
-                                      assetPath:
-                                          'assets/images/delivery-truck.png',
-                                      size: Get.width * 0.05,
-                                    ),
-                                    hintText: 'car_name'.tr,
-                                    labelText: 'car_name'.tr,
-                                    value: carid,
-                                    color: AppColor.black,
-                                    // isPIN: true,
-                                    hintcolor: AppColor.black.withOpacity(0.5),
-                                    iconcolor: AppColor.black,
-                                    fontSize: Get.width * 0.03,
-                                    onChanged: (val) {
-                                      Car car = carController.carList
-                                          .firstWhere(
-                                              (element) => element.name == val,
-                                              orElse: () => Car());
-                                      sourcePathList = sourcePathController
-                                          .sourcePathList
-                                          .where((e) => e.car!.id == car.id)
-                                          .toList();
+                                  //     sourcePathLineList = [];
+                                  //     controller.update();
+                                  //   },
+                                  //   prefixIcon: CustomIcon(
+                                  //     assetPath:
+                                  //         'assets/images/delivery-truck.png',
+                                  //     size: Get.width * 0.05,
+                                  //   ),
+                                  //   hintText: 'car_name'.tr,
+                                  //   labelText: 'car_name'.tr,
+                                  //   value: carid,
+                                  //   color: AppColor.black,
+                                  //   // isPIN: true,
+                                  //   hintcolor: AppColor.black.withOpacity(0.5),
+                                  //   iconcolor: AppColor.black,
+                                  //   fontSize: Get.width * 0.03,
+                                  //   onChanged: (val) {
+                                  //     Car car = carController.carList
+                                  //         .firstWhere(
+                                  //             (element) => element.name == val,
+                                  //             orElse: () => Car());
+                                  //     sourcePathList = sourcePathController
+                                  //         .sourcePathList
+                                  //         .where((e) => e.car!.id == car.id)
+                                  //         .toList();
 
-                                      if (sourcePathList.isNotEmpty) {
-                                        carid = val;
-                                      } else {
-                                        //snakbar
-                                      }
-                                      carTextController = car;
-                                      // requests!.car = car;
-                                      controller.update();
-                                    },
-                                    validator: (value) {
-                                      if (value == null) {
-                                        errorMessage = 'required_message'
-                                            .trParams(
-                                                {'field_name': 'car_name'.tr});
-                                        countErrors++;
-                                        return "";
-                                      }
-                                      return null;
-                                    },
-                                    items: carController.carList
-                                        .map((e) => DropdownMenuItem<String>(
-                                              // value: e.id,
-                                              value: e.name,
-                                              child: Center(
-                                                  child: Text(
-                                                (e.name)!,
-                                                style: TextStyle(
-                                                    fontSize: Get.width * 0.03,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColor.black),
-                                              )),
-                                            ))
-                                        .toList(),
-                                  ),
-                                  SizedBox(
-                                    height: Get.height * 0.02,
-                                  ),
-                                  carid != null
-                                      ? ContainerDropDownField(
-                                          width: Get.width,
-                                          height: MediaQuery.sizeOf(context)
-                                                  .height *
-                                              0.05,
-                                          prefixIcon: CustomIcon(
-                                            assetPath:
-                                                'assets/images/destination.png',
-                                            size: Get.width * 0.05,
-                                          ),
-                                          hintText: 'source_path'.tr,
-                                          labelText: 'source_path'.tr,
-                                          value: sourcePathId,
-                                          color: AppColor.black,
-                                          // isPIN: true,
-                                          hintcolor:
-                                              AppColor.black.withOpacity(0.5),
-                                          iconcolor: AppColor.black,
-                                          fontSize: Get.width * 0.03,
-                                          onTap: () {
-                                            sourcePathId = null;
-                                            sourcePathLineList = [];
-                                            requestLineList = [];
-                                            if (isAdd) {
-                                              sourcePathTextController = null;
-                                            }
+                                  //     if (sourcePathList.isNotEmpty) {
+                                  //       carid = val;
+                                  //     } else {
+                                  //       //snakbar
+                                  //     }
+                                  //     carTextController = car;
+                                  //     // requests!.car = car;
+                                  //     controller.update();
+                                  //   },
+                                  //   validator: (value) {
+                                  //     if (value == null) {
+                                  //       errorMessage = 'required_message'
+                                  //           .trParams(
+                                  //               {'field_name': 'car_name'.tr});
+                                  //       countErrors++;
+                                  //       return "";
+                                  //     }
+                                  //     return null;
+                                  //   },
+                                  //   items: carController.carList
+                                  //       .map((e) => DropdownMenuItem<String>(
+                                  //             // value: e.id,
+                                  //             value: e.name,
+                                  //             child: Center(
+                                  //                 child: Text(
+                                  //               (e.name)!,
+                                  //               style: TextStyle(
+                                  //                   fontSize: Get.width * 0.03,
+                                  //                   fontWeight: FontWeight.bold,
+                                  //                   color: AppColor.black),
+                                  //             )),
+                                  //           ))
+                                  //       .toList(),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: Get.height * 0.02,
+                                  // ),
+                                  // carid != null
+                                  //     ? ContainerDropDownField(
+                                  //         width: Get.width,
+                                  //         height: MediaQuery.sizeOf(context)
+                                  //                 .height *
+                                  //             0.05,
+                                  //         prefixIcon: CustomIcon(
+                                  //           assetPath:
+                                  //               'assets/images/destination.png',
+                                  //           size: Get.width * 0.05,
+                                  //         ),
+                                  //         hintText: 'source_path'.tr,
+                                  //         labelText: 'source_path'.tr,
+                                  //         value: sourcePathId,
+                                  //         color: AppColor.black,
+                                  //         // isPIN: true,
+                                  //         hintcolor:
+                                  //             AppColor.black.withOpacity(0.5),
+                                  //         iconcolor: AppColor.black,
+                                  //         fontSize: Get.width * 0.03,
+                                  //         onTap: () {
+                                  //           sourcePathId = null;
+                                  //           sourcePathLineList = [];
+                                  //           requestLineList = [];
+                                  //           if (isAdd) {
+                                  //             sourcePathTextController = null;
+                                  //           }
 
-                                            controller.update();
-                                          },
-                                          onChanged: (val) {
-                                            sourcePathId = val;
-                                            SourcePath sourcePath =
-                                                sourcePathController
-                                                    .sourcePathList
-                                                    .firstWhere(
-                                                        (element) =>
-                                                            element
-                                                                .sourcePathName ==
-                                                            val,
-                                                        orElse: () =>
-                                                            SourcePath());
+                                  //           controller.update();
+                                  //         },
+                                  //         onChanged: (val) {
+                                  //           sourcePathId = val;
+                                  //           SourcePath sourcePath =
+                                  //               sourcePathController
+                                  //                   .sourcePathList
+                                  //                   .firstWhere(
+                                  //                       (element) =>
+                                  //                           element
+                                  //                               .sourcePathName ==
+                                  //                           val,
+                                  //                       orElse: () =>
+                                  //                           SourcePath());
 
-                                            if (sourcePath.lins!.isNotEmpty) {
-                                              sourcePathLineList =
-                                                  sourcePath.lins!;
-                                            } else {
-                                              sourcePathLineList =
-                                                  sourcePath.lins!;
-                                              //snake bar
-                                            }
-                                            sourcePathTextController =
-                                                sourcePath;
-                                            // requests!.sourcePathId =
-                                            //     sourcePath.sourcePathId;
-                                            // requests!.sourcePathName =
-                                            //     sourcePath.sourcePathName;
-                                            controller.update();
-                                            // sourcePathLineList = jsonDecode(sourcePath);
-                                          },
-                                          validator: (value) {
-                                            if (value == null) {
-                                              errorMessage = 'required_message'
-                                                  .trParams({
-                                                'field_name': 'source_path'.tr
-                                              });
-                                              countErrors++;
-                                              return "";
-                                            }
-                                            return null;
-                                          },
-                                          items: sourcePathList.map((e) {
-                                            return DropdownMenuItem<String>(
-                                              // value: e.id,
-                                              value: e.sourcePathName,
-                                              child: Center(
-                                                  child: Text(
-                                                (e.sourcePathName)!,
-                                                style: TextStyle(
-                                                    fontSize: Get.width * 0.03,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColor.black),
-                                              )),
+                                  //           if (sourcePath.lins!.isNotEmpty) {
+                                  //             sourcePathLineList =
+                                  //                 sourcePath.lins!;
+                                  //           } else {
+                                  //             sourcePathLineList =
+                                  //                 sourcePath.lins!;
+                                  //             //snake bar
+                                  //           }
+                                  //           sourcePathTextController =
+                                  //               sourcePath;
+                                  //           // requests!.sourcePathId =
+                                  //           //     sourcePath.sourcePathId;
+                                  //           // requests!.sourcePathName =
+                                  //           //     sourcePath.sourcePathName;
+                                  //           controller.update();
+                                  //           // sourcePathLineList = jsonDecode(sourcePath);
+                                  //         },
+                                  //         validator: (value) {
+                                  //           if (value == null) {
+                                  //             errorMessage = 'required_message'
+                                  //                 .trParams({
+                                  //               'field_name': 'source_path'.tr
+                                  //             });
+                                  //             countErrors++;
+                                  //             return "";
+                                  //           }
+                                  //           return null;
+                                  //         },
+                                  //         items: sourcePathList.map((e) {
+                                  //           return DropdownMenuItem<String>(
+                                  //             // value: e.id,
+                                  //             value: e.sourcePathName,
+                                  //             child: Center(
+                                  //                 child: Text(
+                                  //               (e.sourcePathName)!,
+                                  //               style: TextStyle(
+                                  //                   fontSize: Get.width * 0.03,
+                                  //                   fontWeight: FontWeight.bold,
+                                  //                   color: AppColor.black),
+                                  //             )),
+                                  //           );
+                                  //         }).toList(),
+                                  //       )
+                                  //     : Container(),
+                                  // SizedBox(
+                                  //   height: Get.height * 0.02,
+                                  // ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Expanded(flex: 1, child: Container()),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              SharedPr.userObj!.sourcePath!
+                                                  .sourcePathName!,
+                                              style: TextStyle(
+                                                  color: AppColor.black,
+                                                  fontSize: Get.width * 0.04),
+                                            ),
+                                            Text(
+                                              SharedPr.userObj!.sourcePath!.car!
+                                                  .name!,
+                                              style: TextStyle(
+                                                  color: AppColor.black,
+                                                  fontSize: Get.width * 0.04),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Obx(() {
+                                          if (controller.loading.value) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: AppColor.white,
+                                                backgroundColor: AppColor.black,
+                                              ),
                                             );
-                                          }).toList(),
-                                        )
-                                      : Container(),
-                                  SizedBox(
-                                    height: Get.height * 0.02,
+                                          } else {
+                                            return GestureDetector(
+                                                onTap: () async {
+                                                  controller.loading.value =
+                                                      true;
+                                                  controller.update();
+                                                  LoadingDataController
+                                                      loadingDataController =
+                                                      Get.put(
+                                                          LoadingDataController(
+                                                              fromReportsScreen:
+                                                                  true));
+                                                  await loadingDataController
+                                                      .loadData();
+                                                  controller.loading.value =
+                                                      false;
+                                                  // isAdd = true;
+                                                  controller.update();
+                                                },
+                                                child: Container(
+                                                    // width: Get.width * 0.25,
+                                                    height: Get.height * 0.035,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              blurRadius: 100,
+                                                              color: AppColor
+                                                                  .backgroundTable,
+                                                              offset:
+                                                                  Offset(2, 2))
+                                                        ],
+                                                        color: Color(0XFF3967d7)
+                                                            .withOpacity(0.1)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Center(
+                                                            child: Text(
+                                                          'refresh'.tr,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  // Color(0XFF3967d7),
+                                                                  AppColor
+                                                                      .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize:
+                                                                  Get.width *
+                                                                      0.03),
+                                                        )),
+                                                        Icon(
+                                                          Icons.refresh,
+                                                          size:
+                                                              Get.width * 0.05,
+                                                        )
+                                                      ],
+                                                    )));
+                                          }
+                                        }),
+                                      ),
+                                    ],
                                   ),
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              // final date =
-                                              //     await showDatePickerDialog(
-                                              //   context: context,
-                                              //   minDate: DateTime(1990, 1, 1),
-                                              //   maxDate: DateTime(2100, 12, 31),
-                                              //   height: Get.height / 3,
-                                              //   initialPickerType:
-                                              //       PickerType.months,
-                                              // );
-                                              month = await _selectMonth();
-                                              if (month != null) {
-                                                if (month! < 10) {
-                                                  monthTextController =
-                                                      '0${month}';
-                                                } else {
-                                                  monthTextController =
-                                                      month.toString();
-                                                }
-                                                fromDateTextController =
-                                                    DateTime(
-                                                            DateTime.now().year,
-                                                            month!,
-                                                            1)
-                                                        .toString()
-                                                        .substring(0, 10);
-                                                toDateTextController = DateTime(
-                                                        DateTime.now().year,
-                                                        month! + 1,
-                                                        0)
-                                                    .toString()
-                                                    .substring(0, 10);
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            // final date =
+                                            //     await showDatePickerDialog(
+                                            //   context: context,
+                                            //   minDate: DateTime(1990, 1, 1),
+                                            //   maxDate: DateTime(2100, 12, 31),
+                                            //   height: Get.height / 3,
+                                            //   initialPickerType:
+                                            //       PickerType.months,
+                                            // );
+                                            month = await _selectMonth();
+                                            if (month != null) {
+                                              if (month! < 10) {
+                                                monthTextController =
+                                                    '0${month}';
                                               } else {
-                                                ///snakbar
+                                                monthTextController =
+                                                    month.toString();
                                               }
-                                              controller.update();
-                                            },
-                                            child: Container(
-                                              height: Get.height * 0.1,
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        blurRadius: 100,
-                                                        color: AppColor
-                                                            .backgroundTable,
-                                                        offset: Offset(2, 2))
-                                                  ],
-                                                  color: Color(0xffc3c3c6)
-                                                      .withOpacity(0.5)),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            6.0),
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.white,
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                        Icons
-                                                            .date_range_outlined,
-                                                        color: AppColor.black
-                                                            .withOpacity(0.5),
-                                                        size: Get.width * 0.05),
+                                              fromDateTextController = DateTime(
+                                                      DateTime.now().year,
+                                                      month!,
+                                                      1)
+                                                  .toString()
+                                                  .substring(0, 10);
+                                              toDateTextController = DateTime(
+                                                      DateTime.now().year,
+                                                      month! + 1,
+                                                      0)
+                                                  .toString()
+                                                  .substring(0, 10);
+                                            } else {
+                                              ///snakbar
+                                            }
+                                            controller.update();
+                                          },
+                                          child: Container(
+                                            height: Get.height * 0.07,
+                                            width: Get.width * 0.5,
+                                            padding: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      blurRadius: 100,
+                                                      color: AppColor
+                                                          .backgroundTable,
+                                                      offset: Offset(2, 2))
+                                                ],
+                                                color: Color(0xffc3c3c6)
+                                                    .withOpacity(0.5)),
+                                            child: Row(
+                                              // mainAxisAlignment:
+                                              //     MainAxisAlignment.,
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(6.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    color: AppColor.white,
                                                   ),
-                                                  Center(
-                                                      child: Text(
-                                                    'month'.tr,
-                                                    style: TextStyle(
-                                                        color: AppColor.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            Get.width * 0.03),
-                                                  )),
-                                                  monthTextController != null
-                                                      ? Text(
-                                                          monthTextController !=
-                                                                  null
-                                                              ? monthName(int.parse(
-                                                                  monthTextController!))
-                                                              : '',
+                                                  child: Icon(
+                                                      Icons.date_range_outlined,
+                                                      color: AppColor.black
+                                                          .withOpacity(0.5),
+                                                      size: Get.height * 0.04),
+                                                ),
+                                                Expanded(
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          'period'.tr,
                                                           style: TextStyle(
                                                               color: AppColor
                                                                   .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              // fontWeight:
+                                                              //     FontWeight
+                                                              //         .bold,
                                                               fontSize:
                                                                   Get.width *
-                                                                      0.03),
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
+                                                                      0.04),
+                                                        ),
+                                                        monthTextController !=
+                                                                null
+                                                            ? Text(
+                                                                monthTextController !=
+                                                                        null
+                                                                    ? monthName(
+                                                                        int.parse(
+                                                                            monthTextController!))
+                                                                    : '',
+                                                                style: TextStyle(
+                                                                    color: AppColor.black,
+                                                                    // fontWeight:
+                                                                    //     FontWeight
+                                                                    //         .bold,
+                                                                    fontSize: Get.width * 0.03),
+                                                              )
+                                                            : Container()
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              DateTime? fromdate =
-                                                  await showDatePickerDialog(
-                                                      context: context,
-                                                      minDate:
-                                                          DateTime(1990, 1, 1),
-                                                      maxDate: DateTime(
-                                                          2100, 12, 31),
-                                                      height: Get.height / 3);
-                                              if (fromdate != null) {
-                                                fromDateTextController =
-                                                    fromdate
-                                                        .toString()
-                                                        .substring(0, 10);
-                                              } else {
-                                                ///snakbar
-                                              }
-                                              controller.update();
-                                            },
-                                            child: Container(
-                                              height: Get.height * 0.1,
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        blurRadius: 100,
-                                                        color: AppColor
-                                                            .backgroundTable,
-                                                        offset: Offset(2, 2))
-                                                  ],
-                                                  color: Color(0xffc3c3c6)
-                                                      .withOpacity(0.5)),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            6.0),
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.white,
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                        Icons
-                                                            .date_range_outlined,
-                                                        color: AppColor.black
-                                                            .withOpacity(0.5),
-                                                        size: Get.width * 0.05),
-                                                  ),
-                                                  Center(
-                                                      child: Text(
-                                                    'from'.tr,
-                                                    style: TextStyle(
-                                                        color: AppColor.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            Get.width * 0.03),
-                                                  )),
-                                                  fromDateTextController != null
-                                                      ? Text(
-                                                          fromDateTextController !=
-                                                                  null
-                                                              ? fromDateTextController
-                                                                  .toString()
-                                                                  .substring(
-                                                                      0, 10)
-                                                              : '',
-                                                          style: TextStyle(
-                                                              color: AppColor
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.03),
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              final todate =
-                                                  await showDatePickerDialog(
-                                                      context: context,
-                                                      minDate:
-                                                          DateTime(1990, 1, 1),
-                                                      maxDate: DateTime(
-                                                          2100, 12, 31),
-                                                      height: Get.height / 3);
-                                              if (todate != null) {
-                                                toDateTextController = todate
-                                                    .toString()
-                                                    .substring(0, 10);
-                                              } else {
-                                                ///snakbar
-                                              }
-                                              controller.update();
-                                            },
-                                            child: Container(
-                                              height: Get.height * 0.1,
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        blurRadius: 100,
-                                                        color: AppColor
-                                                            .backgroundTable,
-                                                        offset: Offset(2, 2))
-                                                  ],
-                                                  color: Color(0xffc3c3c6)
-                                                      .withOpacity(0.5)),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            6.0),
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.white,
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                        Icons
-                                                            .date_range_outlined,
-                                                        color: AppColor.black
-                                                            .withOpacity(0.5),
-                                                        size: Get.width * 0.05),
-                                                  ),
-                                                  Center(
-                                                      child: Text(
-                                                    'to'.tr,
-                                                    style: TextStyle(
-                                                        color: AppColor.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            Get.width * 0.03),
-                                                  )),
-                                                  toDateTextController != null
-                                                      ? Text(
-                                                          toDateTextController !=
-                                                                  null
-                                                              ? toDateTextController
-                                                                  .toString()
-                                                                  .substring(
-                                                                      0, 10)
-                                                              : '',
-                                                          style: TextStyle(
-                                                              color: AppColor
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.03),
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     child: GestureDetector(
+                                      //       onTap: () async {
+                                      //         // final date =
+                                      //         //     await showDatePickerDialog(
+                                      //         //   context: context,
+                                      //         //   minDate: DateTime(1990, 1, 1),
+                                      //         //   maxDate: DateTime(2100, 12, 31),
+                                      //         //   height: Get.height / 3,
+                                      //         //   initialPickerType:
+                                      //         //       PickerType.months,
+                                      //         // );
+                                      //         month = await _selectMonth();
+                                      //         if (month != null) {
+                                      //           if (month! < 10) {
+                                      //             monthTextController =
+                                      //                 '0${month}';
+                                      //           } else {
+                                      //             monthTextController =
+                                      //                 month.toString();
+                                      //           }
+                                      //           fromDateTextController =
+                                      //               DateTime(
+                                      //                       DateTime.now().year,
+                                      //                       month!,
+                                      //                       1)
+                                      //                   .toString()
+                                      //                   .substring(0, 10);
+                                      //           toDateTextController = DateTime(
+                                      //                   DateTime.now().year,
+                                      //                   month! + 1,
+                                      //                   0)
+                                      //               .toString()
+                                      //               .substring(0, 10);
+                                      //         } else {
+                                      //           ///snakbar
+                                      //         }
+                                      //         controller.update();
+                                      //       },
+                                      //       child: Container(
+                                      //         height: Get.height * 0.1,
+                                      //         padding: EdgeInsets.all(8),
+                                      //         decoration: BoxDecoration(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(10),
+                                      //             boxShadow: [
+                                      //               BoxShadow(
+                                      //                   blurRadius: 100,
+                                      //                   color: AppColor
+                                      //                       .backgroundTable,
+                                      //                   offset: Offset(2, 2))
+                                      //             ],
+                                      //             color: Color(0xffc3c3c6)
+                                      //                 .withOpacity(0.5)),
+                                      //         child: Column(
+                                      //           mainAxisAlignment:
+                                      //               MainAxisAlignment.center,
+                                      //           children: [
+                                      //             Container(
+                                      //               padding:
+                                      //                   const EdgeInsets.all(
+                                      //                       6.0),
+                                      //               decoration: BoxDecoration(
+                                      //                   color: AppColor.white,
+                                      //                   shape: BoxShape.circle),
+                                      //               child: Icon(
+                                      //                   Icons
+                                      //                       .date_range_outlined,
+                                      //                   color: AppColor.black
+                                      //                       .withOpacity(0.5),
+                                      //                   size: Get.width * 0.05),
+                                      //             ),
+                                      //             Center(
+                                      //                 child: Text(
+                                      //               'month'.tr,
+                                      //               style: TextStyle(
+                                      //                   color: AppColor.black,
+                                      //                   fontWeight:
+                                      //                       FontWeight.bold,
+                                      //                   fontSize:
+                                      //                       Get.width * 0.03),
+                                      //             )),
+                                      //             monthTextController != null
+                                      //                 ? Text(
+                                      //                     monthTextController !=
+                                      //                             null
+                                      //                         ? monthName(int.parse(
+                                      //                             monthTextController!))
+                                      //                         : '',
+                                      //                     style: TextStyle(
+                                      //                         color: AppColor
+                                      //                             .black,
+                                      //                         fontWeight:
+                                      //                             FontWeight
+                                      //                                 .bold,
+                                      //                         fontSize:
+                                      //                             Get.width *
+                                      //                                 0.03),
+                                      //                   )
+                                      //                 : Container()
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     child: GestureDetector(
+                                      //       onTap: () async {
+                                      //         DateTime? fromdate =
+                                      //             await showDatePickerDialog(
+                                      //                 context: context,
+                                      //                 minDate:
+                                      //                     DateTime(1990, 1, 1),
+                                      //                 maxDate: DateTime(
+                                      //                     2100, 12, 31),
+                                      //                 height: Get.height / 3);
+                                      //         if (fromdate != null) {
+                                      //           fromDateTextController =
+                                      //               fromdate
+                                      //                   .toString()
+                                      //                   .substring(0, 10);
+                                      //         } else {
+                                      //           ///snakbar
+                                      //         }
+                                      //         controller.update();
+                                      //       },
+                                      //       child: Container(
+                                      //         height: Get.height * 0.1,
+                                      //         padding: EdgeInsets.all(8),
+                                      //         decoration: BoxDecoration(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(10),
+                                      //             boxShadow: [
+                                      //               BoxShadow(
+                                      //                   blurRadius: 100,
+                                      //                   color: AppColor
+                                      //                       .backgroundTable,
+                                      //                   offset: Offset(2, 2))
+                                      //             ],
+                                      //             color: Color(0xffc3c3c6)
+                                      //                 .withOpacity(0.5)),
+                                      //         child: Column(
+                                      //           mainAxisAlignment:
+                                      //               MainAxisAlignment.center,
+                                      //           children: [
+                                      //             Container(
+                                      //               padding:
+                                      //                   const EdgeInsets.all(
+                                      //                       6.0),
+                                      //               decoration: BoxDecoration(
+                                      //                   color: AppColor.white,
+                                      //                   shape: BoxShape.circle),
+                                      //               child: Icon(
+                                      //                   Icons
+                                      //                       .date_range_outlined,
+                                      //                   color: AppColor.black
+                                      //                       .withOpacity(0.5),
+                                      //                   size: Get.width * 0.05),
+                                      //             ),
+                                      //             Center(
+                                      //                 child: Text(
+                                      //               'from'.tr,
+                                      //               style: TextStyle(
+                                      //                   color: AppColor.black,
+                                      //                   fontWeight:
+                                      //                       FontWeight.bold,
+                                      //                   fontSize:
+                                      //                       Get.width * 0.03),
+                                      //             )),
+                                      //             fromDateTextController != null
+                                      //                 ? Text(
+                                      //                     fromDateTextController !=
+                                      //                             null
+                                      //                         ? fromDateTextController
+                                      //                             .toString()
+                                      //                             .substring(
+                                      //                                 0, 10)
+                                      //                         : '',
+                                      //                     style: TextStyle(
+                                      //                         color: AppColor
+                                      //                             .black,
+                                      //                         fontWeight:
+                                      //                             FontWeight
+                                      //                                 .bold,
+                                      //                         fontSize:
+                                      //                             Get.width *
+                                      //                                 0.03),
+                                      //                   )
+                                      //                 : Container()
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     child: GestureDetector(
+                                      //       onTap: () async {
+                                      //         final todate =
+                                      //             await showDatePickerDialog(
+                                      //                 context: context,
+                                      //                 minDate:
+                                      //                     DateTime(1990, 1, 1),
+                                      //                 maxDate: DateTime(
+                                      //                     2100, 12, 31),
+                                      //                 height: Get.height / 3);
+                                      //         if (todate != null) {
+                                      //           toDateTextController = todate
+                                      //               .toString()
+                                      //               .substring(0, 10);
+                                      //         } else {
+                                      //           ///snakbar
+                                      //         }
+                                      //         controller.update();
+                                      //       },
+                                      //       child: Container(
+                                      //         height: Get.height * 0.1,
+                                      //         padding: EdgeInsets.all(8),
+                                      //         decoration: BoxDecoration(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(10),
+                                      //             boxShadow: [
+                                      //               BoxShadow(
+                                      //                   blurRadius: 100,
+                                      //                   color: AppColor
+                                      //                       .backgroundTable,
+                                      //                   offset: Offset(2, 2))
+                                      //             ],
+                                      //             color: Color(0xffc3c3c6)
+                                      //                 .withOpacity(0.5)),
+                                      //         child: Column(
+                                      //           mainAxisAlignment:
+                                      //               MainAxisAlignment.center,
+                                      //           children: [
+                                      //             Container(
+                                      //               padding:
+                                      //                   const EdgeInsets.all(
+                                      //                       6.0),
+                                      //               decoration: BoxDecoration(
+                                      //                   color: AppColor.white,
+                                      //                   shape: BoxShape.circle),
+                                      //               child: Icon(
+                                      //                   Icons
+                                      //                       .date_range_outlined,
+                                      //                   color: AppColor.black
+                                      //                       .withOpacity(0.5),
+                                      //                   size: Get.width * 0.05),
+                                      //             ),
+                                      //             Center(
+                                      //                 child: Text(
+                                      //               'to'.tr,
+                                      //               style: TextStyle(
+                                      //                   color: AppColor.black,
+                                      //                   fontWeight:
+                                      //                       FontWeight.bold,
+                                      //                   fontSize:
+                                      //                       Get.width * 0.03),
+                                      //             )),
+                                      //             toDateTextController != null
+                                      //                 ? Text(
+                                      //                     toDateTextController !=
+                                      //                             null
+                                      //                         ? toDateTextController
+                                      //                             .toString()
+                                      //                             .substring(
+                                      //                                 0, 10)
+                                      //                         : '',
+                                      //                     style: TextStyle(
+                                      //                         color: AppColor
+                                      //                             .black,
+                                      //                         fontWeight:
+                                      //                             FontWeight
+                                      //                                 .bold,
+                                      //                         fontSize:
+                                      //                             Get.width *
+                                      //                                 0.03),
+                                      //                   )
+                                      //                 : Container()
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                   sourcePathLineList.isNotEmpty
@@ -1815,7 +2049,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                             child: Column(
                                               children: [
                                                 SizedBox(
-                                                  height: Get.height * 0.01,
+                                                  height: Get.height * 0.001,
                                                 ),
                                                 Container(
                                                   width: Get.width,
@@ -1889,7 +2123,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                         style: TextStyle(
                                                                             color:
                                                                                 AppColor.black,
-                                                                            fontWeight: FontWeight.bold,
+                                                                            fontWeight: FontWeight.w600,
                                                                             fontSize: Get.width * 0.04),
                                                                       ))),
                                                                 )),
@@ -1955,73 +2189,6 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                           ],
                                                         ),
                                                       ),
-                                                      ...requestLineList
-                                                          .map((e) => SizedBox(
-                                                                width:
-                                                                    Get.width,
-                                                                height: MediaQuery.sizeOf(
-                                                                            context)
-                                                                        .height *
-                                                                    0.05,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Expanded(
-                                                                        flex: 5,
-                                                                        child:
-                                                                            Container(
-                                                                          padding:
-                                                                              EdgeInsets.symmetric(horizontal: 10),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
-                                                                          child: Center(
-                                                                              child: Text(
-                                                                            e.destName!,
-                                                                            style: TextStyle(
-                                                                                fontSize: Get.width * 0.03,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: Color(0XFF3967d7).withOpacity(0.7)),
-                                                                          )),
-                                                                        )),
-                                                                    Expanded(
-                                                                        flex: 2,
-                                                                        child:
-                                                                            Container(
-                                                                          padding:
-                                                                              EdgeInsets.symmetric(horizontal: 10),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                Text(
-                                                                              e.destPrice.toString(),
-                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            ),
-                                                                          ),
-                                                                        )),
-                                                                    Expanded(
-                                                                        flex: 1,
-                                                                        child:
-                                                                            Container(
-                                                                          // padding:
-                                                                          //     EdgeInsets.symmetric(horizontal: 20),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
-                                                                          child: IconButton(
-                                                                              onPressed: () {
-                                                                                totalPrice -= e.destPrice!;
-                                                                                requestLineList.remove(e);
-                                                                                // requests!.requestLines = requestLineList;
-                                                                                controller.update();
-                                                                              },
-                                                                              icon: const Icon(Icons.delete)),
-                                                                        )),
-                                                                  ],
-                                                                ),
-                                                              )),
                                                       isAdd
                                                           ? Row(
                                                               children: [
@@ -2145,7 +2312,74 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                             .cancel_sharp))
                                                               ],
                                                             )
-                                                          : Container()
+                                                          : Container(),
+                                                      ...requestLineList
+                                                          .map((e) => SizedBox(
+                                                                width:
+                                                                    Get.width,
+                                                                height: MediaQuery.sizeOf(
+                                                                            context)
+                                                                        .height *
+                                                                    0.05,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                        flex: 5,
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.symmetric(horizontal: 10),
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                                          child: Center(
+                                                                              child: Text(
+                                                                            e.destName!,
+                                                                            style: TextStyle(
+                                                                                fontSize: Get.width * 0.03,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                          )),
+                                                                        )),
+                                                                    Expanded(
+                                                                        flex: 2,
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.symmetric(horizontal: 10),
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              e.destPrice.toString(),
+                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            ),
+                                                                          ),
+                                                                        )),
+                                                                    Expanded(
+                                                                        flex: 1,
+                                                                        child:
+                                                                            Container(
+                                                                          // padding:
+                                                                          //     EdgeInsets.symmetric(horizontal: 20),
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                                          child: IconButton(
+                                                                              onPressed: () {
+                                                                                totalPrice -= e.destPrice!;
+                                                                                requestLineList.remove(e);
+                                                                                // requests!.requestLines = requestLineList;
+                                                                                controller.update();
+                                                                              },
+                                                                              icon: const Icon(Icons.delete)),
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                              )),
                                                     ],
                                                   ),
                                                 ),

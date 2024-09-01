@@ -35,6 +35,7 @@ class RequestController extends GetxController {
   TextEditingController searchReportsController = TextEditingController();
   String? filtterRequstBy, filtterReportBy;
   String? carid, sourcePathId, sourcePathLineId;
+  final loading = false.obs;
 
   @override
   Future<void> onInit() async {

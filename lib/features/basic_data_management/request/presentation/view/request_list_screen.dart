@@ -748,8 +748,8 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                 ],
               ),
             ),
-            carController.carList.isNotEmpty &&
-                    sourcePathController.sourcePathList.isNotEmpty
+            SharedPr.userObj!.sourcePath!.car!.name!.isNotEmpty &&
+                    SharedPr.userObj!.sourcePath!.sourcePathName!.isNotEmpty
                 ? requestController.searchRequstsController.text == ''
                     ? Wrap(
                         direction: Axis.horizontal,

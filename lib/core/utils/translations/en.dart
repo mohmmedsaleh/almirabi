@@ -252,5 +252,7 @@ var en = {
   'date_match_error':
       '''The month you entered doesn't match with start date or end date''',
   'send_all': 'Send All',
-  'add_requst': 'Add Requst'
+  'add_requst': 'Add Requst',
+  'refresh': 'Refresh',
+  'period': 'Period',
 };
