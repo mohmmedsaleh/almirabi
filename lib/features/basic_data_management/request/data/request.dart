@@ -66,13 +66,14 @@ class Requests {
     state = fromState(json['state'].toString());
     requestLines = [];
     for (var element in linsList) {
-      requestLines!.add(SourcePathLine(
-          destId:
-              fromTemblet ? element['destination_path_id'] : element['dest_id'],
-          destName: fromTemblet
-              ? element['destination_path_name']
-              : element['dest_name'],
-          destPrice: fromTemblet ? element['price'] : element['dest_price']));
+      requestLines!.add(SourcePathLine.fromJson(element
+          // destId:
+          //     fromTemblet ? element['destination_path_id'] : element['dest_id'],
+          // destName: fromTemblet
+          //     ? element['destination_path_name']
+          //     : element['dest_name'],
+          // destPrice: fromTemblet ? element['price'] : element['dest_price']
+          ));
     }
 
     driverId =
@@ -91,6 +92,7 @@ class Requests {
     // print(requestLines);
     // data['id'] = id;
     data['product_car_id'] = car!.id;
+    data['product_car_name'] = car!.name;
     data['from_date'] = fromDate;
     data['to_date'] = toDate;
     data['month_name'] = monthName;

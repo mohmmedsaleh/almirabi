@@ -373,7 +373,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
               Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -390,42 +390,42 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: Get.height * 0.05),
-                          Text(
-                            'visa_number'.tr,
-                            style: TextStyle(
-                                fontSize: Get.width * 0.03,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black),
-                          ),
-                          SizedBox(height: Get.height * 0.01),
-                          ContainerTextField(
-                            controller: visaNumberController,
-                            backgroundColor: AppColor.white,
-                            prefixIcon: CustomIcon(
-                                padding: 10,
-                                color: Color(0XFF3967d7),
-                                size: Get.width * 0.05,
-                                assetPath: 'assets/images/passport.png'),
-                            hintText: 'visa_number'.tr,
-                            labelText: 'visa_number'.tr,
-                            width: Get.width,
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            hintcolor: AppColor.black.withOpacity(0.5),
-                            iconcolor: AppColor.black,
-                            color: AppColor.black,
-                            fontSize: Get.width * 0.03,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message'
-                                    .trParams({'field_name': 'visa_number'.tr});
-                                countErrors++;
-                                return "";
-                              }
+                          // SizedBox(height: Get.height * 0.05),
+                          // Text(
+                          //   'visa_number'.tr,
+                          //   style: TextStyle(
+                          //       fontSize: Get.width * 0.03,
+                          //       fontWeight: FontWeight.bold,
+                          //       color: AppColor.black),
+                          // ),
+                          // SizedBox(height: Get.height * 0.01),
+                          // ContainerTextField(
+                          //   controller: visaNumberController,
+                          //   backgroundColor: AppColor.white,
+                          //   prefixIcon: CustomIcon(
+                          //       padding: 10,
+                          //       color: Color(0XFF3967d7),
+                          //       size: Get.width * 0.05,
+                          //       assetPath: 'assets/images/passport.png'),
+                          //   hintText: 'visa_number'.tr,
+                          //   labelText: 'visa_number'.tr,
+                          //   width: Get.width,
+                          //   height: MediaQuery.sizeOf(context).height * 0.05,
+                          //   hintcolor: AppColor.black.withOpacity(0.5),
+                          //   iconcolor: AppColor.black,
+                          //   color: AppColor.black,
+                          //   fontSize: Get.width * 0.03,
+                          //   validator: (value) {
+                          //     if (value == null || value.isEmpty) {
+                          //       errorMessage = 'required_message'
+                          //           .trParams({'field_name': 'visa_number'.tr});
+                          //       countErrors++;
+                          //       return "";
+                          //     }
 
-                              return null;
-                            },
-                          ),
+                          //     return null;
+                          //   },
+                          // ),
 
                           SizedBox(
                               height: MediaQuery.sizeOf(context).height * 0.03),

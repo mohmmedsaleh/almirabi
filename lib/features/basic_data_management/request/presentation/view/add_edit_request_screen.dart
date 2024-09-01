@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:almirabi/core/config/app_colors.dart';
 import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:almirabi/core/utils/response_result.dart';
@@ -1124,26 +1122,32 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
     await sourcePathController.SourcePathData();
 
     if (!widget.isAdd) {
-      carid = carController.carList
-          .firstWhere((e) => e.id == widget.objectToEdit!.car!.id)
-          .name;
-      sourcePathList = sourcePathController.sourcePathList
-          .where((e) => e.car!.id == widget.objectToEdit!.car!.id)
-          .toList();
-      sourcePathId = widget.objectToEdit!.sourcePathName;
+      // carid = carController.carList
+      //     .firstWhere((e) => e.id == widget.objectToEdit!.car!.id)
+      //     .name;
+      // sourcePathList = sourcePathController.sourcePathList
+      //     .where((e) => e.car!.id == widget.objectToEdit!.car!.id)
+      //     .toList();
+      // sourcePathId = widget.objectToEdit!.sourcePathName;
       requestLineList.addAll(widget.objectToEdit!.requestLines!);
-      SourcePath sourcePath = sourcePathController.sourcePathList.firstWhere(
-          (element) => element.sourcePathName == sourcePathId,
-          orElse: () => SourcePath());
-      sourcePathLineList = sourcePath.lins!;
-      carTextController = Car(id: widget.objectToEdit!.car!.id, name: carid);
+      // SourcePath sourcePath = sourcePathController.sourcePathList.firstWhere(
+      //     (element) => element.sourcePathName == sourcePathId,
+      //     orElse: () => SourcePath());
+      // sourcePathLineList = sourcePath.lins!;
+      carTextController = Car(
+          id: widget.objectToEdit!.car!.id,
+          name: widget.objectToEdit!.car!.name);
       sourcePathTextController = SourcePath(
           sourcePathId: widget.objectToEdit!.sourcePathId,
           sourcePathName: widget.objectToEdit!.sourcePathName);
       fromDateTextController = widget.objectToEdit!.fromDate;
       toDateTextController = widget.objectToEdit!.toDate;
-      monthTextController = widget.objectToEdit!.monthName;
+      monthTextController = int.parse(widget.objectToEdit!.monthName!) < 10
+          ? '0${int.parse(widget.objectToEdit!.monthName!)}'
+          : widget.objectToEdit!.monthName;
       totalPrice = widget.objectToEdit!.amoutTotal!;
+
+      sourcePathLineList = SharedPr.userObj!.sourcePath!.lins!;
     } else {
       sourcePathLineList = SharedPr.userObj!.sourcePath!.lins!;
       carTextController = Car(
@@ -1444,6 +1448,29 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                   true));
                                                   await loadingDataController
                                                       .loadData();
+                                                  requestLineList = [];
+                                                  sourcePathLineList = SharedPr
+                                                      .userObj!
+                                                      .sourcePath!
+                                                      .lins!;
+                                                  carTextController = Car(
+                                                      id: SharedPr.userObj!
+                                                          .sourcePath!.car!.id!,
+                                                      name: SharedPr
+                                                          .userObj!
+                                                          .sourcePath!
+                                                          .car!
+                                                          .name!);
+                                                  sourcePathTextController =
+                                                      SourcePath(
+                                                          sourcePathId: SharedPr
+                                                              .userObj!
+                                                              .sourcePath!
+                                                              .sourcePathId,
+                                                          sourcePathName: SharedPr
+                                                              .userObj!
+                                                              .sourcePath!
+                                                              .sourcePathName);
                                                   controller.loading.value =
                                                       false;
                                                   // isAdd = true;
@@ -1963,7 +1990,13 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                 val,
                                                             orElse: () =>
                                                                 SourcePathLine());
-
+                                                    sourcePathLine.quantity = 1;
+                                                    sourcePathLine
+                                                            .destTotalPrice =
+                                                        sourcePathLine
+                                                                .quantity! *
+                                                            sourcePathLine
+                                                                .destPrice!;
                                                     requestLineList
                                                         .add(sourcePathLine);
                                                     totalPrice = sourcePathLine
@@ -2130,65 +2163,65 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                           ],
                                                         ),
                                                       ),
-                                                      Container(
-                                                        width: Get.width,
-                                                        height:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height *
-                                                                0.05,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color(
-                                                                  0XFF3967d7)
-                                                              .withOpacity(0.1),
-                                                          // borderRadius:
-                                                          //     BorderRadius
-                                                          //         .circular(
-                                                          //             10)
-                                                        ),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                                flex: 5,
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    "destination_path"
-                                                                        .tr,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            Get.width *
-                                                                                0.03,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Color(
-                                                                            0XFF3967d7)),
-                                                                  ),
-                                                                )),
-                                                            Expanded(
-                                                                flex: 2,
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    "price".tr,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            Get.width *
-                                                                                0.03,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Color(
-                                                                            0XFF3967d7)),
-                                                                  ),
-                                                                )),
-                                                            Expanded(
-                                                                flex: 1,
-                                                                child:
-                                                                    Container()),
-                                                          ],
-                                                        ),
-                                                      ),
+                                                      // Container(
+                                                      //   width: Get.width,
+                                                      //   height:
+                                                      //       MediaQuery.sizeOf(
+                                                      //                   context)
+                                                      //               .height *
+                                                      //           0.05,
+                                                      //   decoration:
+                                                      //       BoxDecoration(
+                                                      //     color: Color(
+                                                      //             0XFF3967d7)
+                                                      //         .withOpacity(0.1),
+                                                      //     // borderRadius:
+                                                      //     //     BorderRadius
+                                                      //     //         .circular(
+                                                      //     //             10)
+                                                      //   ),
+                                                      //   child: Row(
+                                                      //     children: [
+                                                      //       Expanded(
+                                                      //           flex: 5,
+                                                      //           child: Center(
+                                                      //             child: Text(
+                                                      //               "destination_path"
+                                                      //                   .tr,
+                                                      //               style: TextStyle(
+                                                      //                   fontSize:
+                                                      //                       Get.width *
+                                                      //                           0.03,
+                                                      //                   fontWeight:
+                                                      //                       FontWeight
+                                                      //                           .bold,
+                                                      //                   color: Color(
+                                                      //                       0XFF3967d7)),
+                                                      //             ),
+                                                      //           )),
+                                                      //       Expanded(
+                                                      //           flex: 2,
+                                                      //           child: Center(
+                                                      //             child: Text(
+                                                      //               "price".tr,
+                                                      //               style: TextStyle(
+                                                      //                   fontSize:
+                                                      //                       Get.width *
+                                                      //                           0.03,
+                                                      //                   fontWeight:
+                                                      //                       FontWeight
+                                                      //                           .bold,
+                                                      //                   color: Color(
+                                                      //                       0XFF3967d7)),
+                                                      //             ),
+                                                      //           )),
+                                                      //       Expanded(
+                                                      //           flex: 1,
+                                                      //           child:
+                                                      //               Container()),
+                                                      //     ],
+                                                      //   ),
+                                                      // ),
                                                       isAdd
                                                           ? Row(
                                                               children: [
@@ -2236,9 +2269,44 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                               val,
                                                                           orElse: () =>
                                                                               SourcePathLine());
-                                                                      requestLineList
-                                                                          .add(
-                                                                              sourcePathLine);
+
+                                                                      var is_added =
+                                                                          requestLineList
+                                                                              .any(
+                                                                        (e) =>
+                                                                            e.destName ==
+                                                                            sourcePathLine.destName,
+                                                                      );
+
+                                                                      if (is_added) {
+                                                                        var index = requestLineList.indexWhere((e) =>
+                                                                            e.destId ==
+                                                                            sourcePathLine.destId);
+
+                                                                        sourcePathLine
+                                                                            .quantity = requestLineList[index]
+                                                                                .quantity! +
+                                                                            1;
+                                                                        sourcePathLine
+                                                                            .destTotalPrice = sourcePathLine
+                                                                                .quantity! *
+                                                                            sourcePathLine.destPrice!;
+                                                                        requestLineList
+                                                                            .remove(requestLineList[index]);
+                                                                        requestLineList
+                                                                            .add(sourcePathLine);
+                                                                      } else {
+                                                                        sourcePathLine
+                                                                            .quantity = 1;
+                                                                        sourcePathLine
+                                                                            .destTotalPrice = sourcePathLine
+                                                                                .quantity! *
+                                                                            sourcePathLine.destPrice!;
+                                                                        requestLineList
+                                                                            .add(sourcePathLine);
+                                                                      }
+                                                                      print(
+                                                                          'sourcePathLine.destTotalPrice ${sourcePathLine.destTotalPrice}');
                                                                       totalPrice +=
                                                                           sourcePathLine
                                                                               .destPrice!;
@@ -2314,72 +2382,202 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                             )
                                                           : Container(),
                                                       ...requestLineList
-                                                          .map((e) => SizedBox(
-                                                                width:
-                                                                    Get.width,
-                                                                height: MediaQuery.sizeOf(
-                                                                            context)
-                                                                        .height *
-                                                                    0.05,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Expanded(
-                                                                        flex: 5,
-                                                                        child:
-                                                                            Container(
-                                                                          padding:
-                                                                              EdgeInsets.symmetric(horizontal: 10),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
-                                                                          child: Center(
-                                                                              child: Text(
-                                                                            e.destName!,
-                                                                            style: TextStyle(
-                                                                                fontSize: Get.width * 0.03,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: Color(0XFF3967d7).withOpacity(0.7)),
-                                                                          )),
-                                                                        )),
-                                                                    Expanded(
-                                                                        flex: 2,
-                                                                        child:
-                                                                            Container(
-                                                                          padding:
-                                                                              EdgeInsets.symmetric(horizontal: 10),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                          .map((e) => Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: InkWell(
+                                                                  onTap: () {
+                                                                    e.quantity =
+                                                                        e.quantity! +
+                                                                            1;
+                                                                    e.destTotalPrice =
+                                                                        e.quantity! *
+                                                                            e.destPrice!;
+                                                                    totalPrice +=
+                                                                        e.destPrice!;
+                                                                    controller
+                                                                        .update();
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(8),
+                                                                    // margin:
+                                                                    //     EdgeInsets
+                                                                    //         .all(
+                                                                    //             8),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                15),
+                                                                        color: Color(0XFF3967d7)
+                                                                            .withOpacity(0.05)),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          flex:
+                                                                              10,
                                                                           child:
-                                                                              Center(
-                                                                            child:
+                                                                              ListTile(
+                                                                            leading:
+                                                                                Icon(Icons.location_on),
+                                                                            title:
+                                                                                Text(
+                                                                              e.destName!,
+                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            ),
+                                                                            subtitle:
                                                                                 Text(
                                                                               e.destPrice.toString(),
                                                                               style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
                                                                             ),
+                                                                            trailing:
+                                                                                Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                              children: [
+                                                                                Text(
+                                                                                  e.quantity.toString(),
+                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                ),
+                                                                                Text(
+                                                                                  e.destTotalPrice.toString(),
+                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+
+                                                                            // Row(children: [ Text(
+                                                                            //   e.destPrice
+                                                                            //       .toString(),
+                                                                            //   style: TextStyle(
+                                                                            //       fontSize:
+                                                                            //           Get.width *
+                                                                            //               0.03,
+                                                                            //       fontWeight:
+                                                                            //           FontWeight
+                                                                            //               .bold,
+                                                                            //       color: Color(0XFF3967d7)
+                                                                            //           .withOpacity(0.7)),
+                                                                            // ), Text(
+                                                                            //   e.destPrice
+                                                                            //       .toString(),
+                                                                            //   style: TextStyle(
+                                                                            //       fontSize:
+                                                                            //           Get.width *
+                                                                            //               0.03,
+                                                                            //       fontWeight:
+                                                                            //           FontWeight
+                                                                            //               .bold,
+                                                                            //       color: Color(0XFF3967d7)
+                                                                            //           .withOpacity(0.7)),
+                                                                            // ),],),
                                                                           ),
-                                                                        )),
-                                                                    Expanded(
-                                                                        flex: 1,
-                                                                        child:
-                                                                            Container(
-                                                                          // padding:
-                                                                          //     EdgeInsets.symmetric(horizontal: 20),
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
-                                                                              color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                                        ),
+                                                                        Expanded(
+                                                                          flex:
+                                                                              1,
                                                                           child: IconButton(
                                                                               onPressed: () {
-                                                                                totalPrice -= e.destPrice!;
+                                                                                totalPrice -= e.destTotalPrice!;
                                                                                 requestLineList.remove(e);
                                                                                 // requests!.requestLines = requestLineList;
                                                                                 controller.update();
                                                                               },
-                                                                              icon: const Icon(Icons.delete)),
-                                                                        )),
-                                                                  ],
+                                                                              icon: Icon(Icons.delete)),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               )),
+                                                      // ...requestLineList
+                                                      //     .map((e) => SizedBox(
+                                                      //           width:
+                                                      //               Get.width,
+                                                      //           height: MediaQuery.sizeOf(
+                                                      //                       context)
+                                                      //                   .height *
+                                                      //               0.05,
+                                                      //           child: Row(
+                                                      //             children: [
+                                                      //               Expanded(
+                                                      //                   flex: 5,
+                                                      //                   child:
+                                                      //                       Container(
+                                                      //                     padding:
+                                                      //                         EdgeInsets.symmetric(horizontal: 10),
+                                                      //                     decoration: BoxDecoration(
+                                                      //                         border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                      //                         color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                      //                     child: Center(
+                                                      //                         child: Text(
+                                                      //                       e.destName!,
+                                                      //                       style: TextStyle(
+                                                      //                           fontSize: Get.width * 0.03,
+                                                      //                           fontWeight: FontWeight.bold,
+                                                      //                           color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                      //                     )),
+                                                      //                   )),
+                                                      //               Expanded(
+                                                      //                   flex: 1,
+                                                      //                   child:
+                                                      //                       Container(
+                                                      //                     padding:
+                                                      //                         EdgeInsets.symmetric(horizontal: 10),
+                                                      //                     decoration: BoxDecoration(
+                                                      //                         border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                      //                         color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                      //                     child:
+                                                      //                         Center(
+                                                      //                       child:
+                                                      //                           Text(
+                                                      //                         e.quantity.toString(),
+                                                      //                         style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                      //                       ),
+                                                      //                     ),
+                                                      //                   )),
+                                                      //               Expanded(
+                                                      //                   flex: 2,
+                                                      //                   child:
+                                                      //                       Container(
+                                                      //                     padding:
+                                                      //                         EdgeInsets.symmetric(horizontal: 10),
+                                                      //                     decoration: BoxDecoration(
+                                                      //                         border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                      //                         color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                      //                     child:
+                                                      //                         Center(
+                                                      //                       child:
+                                                      //                           Text(
+                                                      //                         e.destPrice.toString(),
+                                                      //                         style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                      //                       ),
+                                                      //                     ),
+                                                      //                   )),
+                                                      //               Expanded(
+                                                      //                   flex: 1,
+                                                      //                   child:
+                                                      //                       Container(
+                                                      //                     // padding:
+                                                      //                     //     EdgeInsets.symmetric(horizontal: 20),
+                                                      //                     decoration: BoxDecoration(
+                                                      //                         border: Border.symmetric(vertical: BorderSide(color: Color(0XFF3967d7).withOpacity(0.1))),
+                                                      //                         color: Color(0XFF3967d7).withOpacity(0.05)),
+                                                      //                     child: IconButton(
+                                                      //                         onPressed: () {
+                                                      //                           totalPrice -= e.destPrice!;
+                                                      //                           requestLineList.remove(e);
+                                                      //                           // requests!.requestLines = requestLineList;
+                                                      //                           controller.update();
+                                                      //                         },
+                                                      //                         icon: const Icon(Icons.delete)),
+                                                      //                   )),
+                                                      //             ],
+                                                      //           ),
+                                                      //         )),
                                                     ],
                                                   ),
                                                 ),
@@ -2467,7 +2665,10 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                           sourcePathTextController!
                                                               .sourcePathName);
                                                   ResponseResult result;
-                                                  // print(requests!.toJson());
+
+                                                  print(
+                                                      'requests ${requests!.toJson()}');
+
                                                   if (widget.isAdd) {
                                                     result = await controller
                                                         .createRequest(
@@ -2505,6 +2706,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                             result.message);
                                                   }
                                                 } else {
+                                                  print(fromDateTextController);
+                                                  print(toDateTextController);
+                                                  print(monthTextController);
                                                   appSnackBar(
                                                       message:
                                                           'date_match_error'

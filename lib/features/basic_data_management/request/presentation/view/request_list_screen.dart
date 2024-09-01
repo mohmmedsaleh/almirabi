@@ -677,23 +677,24 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
               ),
             ),
             actions: [
-              IconButton(
-                onPressed: () async {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: AppColor.white,
-                    builder: (BuildContext context) {
-                      return FilterState(
-                        isLoacl: true,
-                        requestController: requestController,
-                      );
-                    },
-                  );
-                },
-                icon: FaIcon(
-                  FontAwesomeIcons.sliders,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () async {
+              //     showModalBottomSheet(
+              //       context: context,
+              //       backgroundColor: AppColor.white,
+              //       builder: (BuildContext context) {
+              //         return FilterState(
+              //           isLoacl: true,
+              //           requestController: requestController,
+              //         );
+              //       },
+              //     );
+              //   },
+              //   icon: FaIcon(
+              //     FontAwesomeIcons.sliders,
+              //   ),
+              // ),
+
               IconButton(
                 onPressed: () async {
                   await SharedPr.setLanguage(
@@ -705,95 +706,62 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
         drawer: CustomDrawer(
           currentRoute: '/RequestListScreen',
         ),
-        body: SingleChildScrollView(
-            child: Column(
+        body: Column(
           children: [
-            Container(
-              height: Get.height * 0.1,
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 100,
-                        color: AppColor.backgroundTable,
-                        offset: Offset(2, 2))
-                  ],
-                  color: AppColor.white),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ...stateList.entries.map((e) => Container(
-                        margin: EdgeInsets.all(5),
+            FiltterWidget(
+              requestController: requestController,
+              isLoacl: true,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: SharedPr.userObj!.sourcePath!.car!.name!.isNotEmpty &&
+                        SharedPr.userObj!.sourcePath!.sourcePathName!.isNotEmpty
+                    ? requestController.searchRequstsController.text == ''
+                        ? Wrap(
+                            direction: Axis.horizontal,
+                            children: [
+                              ...requestController.requestList
+                                  .map((item) => card_data2(
+                                        sourcePathList:
+                                            sourcePathController.sourcePathList,
+                                        carList: carController.carList,
+                                        item: item,
+                                        requestController: requestController,
+                                      ))
+                            ],
+                          )
+                        : Wrap(
+                            direction: Axis.horizontal,
+                            children: [
+                              ...requestController.searchResults
+                                  .map((item) => card_data2(
+                                        sourcePathList:
+                                            sourcePathController.sourcePathList,
+                                        carList: carController.carList,
+                                        item: item,
+                                        requestController: requestController,
+                                      ))
+                            ],
+                          )
+                    : Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              backgroundColor: AppColor.backgroundTable,
-                              child: CustomIcon(
-                                  assetPath: e.value[0],
-                                  padding: 7,
-                                  size: Get.width * 0.07),
+                            CircularProgressIndicator(
+                              color: Color(0XFF3967d7),
+                              backgroundColor: AppColor.black,
                             ),
-                            Text(
-                              e.key.toString(),
-                              style: TextStyle(
-                                  fontSize: Get.width * 0.03,
-                                  color: Color(0XFF3967d7)),
-                            )
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('data_isloading'.tr)
                           ],
                         ),
-                      )),
-                ],
+                      ),
               ),
-            ),
-            SharedPr.userObj!.sourcePath!.car!.name!.isNotEmpty &&
-                    SharedPr.userObj!.sourcePath!.sourcePathName!.isNotEmpty
-                ? requestController.searchRequstsController.text == ''
-                    ? Wrap(
-                        direction: Axis.horizontal,
-                        children: [
-                          ...requestController.requestList
-                              .map((item) => card_data2(
-                                    sourcePathList:
-                                        sourcePathController.sourcePathList,
-                                    carList: carController.carList,
-                                    item: item,
-                                    requestController: requestController,
-                                  ))
-                        ],
-                      )
-                    : Wrap(
-                        direction: Axis.horizontal,
-                        children: [
-                          ...requestController.searchResults
-                              .map((item) => card_data2(
-                                    sourcePathList:
-                                        sourcePathController.sourcePathList,
-                                    carList: carController.carList,
-                                    item: item,
-                                    requestController: requestController,
-                                  ))
-                        ],
-                      )
-                : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                          color: Color(0XFF3967d7),
-                          backgroundColor: AppColor.black,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text('data_isloading'.tr)
-                      ],
-                    ),
-                  )
+            )
           ],
-        )),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -873,6 +841,107 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
   }
 }
 
+class FiltterWidget extends StatelessWidget {
+  FiltterWidget(
+      {super.key, required this.requestController, required this.isLoacl});
+
+  final RequestController requestController;
+  bool isLoacl;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Get.height * 0.1,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 100,
+                color: AppColor.backgroundTable,
+                offset: Offset(2, 2))
+          ],
+          color: AppColor.white),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ...stateList.entries.map((e) => Container(
+                margin: EdgeInsets.all(5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (isLoacl) {
+                          if (requestController.searchRequstsController.text ==
+                              e.key.name) {
+                            requestController.searchRequstsController.text = '';
+                            requestController.filtterRequstBy = null;
+                            requestController.searchResults.clear();
+                            requestController.update();
+                          } else {
+                            requestController.searchByState(e.key.name, true);
+                            requestController.searchRequstsController.text =
+                                e.key.name;
+                            requestController.update();
+                          }
+                        } else {
+                          if (requestController.searchReportsController.text ==
+                              e.key.name) {
+                            requestController.searchReportsController.text = '';
+                            requestController.filtterReportBy = null;
+                            requestController.searchResults.clear();
+                            requestController.update();
+                          } else {
+                            requestController.searchByState(
+                                e.key.name, isLoacl);
+                            requestController.searchReportsController.text =
+                                e.key.name;
+                            requestController.update();
+                          }
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: isLoacl
+                            ? requestController.searchRequstsController.text ==
+                                    e.key.name
+                                ? Color(0XFF3967d7)
+                                : AppColor.backgroundTable
+                            : requestController.searchReportsController.text ==
+                                    e.key.name
+                                ? Color(0XFF3967d7)
+                                : AppColor.backgroundTable,
+                        child: CustomIcon(
+                            assetPath: e.value[0],
+                            padding: 7,
+                            color: isLoacl
+                                ? requestController
+                                            .searchRequstsController.text ==
+                                        e.key.name
+                                    ? AppColor.white
+                                    : null
+                                : requestController
+                                            .searchReportsController.text ==
+                                        e.key.name
+                                    ? AppColor.white
+                                    : null,
+                            size: Get.width * 0.07),
+                      ),
+                    ),
+                    Text(
+                      e.key.toString(),
+                      style: TextStyle(
+                          fontSize: Get.width * 0.03, color: Color(0XFF3967d7)),
+                    )
+                  ],
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
 class card_data2 extends StatelessWidget {
   const card_data2(
       {super.key,
@@ -888,19 +957,13 @@ class card_data2 extends StatelessWidget {
   final RequestController? requestController;
   @override
   Widget build(BuildContext context) {
-    var car = item.car!.name != ''
-        ? item.car!
-        : carList == []
-            ? Car()
-            : carList.firstWhere((e) => e.id == item.car!.id);
+    // print(item.car!.name!);
+    var car = item.car!.name != '' ? item.car! : Car(name: '');
     var sourcePath = item.sourcePathId != null && item.sourcePathName != null
         ? SourcePath(
             sourcePathId: item.sourcePathId,
             sourcePathName: item.sourcePathName)
-        : sourcePathList == []
-            ? SourcePath()
-            : sourcePathList
-                .firstWhere((e) => e.sourcePathId == item.sourcePathId!);
+        : SourcePath(sourcePathName: '');
 
     return InkWell(
       onTap: () {
@@ -944,55 +1007,69 @@ class card_data2 extends StatelessWidget {
                     ),
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${'car'.tr}  :  ${car.name ?? ''}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.03,
-                                        color: AppColor.black),
-                                  ),
-                                  Text(
-                                    "${'month'.tr}  :  ${monthName(int.parse(item.monthName!))}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.03,
-                                        color: AppColor.grey),
-                                  ),
-                                ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: CustomIcon(
+                                    padding: 0,
+                                    assetPath:
+                                        'assets/images/delivery-truck.png',
+                                    color: AppColor.black.withOpacity(0.5),
+                                    size: Get.width * 0.06),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${'from'.tr}  :  ${item.fromDate!.substring(0, 10)}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.03,
-                                        color: AppColor.grey,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "${'to'.tr}  :  ${item.toDate!.substring(0, 10)}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.03,
-                                        color: AppColor.grey,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                              Text(
+                                "${'car'.tr}  :  ${car.name ?? ''}",
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.03,
+                                    color: AppColor.black),
                               ),
                             ],
                           ),
-                          Text(
-                            "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
-                            style: TextStyle(
-                                fontSize: Get.width * 0.03,
-                                color: AppColor.grey),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 11.0),
+                                child: Icon(
+                                  Icons.date_range_outlined,
+                                  color: AppColor.black.withOpacity(0.5),
+                                  size: Get.width * 0.04,
+                                ),
+                              ),
+                              Text(
+                                "${'period'.tr}  :  ${monthName(int.parse(item.monthName!))}",
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.03,
+                                    color: AppColor.grey),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 11.0),
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: AppColor.black.withOpacity(0.5),
+                                  size: Get.width * 0.04,
+                                ),
+                              ),
+                              // SizedBox(
+                              //   width: Get.width * 0.03,
+                              // ),
+                              Text(
+                                "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.03,
+                                    color: AppColor.grey),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -1000,78 +1077,108 @@ class card_data2 extends StatelessWidget {
                   ],
                 ),
               ),
-              item.state == RequestState.draft
-                  ? Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              ResponseResult responseResult =
-                                  await requestController!
-                                      .createRequestRemotely(requests: [item]);
-                              if (responseResult.status) {
-                                await requestController!.requestData();
-                                appSnackBar(
-                                    messageType: MessageTypes.success,
-                                    message: 'Successful'.tr);
-                              } else {
-                                appSnackBar(message: responseResult.message);
-                              }
-                            },
-                            icon: Container(
-                              width: Get.width * 0.2,
-                              height: Get.height,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 100,
-                                        color: AppColor.backgroundTable,
-                                        offset: Offset(2, 2))
-                                  ],
-                                  color: AppColor.backgroundTable),
-                              child: Center(
-                                child: Text("send".tr,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: Get.width * 0.03,
-                                        color: AppColor.black)),
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Get.to(() => AddEditRequestScreen2(
-                                    objectToEdit: item,
-                                    isAdd: false,
-                                  ));
-                            },
-                            icon: Container(
-                              width: Get.width * 0.2,
-                              height: Get.height,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 100,
-                                        color: AppColor.backgroundTable,
-                                        offset: Offset(2, 2))
-                                  ],
-                                  color: Color(0XFF3967d7).withOpacity(0.1)),
-                              child: Center(
-                                child: Text("edit".tr,
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.03,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0XFF3967d7))),
-                              ),
-                            ),
-                          ),
-                        ],
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      // width: Get.width * 0.2,
+                      height: Get.height * 0.03,
+                      margin: EdgeInsets.all(5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: AppColor.backgroundTable,
                       ),
-                    )
-                  : Container(),
+                      child: Center(
+                        child: Text(
+                          " ${item.state!.toString()}",
+                          style: TextStyle(
+                            fontSize: Get.width * 0.03,
+                            color: AppColor.black,
+                            // fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    ),
+                    item.state == RequestState.draft
+                        ? Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Get.to(() => AddEditRequestScreen2(
+                                        objectToEdit: item,
+                                        isAdd: false,
+                                      ));
+                                },
+                                icon: Container(
+                                  width: Get.width * 0.2,
+                                  height: Get.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 100,
+                                          color: AppColor.backgroundTable,
+                                          offset: Offset(2, 2))
+                                    ],
+                                    color: AppColor.backgroundTable,
+                                  ),
+                                  child: Center(
+                                    child: Text("edit".tr,
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColor.black)),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  ResponseResult responseResult =
+                                      await requestController!
+                                          .createRequestRemotely(
+                                              requests: [item]);
+                                  if (responseResult.status) {
+                                    await requestController!.requestData();
+                                    appSnackBar(
+                                        messageType: MessageTypes.success,
+                                        message: 'Successful'.tr);
+                                  } else {
+                                    appSnackBar(
+                                        message: responseResult.message);
+                                  }
+                                },
+                                icon: Container(
+                                  width: Get.width * 0.2,
+                                  height: Get.height,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 100,
+                                            color: AppColor.backgroundTable,
+                                            offset: Offset(2, 2))
+                                      ],
+                                      color:
+                                          Color(0XFF3967d7).withOpacity(0.1)),
+                                  child: Center(
+                                    child: Text("send".tr,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Get.width * 0.03,
+                                            color: Color(0XFF3967d7))),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
+                  ],
+                ),
+              )
             ],
           )),
 

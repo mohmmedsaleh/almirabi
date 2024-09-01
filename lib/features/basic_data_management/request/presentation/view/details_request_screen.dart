@@ -409,17 +409,17 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
               height: Get.height * 0.03,
             ),
 
-            Text(
-                '${'month'.tr} : ${monthName(int.parse(widget.item.monthName!))}'),
-            SizedBox(
-              height: Get.height * 0.01,
-            ),
+            // Text(
+            //     '${'month'.tr} : ${monthName(int.parse(widget.item.monthName!))}'),
+            // SizedBox(
+            //   height: Get.height * 0.01,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  height: Get.height * 0.1,
-                  width: Get.width * 0.3,
+                  height: Get.height * 0.07,
+                  width: Get.width * 0.4,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -429,40 +429,52 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: AppColor.white),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: Color(0xffc3c3c6).withOpacity(0.5),
-                            shape: BoxShape.circle),
-                        child: Icon(Icons.date_range_outlined,
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColor.white,
+                        ),
+                        child: CustomIcon(
+                            padding: 0,
+                            assetPath: 'assets/images/delivery-truck.png',
                             color: AppColor.black.withOpacity(0.5),
-                            size: Get.width * 0.05),
+                            size: Get.width * 0.08),
                       ),
-                      Center(
-                          child: Text(
-                        'from'.tr,
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )),
-                      Text(
-                        "${widget.item.fromDate!.substring(0, 10)}",
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // crossAxisAlignment: c,
+                            children: [
+                              Text(
+                                'car_name'.tr,
+                                style: TextStyle(
+                                    color: AppColor.black,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: Get.width * 0.03),
+                              ),
+                              Text(
+                                "${widget.item.car!.name != '' ? widget.item.car!.name : carController.carList.firstWhere((e) => e.id == widget.item.car!.id).name}",
+                                style: TextStyle(
+                                    color: AppColor.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Get.width * 0.03),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  height: Get.height * 0.1,
-                  width: Get.width * 0.3,
+                  height: Get.height * 0.07,
+                  width: Get.width * 0.4,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -472,37 +484,134 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: AppColor.white),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: Color(0xffc3c3c6).withOpacity(0.5),
-                            shape: BoxShape.circle),
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColor.white,
+                        ),
                         child: Icon(Icons.date_range_outlined,
                             color: AppColor.black.withOpacity(0.5),
-                            size: Get.width * 0.05),
+                            size: Get.height * 0.04),
                       ),
-                      Center(
-                          child: Text(
-                        'to'.tr,
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )),
-                      Text(
-                        "${widget.item.toDate!.substring(0, 10)}",
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // crossAxisAlignment: c,
+                            children: [
+                              Text(
+                                'period'.tr,
+                                style: TextStyle(
+                                    color: AppColor.black,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: Get.width * 0.03),
+                              ),
+                              Text(
+                                "${monthName(int.parse(widget.item.monthName!))}",
+                                style: TextStyle(
+                                    color: AppColor.black,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: Get.width * 0.03),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
+
+                // Container(
+                //   height: Get.height * 0.1,
+                //   width: Get.width * 0.3,
+                //   padding: EdgeInsets.all(8),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(10),
+                //       boxShadow: [
+                //         BoxShadow(
+                //             blurRadius: 100,
+                //             color: AppColor.backgroundTable,
+                //             offset: Offset(2, 2))
+                //       ],
+                //       color: AppColor.white),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.all(6.0),
+                //         decoration: BoxDecoration(
+                //             color: Color(0xffc3c3c6).withOpacity(0.5),
+                //             shape: BoxShape.circle),
+                //         child: Icon(Icons.date_range_outlined,
+                //             color: AppColor.black.withOpacity(0.5),
+                //             size: Get.width * 0.05),
+                //       ),
+                //       Center(
+                //           child: Text(
+                //         'from'.tr,
+                //         style: TextStyle(
+                //             color: AppColor.black,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: Get.width * 0.03),
+                //       )),
+                //       Text(
+                //         "${widget.item.fromDate!.substring(0, 10)}",
+                //         style: TextStyle(
+                //             color: AppColor.black,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: Get.width * 0.03),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // Container(
+                //   height: Get.height * 0.1,
+                //   width: Get.width * 0.3,
+                //   padding: EdgeInsets.all(8),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(10),
+                //       boxShadow: [
+                //         BoxShadow(
+                //             blurRadius: 100,
+                //             color: AppColor.backgroundTable,
+                //             offset: Offset(2, 2))
+                //       ],
+                //       color: AppColor.white),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.all(6.0),
+                //         decoration: BoxDecoration(
+                //             color: Color(0xffc3c3c6).withOpacity(0.5),
+                //             shape: BoxShape.circle),
+                //         child: Icon(Icons.date_range_outlined,
+                //             color: AppColor.black.withOpacity(0.5),
+                //             size: Get.width * 0.05),
+                //       ),
+                //       Center(
+                //           child: Text(
+                //         'to'.tr,
+                //         style: TextStyle(
+                //             color: AppColor.black,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: Get.width * 0.03),
+                //       )),
+                //       Text(
+                //         "${widget.item.toDate!.substring(0, 10)}",
+                //         style: TextStyle(
+                //             color: AppColor.black,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: Get.width * 0.03),
+                //       )
+                //     ],
+                //   ),
+                // ),
                 // Container(
                 //   height: Get.width * 0.12,
                 //   width: Get.width * 0.12,
@@ -521,14 +630,14 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
               ],
             ),
             SizedBox(
-              height: Get.height * 0.03,
+              height: Get.height * 0.02,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  height: Get.height * 0.1,
-                  width: Get.width * 0.3,
+                  height: Get.height * 0.07,
+                  width: Get.width * 0.87,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -538,80 +647,42 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                             color: AppColor.backgroundTable,
                             offset: Offset(2, 2))
                       ],
-                      color: AppColor.white),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
-                            color: Color(0xffc3c3c6).withOpacity(0.5),
-                            shape: BoxShape.circle),
-                        child: CustomIcon(
-                            padding: 0,
-                            assetPath: 'assets/images/delivery-truck.png',
-                            color: AppColor.black.withOpacity(0.5),
-                            size: Get.width * 0.05),
-                      ),
-                      Center(
-                          child: Text(
-                        'car_name'.tr,
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )),
-                      Text(
-                        "${widget.item.car!.name != '' ? widget.item.car!.name : carController.carList.firstWhere((e) => e.id == widget.item.car!.id).name}",
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )
-                    ],
-                  ),
-                ),
-
-                Container(
-                  height: Get.height * 0.1,
-                  width: Get.width * 0.3,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 100,
-                            color: AppColor.backgroundTable,
-                            offset: Offset(2, 2))
-                      ],
-                      color: AppColor.white),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                            color: Color(0xffc3c3c6).withOpacity(0.5),
-                            shape: BoxShape.circle),
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColor.white,
+                        ),
                         child: Icon(Icons.location_on,
                             color: AppColor.black.withOpacity(0.5),
-                            size: Get.width * 0.05),
+                            size: Get.width * 0.08),
                       ),
-                      Center(
-                          child: Text(
-                        'source_path'.tr,
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )),
-                      Text(
-                        "${widget.item.sourcePathName != null ? widget.item.sourcePathName!.length > 13 ? '${widget.item.sourcePathName!.substring(0, 13)}...' : widget.item.sourcePathName : ''}",
-                        style: TextStyle(
-                            color: AppColor.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Get.width * 0.03),
-                      )
+                      Expanded(
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'source_path'.tr,
+                              style: TextStyle(
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Get.width * 0.03),
+                            ),
+                            Text(
+                              "${widget.item.sourcePathName != null ? widget.item.sourcePathName!.length > 30 ? '${widget.item.sourcePathName!.substring(0, 30)}...' : widget.item.sourcePathName : ''}",
+                              style: TextStyle(
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Get.width * 0.03),
+                            )
+                          ],
+                        )),
+                      ),
                     ],
                   ),
                 ),
@@ -808,97 +879,186 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                           //     ],
                           //   ),
                           // ),
-                          Container(
-                            width: Get.width,
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            decoration: BoxDecoration(
-                              color: Color(0XFF3967d7).withOpacity(0.1),
-                              // borderRadius:
-                              //     BorderRadius
-                              //         .circular(
-                              //             10)
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    flex: 5,
-                                    child: Center(
-                                      child: Text(
-                                        "destination_path".tr,
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0XFF3967d7)),
-                                      ),
-                                    )),
-                                Expanded(
-                                    flex: 2,
-                                    child: Center(
-                                      child: Text(
-                                        "price".tr,
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0XFF3967d7)),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                          ...widget.item.requestLines!.map((e) => SizedBox(
-                                width: Get.width,
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 5,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                              border: Border.symmetric(
-                                                  vertical: BorderSide(
-                                                      color: Color(0XFF3967d7)
-                                                          .withOpacity(0.1))),
-                                              color: Color(0XFF3967d7)
-                                                  .withOpacity(0.05)),
-                                          child: Center(
-                                              child: Text(
+                          // Container(
+                          //   width: Get.width,
+                          //   height: MediaQuery.sizeOf(context).height * 0.05,
+                          //   decoration: BoxDecoration(
+                          //     color: Color(0XFF3967d7).withOpacity(0.1),
+                          //     // borderRadius:
+                          //     //     BorderRadius
+                          //     //         .circular(
+                          //     //             10)
+                          //   ),
+                          //   child: Row(
+                          //     children: [
+                          //       Expanded(
+                          //           flex: 5,
+                          //           child: Center(
+                          //             child: Text(
+                          //               "destination_path".tr,
+                          //               style: TextStyle(
+                          //                   fontSize: Get.width * 0.03,
+                          //                   fontWeight: FontWeight.bold,
+                          //                   color: Color(0XFF3967d7)),
+                          //             ),
+                          //           )),
+                          //       Expanded(
+                          //           flex: 2,
+                          //           child: Center(
+                          //             child: Text(
+                          //               "price".tr,
+                          //               style: TextStyle(
+                          //                   fontSize: Get.width * 0.03,
+                          //                   fontWeight: FontWeight.bold,
+                          //                   color: Color(0XFF3967d7)),
+                          //             ),
+                          //           )),
+                          //     ],
+                          //   ),
+                          // ),
+                          ...widget.item.requestLines!.map((e) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  // margin:
+                                  //     EdgeInsets
+                                  //         .all(
+                                  //             8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color:
+                                          Color(0XFF3967d7).withOpacity(0.05)),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 10,
+                                        child: ListTile(
+                                          leading: Icon(Icons.location_on),
+                                          title: Text(
                                             e.destName!,
                                             style: TextStyle(
                                                 fontSize: Get.width * 0.03,
                                                 fontWeight: FontWeight.bold,
                                                 color: Color(0XFF3967d7)
                                                     .withOpacity(0.7)),
-                                          )),
-                                        )),
-                                    Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                              border: Border.symmetric(
-                                                  vertical: BorderSide(
-                                                      color: Color(0XFF3967d7)
-                                                          .withOpacity(0.1))),
-                                              color: Color(0XFF3967d7)
-                                                  .withOpacity(0.05)),
-                                          child: Center(
-                                            child: Text(
-                                              e.destPrice.toString(),
-                                              style: TextStyle(
-                                                  fontSize: Get.width * 0.03,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0XFF3967d7)
-                                                      .withOpacity(0.7)),
-                                            ),
                                           ),
-                                        )),
-                                  ],
+                                          subtitle: Text(
+                                            e.destPrice.toString(),
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0XFF3967d7)
+                                                    .withOpacity(0.7)),
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                e.quantity.toString(),
+                                                style: TextStyle(
+                                                    fontSize: Get.width * 0.03,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0XFF3967d7)
+                                                        .withOpacity(0.7)),
+                                              ),
+                                              Text(
+                                                e.destTotalPrice.toString(),
+                                                style: TextStyle(
+                                                    fontSize: Get.width * 0.03,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0XFF3967d7)
+                                                        .withOpacity(0.7)),
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Row(children: [ Text(
+                                          //   e.destPrice
+                                          //       .toString(),
+                                          //   style: TextStyle(
+                                          //       fontSize:
+                                          //           Get.width *
+                                          //               0.03,
+                                          //       fontWeight:
+                                          //           FontWeight
+                                          //               .bold,
+                                          //       color: Color(0XFF3967d7)
+                                          //           .withOpacity(0.7)),
+                                          // ), Text(
+                                          //   e.destPrice
+                                          //       .toString(),
+                                          //   style: TextStyle(
+                                          //       fontSize:
+                                          //           Get.width *
+                                          //               0.03,
+                                          //       fontWeight:
+                                          //           FontWeight
+                                          //               .bold,
+                                          //       color: Color(0XFF3967d7)
+                                          //           .withOpacity(0.7)),
+                                          // ),],),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               )),
+                          // ...widget.item.requestLines!.map((e) => SizedBox(
+                          //       width: Get.width,
+                          //       height:
+                          //           MediaQuery.sizeOf(context).height * 0.05,
+                          //       child: Row(
+                          //         children: [
+                          //           Expanded(
+                          //               flex: 5,
+                          //               child: Container(
+                          //                 padding: EdgeInsets.symmetric(
+                          //                     horizontal: 10),
+                          //                 decoration: BoxDecoration(
+                          //                     border: Border.symmetric(
+                          //                         vertical: BorderSide(
+                          //                             color: Color(0XFF3967d7)
+                          //                                 .withOpacity(0.1))),
+                          //                     color: Color(0XFF3967d7)
+                          //                         .withOpacity(0.05)),
+                          //                 child: Center(
+                          //                     child: Text(
+                          //                   e.destName!,
+                          //                   style: TextStyle(
+                          //                       fontSize: Get.width * 0.03,
+                          //                       fontWeight: FontWeight.bold,
+                          //                       color: Color(0XFF3967d7)
+                          //                           .withOpacity(0.7)),
+                          //                 )),
+                          //               )),
+                          //           Expanded(
+                          //               flex: 2,
+                          //               child: Container(
+                          //                 padding: EdgeInsets.symmetric(
+                          //                     horizontal: 10),
+                          //                 decoration: BoxDecoration(
+                          //                     border: Border.symmetric(
+                          //                         vertical: BorderSide(
+                          //                             color: Color(0XFF3967d7)
+                          //                                 .withOpacity(0.1))),
+                          //                     color: Color(0XFF3967d7)
+                          //                         .withOpacity(0.05)),
+                          //                 child: Center(
+                          //                   child: Text(
+                          //                     e.destPrice.toString(),
+                          //                     style: TextStyle(
+                          //                         fontSize: Get.width * 0.03,
+                          //                         fontWeight: FontWeight.bold,
+                          //                         color: Color(0XFF3967d7)
+                          //                             .withOpacity(0.7)),
+                          //                   ),
+                          //                 ),
+                          //               )),
+                          //         ],
+                          //       ),
+                          //     )),
+
                           // ...widget.item.requestLines!.map((e) => SizedBox(
                           //       width: Get.width,
                           //       height:
