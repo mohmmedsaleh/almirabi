@@ -1,5 +1,5 @@
-import '../data/subscription_info.dart';
+// import '../data/subscription_info.dart';
 
-abstract class RemoteDatabaseSettingRepository {
-  Future checkConnection({required SubscriptionInfo subscriptionInfo});
-}
+// abstract class RemoteDatabaseSettingRepository {
+//   Future checkConnection({required SubscriptionInfo subscriptionInfo});
+// }

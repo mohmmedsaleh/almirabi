@@ -317,48 +317,37 @@ class _LoginScreen2State extends State<LoginScreen2> {
               CustomBack(
                 height: MediaQuery.of(context).size.height * 0.2,
                 color: Color(0XFF3967d7),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: HeaderIcons(
-                          height: Get.width * 0.07,
-                          icon: Icons.language,
-                          darkBackground: true,
-                          onTap: () async {
-                            await SharedPr.setLanguage(
-                                lang: SharedPr.lang == 'en' ? 'ar' : 'en');
-                          }),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        height: Get.width * 0.3,
-                        padding: EdgeInsets.only(top: 30),
-                        child: CustomIcon(
-                          assetPath: 'assets/images/image.png',
-                          size: Get.width * 0.3,
-                          padding: 10,
-                          color: AppColor.white,
-                        ),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: HeaderIcons(
+                            height: Get.width * 0.07,
+                            icon: Icons.language,
+                            darkBackground: true,
+                            onTap: () async {
+                              await SharedPr.setLanguage(
+                                  lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                            }),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: HeaderIcons(
-                          icon: Icons.settings,
-                          height: Get.width * 0.07,
-                          darkBackground: true,
-                          onTap: () async {
-                            Get.to(() => RemoteDatabaseScreen2(
-                                  subscriptionInfo:
-                                      SharedPr.subscriptionDetailsObj,
-                                  changeConnectionInfo: true,
-                                ));
-                          }),
-                    )
-                  ],
+                      Expanded(flex: 3, child: Container()),
+                      Expanded(
+                        flex: 1,
+                        child: HeaderIcons(
+                            icon: Icons.settings,
+                            height: Get.width * 0.07,
+                            darkBackground: true,
+                            onTap: () async {
+                              Get.to(() => RemoteDatabaseScreen2(
+                                    changeConnectionInfo: true,
+                                  ));
+                            }),
+                      )
+                    ],
+                  ),
                 ),
               ),
               //  Center(
@@ -372,186 +361,202 @@ class _LoginScreen2State extends State<LoginScreen2> {
 
               Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: Get.height * 0.2),
-                    Text(
-                      'login'.tr,
-                      style: TextStyle(
-                          fontSize: Get.width * 0.05,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0XFF3967d7)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // SizedBox(height: Get.height * 0.05),
-                          // Text(
-                          //   'visa_number'.tr,
-                          //   style: TextStyle(
-                          //       fontSize: Get.width * 0.03,
-                          //       fontWeight: FontWeight.bold,
-                          //       color: AppColor.black),
-                          // ),
-                          // SizedBox(height: Get.height * 0.01),
-                          // ContainerTextField(
-                          //   controller: visaNumberController,
-                          //   backgroundColor: AppColor.white,
-                          //   prefixIcon: CustomIcon(
-                          //       padding: 10,
-                          //       color: Color(0XFF3967d7),
-                          //       size: Get.width * 0.05,
-                          //       assetPath: 'assets/images/passport.png'),
-                          //   hintText: 'visa_number'.tr,
-                          //   labelText: 'visa_number'.tr,
-                          //   width: Get.width,
-                          //   height: MediaQuery.sizeOf(context).height * 0.05,
-                          //   hintcolor: AppColor.black.withOpacity(0.5),
-                          //   iconcolor: AppColor.black,
-                          //   color: AppColor.black,
-                          //   fontSize: Get.width * 0.03,
-                          //   validator: (value) {
-                          //     if (value == null || value.isEmpty) {
-                          //       errorMessage = 'required_message'
-                          //           .trParams({'field_name': 'visa_number'.tr});
-                          //       countErrors++;
-                          //       return "";
-                          //     }
-
-                          //     return null;
-                          //   },
-                          // ),
-
-                          SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.03),
-                          Text(
-                            'pin_number'.tr,
-                            style: TextStyle(
-                                fontSize: Get.width * 0.03,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black),
-                          ),
-                          SizedBox(height: Get.height * 0.01),
-                          ContainerTextField(
-                            backgroundColor: AppColor.white,
-                            keyboardType: TextInputType.number,
-                            controller: pinNumberController,
-                            prefixIcon: CustomIcon(
-                                padding: 10,
-                                color: Color(0XFF3967d7),
-                                size: Get.width * 0.05,
-                                assetPath: 'assets/images/key.png'),
-                            hintText: 'pin_number'.tr,
-                            labelText: 'pin_number'.tr,
-                            obscureText: flag ? false : true,
-                            width: Get.width,
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            hintcolor: AppColor.black.withOpacity(0.5),
-                            iconcolor: AppColor.black,
-                            color: AppColor.black,
-                            fontSize: Get.width * 0.03,
-                            suffixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 10),
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      flag = !flag;
-                                    });
-                                  },
-                                  icon: flag
-                                      ? Icon(
-                                          Icons.visibility,
-                                          color: Color(0XFF3967d7),
-                                        )
-                                      : Icon(
-                                          Icons.visibility_off,
-                                          color: AppColor.black,
-                                        )),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message_f'
-                                    .trParams({'field_name': 'pin_number'.tr});
-                                return "";
-                              }
-                              // if (value.isNotEmpty) {
-                              //   var message = ValidatorHelper.passWordValidation(value: value);
-                              //   if (message == "") {
-                              //     return null;
-                              //   }
-                              //   errorMessage = message;
-                              //   return "";
-                              // }
-                              return null;
-                            },
-                          ),
-
-                          SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.1),
-                          Obx(() {
-                            if (authenticationController.loading.value) {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColor.white,
-                                  backgroundColor: AppColor.black,
-                                ),
-                              );
-                            } else {
-                              return ButtonElevated(
-                                  borderRadius: 20,
-                                  text: 'login'.tr,
-                                  width: Get.width,
-                                  backgroundColor: Color(0XFF3967d7),
-                                  onPressed: onPressed);
-                            }
-                          }),
-                          // Obx(() {
-                          //   if (remoteDatabaseSettingController
-                          //       .isLoading.value) {
-                          //     return Center(
-                          //       child: CircularProgressIndicator(
-                          //         color: AppColor.white,
-                          //         backgroundColor: AppColor.black,
-                          //       ),
-                          //     );
-                          //   } else {
-                          //     return Row(
-                          //       children: [
-                          //         Expanded(
-                          //           child: ButtonElevated(
-                          //               borderRadius: 20,
-                          //               text: 'connect'.tr,
-                          //               backgroundColor: Color(0XFF3967d7),
-                          //               onPressed: _onPressed),
-                          //         ),
-                          //         if (widget.changeConnectionInfo)
-                          //           const SizedBox(
-                          //             width: 20,
-                          //           ),
-                          //         if (widget.changeConnectionInfo)
-                          //           Expanded(
-                          //             child: ButtonElevated(
-                          //                 text: 'back'.tr,
-                          //                 borderRadius: 20,
-                          //                 backgroundColor: Color(0XFF3967d7),
-                          //                 onPressed: () async {
-                          //                   Get.back();
-                          //                 }),
-                          //           ),
-                          //       ],
-                          //     );
-                          //   }
-                          // }),
-                        ],
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  // color: Color(0XFF3967d7),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: Get.width * 0.6,
+                        padding: EdgeInsets.only(top: 30),
+                        child: CustomIcon(
+                          assetPath: 'assets/images/image.png',
+                          size: Get.width * 0.6,
+                          padding: 10,
+                          color: Color(0XFF3967d7),
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: Get.height * 0.1),
+                      Text(
+                        'login'.tr,
+                        style: TextStyle(
+                            fontSize: Get.width * 0.05,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0XFF3967d7)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // SizedBox(height: Get.height * 0.05),
+                            // Text(
+                            //   'visa_number'.tr,
+                            //   style: TextStyle(
+                            //       fontSize: Get.width * 0.03,
+                            //       fontWeight: FontWeight.bold,
+                            //       color: AppColor.black),
+                            // ),
+                            // SizedBox(height: Get.height * 0.01),
+                            // ContainerTextField(
+                            //   controller: visaNumberController,
+                            //   backgroundColor: AppColor.white,
+                            //   prefixIcon: CustomIcon(
+                            //       padding: 10,
+                            //       color: Color(0XFF3967d7),
+                            //       size: Get.width * 0.05,
+                            //       assetPath: 'assets/images/passport.png'),
+                            //   hintText: 'visa_number'.tr,
+                            //   labelText: 'visa_number'.tr,
+                            //   width: Get.width,
+                            //   height: MediaQuery.sizeOf(context).height * 0.05,
+                            //   hintcolor: AppColor.black.withOpacity(0.5),
+                            //   iconcolor: AppColor.black,
+                            //   color: AppColor.black,
+                            //   fontSize: Get.width * 0.03,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       errorMessage = 'required_message'
+                            //           .trParams({'field_name': 'visa_number'.tr});
+                            //       countErrors++;
+                            //       return "";
+                            //     }
+
+                            //     return null;
+                            //   },
+                            // ),
+
+                            SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.03),
+                            Text(
+                              'pin_number'.tr,
+                              style: TextStyle(
+                                  fontSize: Get.width * 0.03,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black),
+                            ),
+                            SizedBox(height: Get.height * 0.01),
+                            ContainerTextField(
+                              backgroundColor: AppColor.white,
+                              keyboardType: TextInputType.number,
+                              controller: pinNumberController,
+                              prefixIcon: CustomIcon(
+                                  padding: 10,
+                                  color: Color(0XFF3967d7),
+                                  size: Get.width * 0.05,
+                                  assetPath: 'assets/images/key.png'),
+                              hintText: 'pin_number'.tr,
+                              labelText: 'pin_number'.tr,
+                              obscureText: flag ? false : true,
+                              width: Get.width,
+                              height: MediaQuery.sizeOf(context).height * 0.05,
+                              hintcolor: AppColor.black.withOpacity(0.5),
+                              iconcolor: AppColor.black,
+                              color: AppColor.black,
+                              fontSize: Get.width * 0.03,
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10),
+                                child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        flag = !flag;
+                                      });
+                                    },
+                                    icon: flag
+                                        ? Icon(
+                                            Icons.visibility,
+                                            color: Color(0XFF3967d7),
+                                          )
+                                        : Icon(
+                                            Icons.visibility_off,
+                                            color: AppColor.black,
+                                          )),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  errorMessage = 'required_message_f'.trParams(
+                                      {'field_name': 'pin_number'.tr});
+                                  return "";
+                                }
+                                // if (value.isNotEmpty) {
+                                //   var message = ValidatorHelper.passWordValidation(value: value);
+                                //   if (message == "") {
+                                //     return null;
+                                //   }
+                                //   errorMessage = message;
+                                //   return "";
+                                // }
+                                return null;
+                              },
+                            ),
+
+                            SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.1),
+                            Obx(() {
+                              if (authenticationController.loading.value) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.white,
+                                    backgroundColor: AppColor.black,
+                                  ),
+                                );
+                              } else {
+                                return ButtonElevated(
+                                    borderRadius: 20,
+                                    text: 'login'.tr,
+                                    width: Get.width,
+                                    backgroundColor: Color(0XFF3967d7),
+                                    onPressed: onPressed);
+                              }
+                            }),
+                            // Obx(() {
+                            //   if (remoteDatabaseSettingController
+                            //       .isLoading.value) {
+                            //     return Center(
+                            //       child: CircularProgressIndicator(
+                            //         color: AppColor.white,
+                            //         backgroundColor: AppColor.black,
+                            //       ),
+                            //     );
+                            //   } else {
+                            //     return Row(
+                            //       children: [
+                            //         Expanded(
+                            //           child: ButtonElevated(
+                            //               borderRadius: 20,
+                            //               text: 'connect'.tr,
+                            //               backgroundColor: Color(0XFF3967d7),
+                            //               onPressed: _onPressed),
+                            //         ),
+                            //         if (widget.changeConnectionInfo)
+                            //           const SizedBox(
+                            //             width: 20,
+                            //           ),
+                            //         if (widget.changeConnectionInfo)
+                            //           Expanded(
+                            //             child: ButtonElevated(
+                            //                 text: 'back'.tr,
+                            //                 borderRadius: 20,
+                            //                 backgroundColor: Color(0XFF3967d7),
+                            //                 onPressed: () async {
+                            //                   Get.back();
+                            //                 }),
+                            //           ),
+                            //       ],
+                            //     );
+                            //   }
+                            // }),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

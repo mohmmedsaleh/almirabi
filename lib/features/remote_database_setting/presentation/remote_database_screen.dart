@@ -1,6 +1,7 @@
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
 
 import '../../../core/config/app_colors.dart';
 import '../../../core/config/app_enums.dart';
@@ -13,7 +14,6 @@ import '../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../core/shared_widgets/app_text_field.dart';
 import '../../../core/shared_widgets/custom_app_bar.dart';
 import '../data/subscription_info.dart';
-import '../domain/remote_database_setting_viewmodel.dart';
 
 // class RemoteDatabaseScreen extends StatefulWidget {
 //   final bool changeConnectionInfo;
@@ -764,10 +764,12 @@ class CustomBack extends StatelessWidget {
 // }
 class RemoteDatabaseScreen2 extends StatefulWidget {
   final bool changeConnectionInfo;
-  final SubscriptionInfo? subscriptionInfo;
+  // final SubscriptionInfo? subscriptionInfo;
 
-  const RemoteDatabaseScreen2(
-      {super.key, this.changeConnectionInfo = false, this.subscriptionInfo});
+  const RemoteDatabaseScreen2({
+    super.key,
+    this.changeConnectionInfo = false,
+  });
 
   @override
   State<RemoteDatabaseScreen2> createState() => _RemoteDatabaseScreen2State();
@@ -776,8 +778,9 @@ class RemoteDatabaseScreen2 extends StatefulWidget {
 class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   DatabaseSettingController remoteDatabaseSettingController =
       Get.put(DatabaseSettingController.getInstance());
-  TextEditingController dbNameController = TextEditingController();
-  TextEditingController urlController = TextEditingController();
+  // TokenController tokenClassController = Get.put(TokenController.getInstance());
+  // TextEditingController dbNameController = TextEditingController();
+  TextEditingController keyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? errorMessage;
   final keyFocusNode = FocusNode();
@@ -787,10 +790,10 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   @override
   void initState() {
     super.initState();
-    if (widget.changeConnectionInfo) {
-      dbNameController.text = widget.subscriptionInfo!.db!;
-      urlController.text = widget.subscriptionInfo!.url!;
-    }
+    // if (widget.changeConnectionInfo) {
+    //   // dbNameController.text = widget.subscriptionInfo!.db!;
+    //   keyController.text = widget.subscriptionInfo!.url!;
+    // }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       keyFocusNode.requestFocus();
@@ -815,35 +818,26 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
               CustomBack(
                 height: MediaQuery.of(context).size.height * 0.2,
                 color: Color(0XFF3967d7),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: HeaderIcons(
-                          height: Get.width * 0.07,
-                          icon: Icons.language,
-                          darkBackground: true,
-                          onTap: () async {
-                            await SharedPr.setLanguage(
-                                lang: SharedPr.lang == 'en' ? 'ar' : 'en');
-                          }),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        height: Get.width * 0.3,
-                        padding: EdgeInsets.only(top: 30),
-                        child: CustomIcon(
-                          assetPath: 'assets/images/image.png',
-                          size: Get.width * 0.3,
-                          padding: 10,
-                          color: AppColor.white,
-                        ),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: HeaderIcons(
+                            height: Get.width * 0.07,
+                            icon: Icons.language,
+                            darkBackground: true,
+                            onTap: () async {
+                              await SharedPr.setLanguage(
+                                  lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                            }),
                       ),
-                    ),
-                    Expanded(flex: 1, child: Container())
-                  ],
+                      Expanded(flex: 3, child: Container()),
+                      Expanded(flex: 1, child: Container())
+                    ],
+                  ),
                 ),
               ),
               Form(
@@ -853,7 +847,17 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: Get.height * 0.2),
+                    Container(
+                      height: Get.width * 0.6,
+                      padding: EdgeInsets.only(top: 30),
+                      child: CustomIcon(
+                        assetPath: 'assets/images/image.png',
+                        size: Get.width * 0.6,
+                        padding: 10,
+                        color: Color(0XFF3967d7),
+                      ),
+                    ),
+                    SizedBox(height: Get.height * 0.1),
                     Text(
                       'remote_connection_information'.tr,
                       style: TextStyle(
@@ -866,9 +870,47 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: Get.height * 0.05),
+                          // SizedBox(height: Get.height * 0.05),
+                          // Text(
+                          //   'dbName'.tr,
+                          //   style: TextStyle(
+                          //       fontSize: Get.width * 0.03,
+                          //       fontWeight: FontWeight.bold,
+                          //       color: AppColor.black),
+                          // ),
+                          // SizedBox(height: Get.height * 0.01),
+                          // ContainerTextField(
+                          //   controller: dbNameController,
+                          //   backgroundColor: AppColor.white,
+                          //   prefixIcon: CustomIcon(
+                          //       size: Get.width * 0.05,
+                          //       padding: 10,
+                          //       color: Color(0XFF3967d7),
+                          //       assetPath:
+                          //           'assets/images/database-storage.png'),
+                          //   hintText: 'dbName'.tr,
+                          //   labelText: 'dbName'.tr,
+                          //   width: Get.width,
+                          //   height: MediaQuery.sizeOf(context).height * 0.05,
+                          //   hintcolor: AppColor.black.withOpacity(0.5),
+                          //   iconcolor: AppColor.black,
+                          //   color: AppColor.black,
+                          //   fontSize: Get.width * 0.03,
+                          //   validator: (value) {
+                          //     if (value == null || value.isEmpty) {
+                          //       errorMessage = 'required_message'
+                          //           .trParams({'field_name': 'dbName'.tr});
+
+                          //       return "";
+                          //     }
+
+                          //     return null;
+                          //   },
+                          // ),
+                          // SizedBox(
+                          //     height: MediaQuery.sizeOf(context).height * 0.03),
                           Text(
-                            'dbName'.tr,
+                            'key_number'.tr,
                             style: TextStyle(
                                 fontSize: Get.width * 0.03,
                                 fontWeight: FontWeight.bold,
@@ -876,52 +918,14 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                           ),
                           SizedBox(height: Get.height * 0.01),
                           ContainerTextField(
-                            controller: dbNameController,
-                            backgroundColor: AppColor.white,
-                            prefixIcon: CustomIcon(
-                                size: Get.width * 0.05,
-                                padding: 10,
-                                color: Color(0XFF3967d7),
-                                assetPath:
-                                    'assets/images/database-storage.png'),
-                            hintText: 'dbName'.tr,
-                            labelText: 'dbName'.tr,
-                            width: Get.width,
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            hintcolor: AppColor.black.withOpacity(0.5),
-                            iconcolor: AppColor.black,
-                            color: AppColor.black,
-                            fontSize: Get.width * 0.03,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message'
-                                    .trParams({'field_name': 'dbName'.tr});
-
-                                return "";
-                              }
-
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.03),
-                          Text(
-                            'url'.tr,
-                            style: TextStyle(
-                                fontSize: Get.width * 0.03,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black),
-                          ),
-                          SizedBox(height: Get.height * 0.01),
-                          ContainerTextField(
-                            controller: urlController,
+                            controller: keyController,
                             backgroundColor: AppColor.white,
                             prefixIcon: Icon(
-                              Icons.http_outlined,
+                              Icons.key,
                               color: Color(0XFF3967d7),
                             ),
-                            hintText: 'url'.tr,
-                            labelText: 'url'.tr,
+                            hintText: 'key_number'.tr,
+                            labelText: 'key_number'.tr,
                             width: Get.width,
                             height: MediaQuery.sizeOf(context).height * 0.05,
                             hintcolor: AppColor.black.withOpacity(0.5),
@@ -930,8 +934,8 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                             fontSize: Get.width * 0.03,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message_f'
-                                    .trParams({'field_name': 'url'.tr});
+                                errorMessage = 'required_message_f'.trParams(
+                                    {'field_name': 'token_number'.tr});
                                 return "";
                               }
                               // if (value.isNotEmpty) {
@@ -997,11 +1001,10 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
     );
   }
 
-  _onPressed() {
+  _onPressed() async {
     if (_formKey.currentState!.validate()) {
       remoteDatabaseSettingController
-          .checkDatabase(SubscriptionInfo(
-              url: urlController.text, db: dbNameController.text))
+          .checkDatabase(keyController.text)
           .then((value) async {
         if (value.status) {
           appSnackBar(
@@ -1012,9 +1015,37 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
           // Get.to(() => const EmployeesListScreen());
           Get.to(() => const LoginScreen2());
         } else {
+          // if (value.data != null) {
+          //   CustomDialog.getInstance().dialog(
+          //       title: 'error_message',
+          //       message: value.message!,
+          //       onPressed: () async {
+          //         await remoteDatabaseSettingController
+          //             .sendTicket(
+          //                 subscriptionId: SharedPr
+          //                     .subscriptionDetailsObj!.subscriptionId
+          //                     .toString(),
+          //                 message: value.message!)
+          //             .then((value) {
+          //           if (value.status) {
+          //             Get.back();
+          //             appSnackBar(
+          //                 message: 'success_send_ticket'.tr,
+          //                 messageType: MessageTypes.success);
+          //           } else {
+          //             appSnackBar(
+          //               message: value.message!,
+          //             );
+          //           }
+          //         });
+          //       },
+          //       dialogType: MessageTypes.error,
+          //       primaryButtonText: 'send_ticket');
+          // } else {
           appSnackBar(
             message: value.message!,
           );
+          // }
         }
       });
     } else {
@@ -1023,6 +1054,31 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
       );
     }
   }
+  //   if (_formKey.currentState!.validate()) {
+  //     remoteDatabaseSettingController
+  //         .checkDatabase(SubscriptionInfo(
+  //             url: tokenController.text, db: dbNameController.text))
+  //         .then((value) async {
+  //       if (value.status) {
+  //         appSnackBar(
+  //           messageType: MessageTypes.success,
+  //           message: 'success_key_login'.tr,
+  //         );
+  //         await SharedPr.removeUserObj();
+  //         // Get.to(() => const EmployeesListScreen());
+  //         Get.to(() => const LoginScreen2());
+  //       } else {
+  //         appSnackBar(
+  //           message: value.message!,
+  //         );
+  //       }
+  //     });
+  //   } else {
+  //     appSnackBar(
+  //       message: errorMessage!,
+  //     );
+  //   }
+  // }
 }
 
 class RPSback extends CustomPainter {

@@ -222,7 +222,6 @@ PreferredSizeWidget customAppBar(
                       darkBackground: headerBackground,
                       onTap: () async {
                         Get.to(() => RemoteDatabaseScreen2(
-                              subscriptionInfo: SharedPr.subscriptionDetailsObj,
                               changeConnectionInfo: true,
                             ));
                       }),

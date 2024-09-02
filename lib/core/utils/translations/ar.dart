@@ -158,7 +158,7 @@ var ar = {
   'display_employees': 'إظهار الموظفين',
   'success_token': "تم جلب الموظفين المرتبطين بنجاح",
   "token_information_sub": "قم بإدخال التوكن المعطى لك من قبل الإدارة",
-  "token_information": "التوكن الخاص بالنقطة",
+  "token_information": "التوكن الخاص بالميرابي",
   "no_data": "لاتوجد بيانات بعد",
   "length_error": "أدنى طول مطلوب هو @field_name",
   "allowed_character_message":

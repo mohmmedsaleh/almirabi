@@ -4,7 +4,9 @@ import 'package:almirabi/features/authentication/presentation/views/login_screen
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-
+import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_service.dart';
+import 'package:pos_package/pos_package.dart';
+import 'package:pos_package/core/config/app_shared_pr.dart' as SharedPrPackage;
 import 'core/config/app_colors.dart';
 import 'core/config/app_messages_translation.dart';
 import 'core/config/app_shared_pr.dart';
@@ -16,9 +18,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // NetworkConnectivityChecker.init();
   await SharedPr.init();
+  await SharedPrPackage.SharedPr.init();
   SharedPr.retrieveInfo();
   await DbHelper.getInstance();
-  // await RemoteDatabaseSettingService.instantiateOdooConnection();
+  await RemoteDatabaseSettingService.instantiateOdooConnection();
   runApp(const MyApp());
 }
 
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
             :
             // SharedPr.userObj?.name == null
             //     ?
+            // TokenScreen()
             const LoginScreen2()
         // : const RequestListScreen2()
         );

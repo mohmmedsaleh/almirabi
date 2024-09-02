@@ -49,6 +49,10 @@ dependencies:
   date_picker_plus: ^4.1.0
   flutter_month_select: ^0.0.2
   font_awesome_flutter: ^10.7.0
+  pos_package:
+    git:
+      url: https://github.com/mohmmedsaleh/pos-package.git
+      ref: huda
 dev_dependencies:
   flutter_test:
     sdk: flutter

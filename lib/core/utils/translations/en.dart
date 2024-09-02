@@ -160,7 +160,7 @@ var en = {
   'success_token': "The Employees related to this token get successfully",
   "token_information_sub":
       "Enter the token that give it to you from management team",
-  "token_information": "Point of Sale Token",
+  "token_information": "Almirabi Token",
   "no_items": "There is No Data Yet",
   "length_error": "Length Must at least @field_name",
   "allowed_character_message":

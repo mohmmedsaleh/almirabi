@@ -4,6 +4,12 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
+  file_selector_windows
+  flutter_window_close
+  local_notifier
+  sqlite3_flutter_libs
+  window_size
+  windows_single_instance
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
