@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../../../core/config/app_colors.dart';
 import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
-import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../remote_database_setting/presentation/remote_database_screen.dart';
 import '../../../car/domain/car_viewmodel.dart';
 import '../../domain/request_viewmodel.dart';
@@ -335,7 +334,7 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
           children: [
             CustomBack(
                 height: MediaQuery.of(context).size.height * 0.1,
-                color: Color(0XFF3967d7),
+                color: const Color(0XFF3967d7),
                 child: Row(
                   children: [
                     Expanded(
@@ -347,13 +346,13 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                                 : Get.offAll(() => const ReportScreen2());
                           },
                           icon: Container(
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   color: AppColor.white,
                                   shape: BoxShape.circle),
                               child: Icon(
                                 Icons.arrow_back_ios_new_outlined,
-                                color: Color(0XFF3967d7),
+                                color: const Color(0XFF3967d7),
                                 size: Get.width * 0.05,
                               ))),
                     ),
@@ -383,13 +382,13 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                                       ));
                                 },
                                 icon: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                       color: AppColor.white,
                                       shape: BoxShape.circle),
                                   child: Icon(
                                     Icons.edit,
-                                    color: Color(0XFF3967d7),
+                                    color: const Color(0XFF3967d7),
                                     size: Get.width * 0.05,
                                   ),
                                 ))
@@ -420,16 +419,16 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                 Container(
                   height: Get.height * 0.07,
                   width: Get.width * 0.4,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                             blurRadius: 100,
                             color: AppColor.backgroundTable,
-                            offset: Offset(2, 2))
+                            offset: const Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: const Color(0xffc3c3c6).withOpacity(0.5)),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -462,7 +461,7 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                                 "${widget.item.car!.name != '' ? widget.item.car!.name : carController.carList.firstWhere((e) => e.id == widget.item.car!.id).name}",
                                 style: TextStyle(
                                     color: AppColor.black,
-                                    fontWeight: FontWeight.bold,
+                                    // fontWeight: FontWeight.bold,
                                     fontSize: Get.width * 0.03),
                               )
                             ],
@@ -475,16 +474,16 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                 Container(
                   height: Get.height * 0.07,
                   width: Get.width * 0.4,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                             blurRadius: 100,
                             color: AppColor.backgroundTable,
-                            offset: Offset(2, 2))
+                            offset: const Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: const Color(0xffc3c3c6).withOpacity(0.5)),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -512,7 +511,7 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                                     fontSize: Get.width * 0.03),
                               ),
                               Text(
-                                "${monthName(int.parse(widget.item.monthName!))}",
+                                monthName(int.parse(widget.item.monthName!)),
                                 style: TextStyle(
                                     color: AppColor.black,
                                     // fontWeight: FontWeight.bold,
@@ -638,16 +637,16 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                 Container(
                   height: Get.height * 0.07,
                   width: Get.width * 0.87,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                             blurRadius: 100,
                             color: AppColor.backgroundTable,
-                            offset: Offset(2, 2))
+                            offset: const Offset(2, 2))
                       ],
-                      color: Color(0xffc3c3c6).withOpacity(0.5)),
+                      color: const Color(0xffc3c3c6).withOpacity(0.5)),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -670,14 +669,14 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
                               'source_path'.tr,
                               style: TextStyle(
                                   color: AppColor.black,
-                                  fontWeight: FontWeight.bold,
+                                  // fontWeight: FontWeight.bold,
                                   fontSize: Get.width * 0.03),
                             ),
                             Text(
                               "${widget.item.sourcePathName != null ? widget.item.sourcePathName!.length > 30 ? '${widget.item.sourcePathName!.substring(0, 30)}...' : widget.item.sourcePathName : ''}",
                               style: TextStyle(
                                   color: AppColor.black,
-                                  fontWeight: FontWeight.bold,
+                                  // fontWeight: FontWeight.bold,
                                   fontSize: Get.width * 0.03),
                             )
                           ],
@@ -807,306 +806,307 @@ class _DetailsRequestScreen2State extends State<DetailsRequestScreen2> {
 
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      width: Get.width,
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      // decoration: BoxDecoration(
-                      //     color: const Color.fromRGBO(173, 89, 31, 200),
-                      //     border: Border.all(color: AppColor.brawn),
-                      //     borderRadius: BorderRadius.circular(15)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Text("destination".tr,
+                child: Container(
+                  width: Get.width,
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(5),
+                  // decoration: BoxDecoration(
+                  //     color: const Color.fromRGBO(173, 89, 31, 200),
+                  //     border: Border.all(color: AppColor.brawn),
+                  //     borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text("destination".tr,
+                            style: TextStyle(
+                                fontSize: Get.width * 0.04,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0XFF3967d7))),
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text("destination".tr,
+                      //           style: TextStyle(
+                      //               fontSize: Get.width * 0.04,
+                      //               fontWeight: FontWeight.bold,
+                      //               color: Color(0XFF3967d7))),
+                      //       Text("${widget.item.amoutTotal}",
+                      //           style: TextStyle(
+                      //               fontSize: Get.width * 0.04,
+                      //               fontWeight: FontWeight.bold,
+                      //               color: Color(0XFF3967d7))),
+                      //     ],
+                      //   ),
+                      // ),
+                      // Container(
+                      //   width: Get.width,
+                      //   height: MediaQuery.sizeOf(context).height * 0.05,
+                      //   decoration: BoxDecoration(
+                      //       color: AppColor.brawn,
+                      //       border: Border.all(color: AppColor.brawn),
+                      //       borderRadius: BorderRadius.circular(15)),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(
+                      //           flex: 6,
+                      //           child: Center(
+                      //             child: Text(
+                      //               "destination_path".tr,
+                      //               style: TextStyle(
+                      //                   fontSize: Get.width * 0.03,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: AppColor.white),
+                      //             ),
+                      //           )),
+                      //       Expanded(
+                      //           flex: 2,
+                      //           child: Center(
+                      //             child: Text(
+                      //               "price".tr,
+                      //               style: TextStyle(
+                      //                   fontSize: Get.width * 0.03,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: AppColor.white),
+                      //             ),
+                      //           )),
+                      //     ],
+                      //   ),
+                      // ),
+                      // Container(
+                      //   width: Get.width,
+                      //   height: MediaQuery.sizeOf(context).height * 0.05,
+                      //   decoration: BoxDecoration(
+                      //     color: Color(0XFF3967d7).withOpacity(0.1),
+                      //     // borderRadius:
+                      //     //     BorderRadius
+                      //     //         .circular(
+                      //     //             10)
+                      //   ),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(
+                      //           flex: 5,
+                      //           child: Center(
+                      //             child: Text(
+                      //               "destination_path".tr,
+                      //               style: TextStyle(
+                      //                   fontSize: Get.width * 0.03,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: Color(0XFF3967d7)),
+                      //             ),
+                      //           )),
+                      //       Expanded(
+                      //           flex: 2,
+                      //           child: Center(
+                      //             child: Text(
+                      //               "price".tr,
+                      //               style: TextStyle(
+                      //                   fontSize: Get.width * 0.03,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: Color(0XFF3967d7)),
+                      //             ),
+                      //           )),
+                      //     ],
+                      //   ),
+                      // ),
+                      ...widget.item.requestLines!.map((e) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              // margin:
+                              //     EdgeInsets
+                              //         .all(
+                              //             8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: const Color(0XFF3967d7)
+                                      .withOpacity(0.05)),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 10,
+                                    child: ListTile(
+                                      leading: const Icon(Icons.location_on),
+                                      title: Text(
+                                        e.destName!,
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0XFF3967d7)
+                                                .withOpacity(0.7)),
+                                      ),
+                                      subtitle: Text(
+                                        e.destPrice.toString(),
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0XFF3967d7)
+                                                .withOpacity(0.7)),
+                                      ),
+                                      trailing: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            e.quantity.toString(),
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color(0XFF3967d7)
+                                                    .withOpacity(0.7)),
+                                          ),
+                                          Text(
+                                            e.destTotalPrice.toString(),
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color(0XFF3967d7)
+                                                    .withOpacity(0.7)),
+                                          ),
+                                        ],
+                                      ),
+
+                                      // Row(children: [ Text(
+                                      //   e.destPrice
+                                      //       .toString(),
+                                      //   style: TextStyle(
+                                      //       fontSize:
+                                      //           Get.width *
+                                      //               0.03,
+                                      //       fontWeight:
+                                      //           FontWeight
+                                      //               .bold,
+                                      //       color: Color(0XFF3967d7)
+                                      //           .withOpacity(0.7)),
+                                      // ), Text(
+                                      //   e.destPrice
+                                      //       .toString(),
+                                      //   style: TextStyle(
+                                      //       fontSize:
+                                      //           Get.width *
+                                      //               0.03,
+                                      //       fontWeight:
+                                      //           FontWeight
+                                      //               .bold,
+                                      //       color: Color(0XFF3967d7)
+                                      //           .withOpacity(0.7)),
+                                      // ),],),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )),
+                      // ...widget.item.requestLines!.map((e) => SizedBox(
+                      //       width: Get.width,
+                      //       height:
+                      //           MediaQuery.sizeOf(context).height * 0.05,
+                      //       child: Row(
+                      //         children: [
+                      //           Expanded(
+                      //               flex: 5,
+                      //               child: Container(
+                      //                 padding: EdgeInsets.symmetric(
+                      //                     horizontal: 10),
+                      //                 decoration: BoxDecoration(
+                      //                     border: Border.symmetric(
+                      //                         vertical: BorderSide(
+                      //                             color: Color(0XFF3967d7)
+                      //                                 .withOpacity(0.1))),
+                      //                     color: Color(0XFF3967d7)
+                      //                         .withOpacity(0.05)),
+                      //                 child: Center(
+                      //                     child: Text(
+                      //                   e.destName!,
+                      //                   style: TextStyle(
+                      //                       fontSize: Get.width * 0.03,
+                      //                       fontWeight: FontWeight.bold,
+                      //                       color: Color(0XFF3967d7)
+                      //                           .withOpacity(0.7)),
+                      //                 )),
+                      //               )),
+                      //           Expanded(
+                      //               flex: 2,
+                      //               child: Container(
+                      //                 padding: EdgeInsets.symmetric(
+                      //                     horizontal: 10),
+                      //                 decoration: BoxDecoration(
+                      //                     border: Border.symmetric(
+                      //                         vertical: BorderSide(
+                      //                             color: Color(0XFF3967d7)
+                      //                                 .withOpacity(0.1))),
+                      //                     color: Color(0XFF3967d7)
+                      //                         .withOpacity(0.05)),
+                      //                 child: Center(
+                      //                   child: Text(
+                      //                     e.destPrice.toString(),
+                      //                     style: TextStyle(
+                      //                         fontSize: Get.width * 0.03,
+                      //                         fontWeight: FontWeight.bold,
+                      //                         color: Color(0XFF3967d7)
+                      //                             .withOpacity(0.7)),
+                      //                   ),
+                      //                 ),
+                      //               )),
+                      //         ],
+                      //       ),
+                      //     )),
+
+                      // ...widget.item.requestLines!.map((e) => SizedBox(
+                      //       width: Get.width,
+                      //       height:
+                      //           MediaQuery.sizeOf(context).height * 0.05,
+                      //       child: Row(
+                      //         children: [
+                      //           Expanded(
+                      //               flex: 5,
+                      //               child: Center(
+                      //                   child: Text(
+                      //                 e.destName!,
+                      //                 style: TextStyle(
+                      //                     fontSize: Get.width * 0.03,
+                      //                     fontWeight: FontWeight.bold,
+                      //                     color: AppColor.brawn),
+                      //               ))),
+                      //           Expanded(
+                      //               flex: 2,
+                      //               child: Center(
+                      //                 child: Text(
+                      //                   e.destPrice.toString(),
+                      //                   style: TextStyle(
+                      //                       fontSize: Get.width * 0.03,
+                      //                       fontWeight: FontWeight.bold,
+                      //                       color: AppColor.brawn),
+                      //                 ),
+                      //               )),
+                      //         ],
+                      //       ),
+                      //     )),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("total_price".tr,
                                 style: TextStyle(
                                     fontSize: Get.width * 0.04,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0XFF3967d7))),
-                          ),
-                          // Padding(
-                          //   padding: const EdgeInsets.all(8.0),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       Text("destination".tr,
-                          //           style: TextStyle(
-                          //               fontSize: Get.width * 0.04,
-                          //               fontWeight: FontWeight.bold,
-                          //               color: Color(0XFF3967d7))),
-                          //       Text("${widget.item.amoutTotal}",
-                          //           style: TextStyle(
-                          //               fontSize: Get.width * 0.04,
-                          //               fontWeight: FontWeight.bold,
-                          //               color: Color(0XFF3967d7))),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Container(
-                          //   width: Get.width,
-                          //   height: MediaQuery.sizeOf(context).height * 0.05,
-                          //   decoration: BoxDecoration(
-                          //       color: AppColor.brawn,
-                          //       border: Border.all(color: AppColor.brawn),
-                          //       borderRadius: BorderRadius.circular(15)),
-                          //   child: Row(
-                          //     children: [
-                          //       Expanded(
-                          //           flex: 6,
-                          //           child: Center(
-                          //             child: Text(
-                          //               "destination_path".tr,
-                          //               style: TextStyle(
-                          //                   fontSize: Get.width * 0.03,
-                          //                   fontWeight: FontWeight.bold,
-                          //                   color: AppColor.white),
-                          //             ),
-                          //           )),
-                          //       Expanded(
-                          //           flex: 2,
-                          //           child: Center(
-                          //             child: Text(
-                          //               "price".tr,
-                          //               style: TextStyle(
-                          //                   fontSize: Get.width * 0.03,
-                          //                   fontWeight: FontWeight.bold,
-                          //                   color: AppColor.white),
-                          //             ),
-                          //           )),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Container(
-                          //   width: Get.width,
-                          //   height: MediaQuery.sizeOf(context).height * 0.05,
-                          //   decoration: BoxDecoration(
-                          //     color: Color(0XFF3967d7).withOpacity(0.1),
-                          //     // borderRadius:
-                          //     //     BorderRadius
-                          //     //         .circular(
-                          //     //             10)
-                          //   ),
-                          //   child: Row(
-                          //     children: [
-                          //       Expanded(
-                          //           flex: 5,
-                          //           child: Center(
-                          //             child: Text(
-                          //               "destination_path".tr,
-                          //               style: TextStyle(
-                          //                   fontSize: Get.width * 0.03,
-                          //                   fontWeight: FontWeight.bold,
-                          //                   color: Color(0XFF3967d7)),
-                          //             ),
-                          //           )),
-                          //       Expanded(
-                          //           flex: 2,
-                          //           child: Center(
-                          //             child: Text(
-                          //               "price".tr,
-                          //               style: TextStyle(
-                          //                   fontSize: Get.width * 0.03,
-                          //                   fontWeight: FontWeight.bold,
-                          //                   color: Color(0XFF3967d7)),
-                          //             ),
-                          //           )),
-                          //     ],
-                          //   ),
-                          // ),
-                          ...widget.item.requestLines!.map((e) => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  // margin:
-                                  //     EdgeInsets
-                                  //         .all(
-                                  //             8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color:
-                                          Color(0XFF3967d7).withOpacity(0.05)),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 10,
-                                        child: ListTile(
-                                          leading: Icon(Icons.location_on),
-                                          title: Text(
-                                            e.destName!,
-                                            style: TextStyle(
-                                                fontSize: Get.width * 0.03,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0XFF3967d7)
-                                                    .withOpacity(0.7)),
-                                          ),
-                                          subtitle: Text(
-                                            e.destPrice.toString(),
-                                            style: TextStyle(
-                                                fontSize: Get.width * 0.03,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0XFF3967d7)
-                                                    .withOpacity(0.7)),
-                                          ),
-                                          trailing: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Text(
-                                                e.quantity.toString(),
-                                                style: TextStyle(
-                                                    fontSize: Get.width * 0.03,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0XFF3967d7)
-                                                        .withOpacity(0.7)),
-                                              ),
-                                              Text(
-                                                e.destTotalPrice.toString(),
-                                                style: TextStyle(
-                                                    fontSize: Get.width * 0.03,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0XFF3967d7)
-                                                        .withOpacity(0.7)),
-                                              ),
-                                            ],
-                                          ),
-
-                                          // Row(children: [ Text(
-                                          //   e.destPrice
-                                          //       .toString(),
-                                          //   style: TextStyle(
-                                          //       fontSize:
-                                          //           Get.width *
-                                          //               0.03,
-                                          //       fontWeight:
-                                          //           FontWeight
-                                          //               .bold,
-                                          //       color: Color(0XFF3967d7)
-                                          //           .withOpacity(0.7)),
-                                          // ), Text(
-                                          //   e.destPrice
-                                          //       .toString(),
-                                          //   style: TextStyle(
-                                          //       fontSize:
-                                          //           Get.width *
-                                          //               0.03,
-                                          //       fontWeight:
-                                          //           FontWeight
-                                          //               .bold,
-                                          //       color: Color(0XFF3967d7)
-                                          //           .withOpacity(0.7)),
-                                          // ),],),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )),
-                          // ...widget.item.requestLines!.map((e) => SizedBox(
-                          //       width: Get.width,
-                          //       height:
-                          //           MediaQuery.sizeOf(context).height * 0.05,
-                          //       child: Row(
-                          //         children: [
-                          //           Expanded(
-                          //               flex: 5,
-                          //               child: Container(
-                          //                 padding: EdgeInsets.symmetric(
-                          //                     horizontal: 10),
-                          //                 decoration: BoxDecoration(
-                          //                     border: Border.symmetric(
-                          //                         vertical: BorderSide(
-                          //                             color: Color(0XFF3967d7)
-                          //                                 .withOpacity(0.1))),
-                          //                     color: Color(0XFF3967d7)
-                          //                         .withOpacity(0.05)),
-                          //                 child: Center(
-                          //                     child: Text(
-                          //                   e.destName!,
-                          //                   style: TextStyle(
-                          //                       fontSize: Get.width * 0.03,
-                          //                       fontWeight: FontWeight.bold,
-                          //                       color: Color(0XFF3967d7)
-                          //                           .withOpacity(0.7)),
-                          //                 )),
-                          //               )),
-                          //           Expanded(
-                          //               flex: 2,
-                          //               child: Container(
-                          //                 padding: EdgeInsets.symmetric(
-                          //                     horizontal: 10),
-                          //                 decoration: BoxDecoration(
-                          //                     border: Border.symmetric(
-                          //                         vertical: BorderSide(
-                          //                             color: Color(0XFF3967d7)
-                          //                                 .withOpacity(0.1))),
-                          //                     color: Color(0XFF3967d7)
-                          //                         .withOpacity(0.05)),
-                          //                 child: Center(
-                          //                   child: Text(
-                          //                     e.destPrice.toString(),
-                          //                     style: TextStyle(
-                          //                         fontSize: Get.width * 0.03,
-                          //                         fontWeight: FontWeight.bold,
-                          //                         color: Color(0XFF3967d7)
-                          //                             .withOpacity(0.7)),
-                          //                   ),
-                          //                 ),
-                          //               )),
-                          //         ],
-                          //       ),
-                          //     )),
-
-                          // ...widget.item.requestLines!.map((e) => SizedBox(
-                          //       width: Get.width,
-                          //       height:
-                          //           MediaQuery.sizeOf(context).height * 0.05,
-                          //       child: Row(
-                          //         children: [
-                          //           Expanded(
-                          //               flex: 5,
-                          //               child: Center(
-                          //                   child: Text(
-                          //                 e.destName!,
-                          //                 style: TextStyle(
-                          //                     fontSize: Get.width * 0.03,
-                          //                     fontWeight: FontWeight.bold,
-                          //                     color: AppColor.brawn),
-                          //               ))),
-                          //           Expanded(
-                          //               flex: 2,
-                          //               child: Center(
-                          //                 child: Text(
-                          //                   e.destPrice.toString(),
-                          //                   style: TextStyle(
-                          //                       fontSize: Get.width * 0.03,
-                          //                       fontWeight: FontWeight.bold,
-                          //                       color: AppColor.brawn),
-                          //                 ),
-                          //               )),
-                          //         ],
-                          //       ),
-                          //     )),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("${widget.item.amoutTotal}",
-                                    style: TextStyle(
-                                        fontSize: Get.width * 0.04,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0XFF3967d7))),
-                              ],
-                            ),
-                          ),
-                        ],
+                                    color: const Color(0XFF3967d7))),
+                            Text("${widget.item.amoutTotal}",
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.04,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0XFF3967d7))),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

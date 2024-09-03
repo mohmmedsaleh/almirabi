@@ -18,8 +18,8 @@ class SourcePathLine {
     destId = fromTemblet ? json['destination_path_id'] : json['dest_id'];
     destName = fromTemblet ? json['destination_path_name'] : json['dest_name'];
     destPrice = fromTemblet ? json['price'] : json['dest_price'];
-    quantity = json['quantity'];
-    destTotalPrice = json['dest_total_price'];
+    quantity = fromTemblet ? json['quantity'] : json['quantity'];
+    destTotalPrice = fromTemblet ? json['total'] : json['dest_total_price'];
   }
 
   Map<String, dynamic> toJson({bool isRemotelyAdded = false}) {
@@ -29,7 +29,9 @@ class SourcePathLine {
     data['dest_name'] = destName;
     data['dest_price'] = destPrice;
     data['quantity'] = quantity;
-    data['dest_total_price'] = destTotalPrice;
+    if (!isRemotelyAdded) {
+      data['dest_total_price'] = destTotalPrice;
+    }
     return data;
   }
 }

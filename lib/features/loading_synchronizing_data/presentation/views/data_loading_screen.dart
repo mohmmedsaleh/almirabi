@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/config/app_colors.dart';
-import '../../../basic_data_management/request/presentation/view/request_list_screen.dart';
 import '../../domain/loading_synchronizing_data_viewmodel.dart';
 
 class DataLoadingScreen extends StatefulWidget {
@@ -31,10 +30,10 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(
-                      color: Color(0XFF3967d7),
+                      color: const Color(0XFF3967d7),
                       backgroundColor: AppColor.black,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text('data_isloading'.tr)

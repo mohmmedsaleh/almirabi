@@ -38,7 +38,7 @@ class AuthenticationController extends GetxController {
     dynamic authResult;
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       authResult = await authenticateService.authenticate(
-          visaNumber: loginInfo.visaNumber!, pinNumber: loginInfo.pinNumber!);
+          pinNumber: loginInfo.pinNumber!);
       print(authResult);
       if (authResult is User) {
         await saveUserDataLocally(authResult: authResult);

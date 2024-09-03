@@ -1,4 +1,5 @@
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
+import 'package:almirabi/features/remote_database_setting/data/subscription_info.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
@@ -6,14 +7,12 @@ import 'package:pos_package/features/remote_database_setting/domain/remote_datab
 import '../../../core/config/app_colors.dart';
 import '../../../core/config/app_enums.dart';
 import '../../../core/config/app_shared_pr.dart';
-
+import 'package:pos_package/core/config/app_shared_pr.dart' as SharedPrPackage;
 import '../../../core/shared_widgets/app_button.dart';
 import '../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../core/shared_widgets/app_header_icons.dart';
 import '../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../core/shared_widgets/app_text_field.dart';
-import '../../../core/shared_widgets/custom_app_bar.dart';
-import '../data/subscription_info.dart';
 
 // class RemoteDatabaseScreen extends StatefulWidget {
 //   final bool changeConnectionInfo;
@@ -817,7 +816,7 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
             children: [
               CustomBack(
                 height: MediaQuery.of(context).size.height * 0.2,
-                color: Color(0XFF3967d7),
+                color: const Color(0XFF3967d7),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                   child: Row(
@@ -849,12 +848,12 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                   children: [
                     Container(
                       height: Get.width * 0.6,
-                      padding: EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30),
                       child: CustomIcon(
                         assetPath: 'assets/images/image.png',
                         size: Get.width * 0.6,
                         padding: 10,
-                        color: Color(0XFF3967d7),
+                        color: const Color(0XFF3967d7),
                       ),
                     ),
                     SizedBox(height: Get.height * 0.1),
@@ -863,7 +862,7 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                       style: TextStyle(
                           fontSize: Get.width * 0.05,
                           fontWeight: FontWeight.bold,
-                          color: Color(0XFF3967d7)),
+                          color: const Color(0XFF3967d7)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -920,7 +919,7 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                           ContainerTextField(
                             controller: keyController,
                             backgroundColor: AppColor.white,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.key,
                               color: Color(0XFF3967d7),
                             ),
@@ -932,10 +931,30 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                             iconcolor: AppColor.black,
                             color: AppColor.black,
                             fontSize: Get.width * 0.03,
+                            obscureText: flag ? false : true,
+                            suffixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, right: 10),
+                              child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      flag = !flag;
+                                    });
+                                  },
+                                  icon: flag
+                                      ? const Icon(
+                                          Icons.visibility,
+                                          color: Color(0XFF3967d7),
+                                        )
+                                      : Icon(
+                                          Icons.visibility_off,
+                                          color: AppColor.black,
+                                        )),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message_f'.trParams(
-                                    {'field_name': 'token_number'.tr});
+                                errorMessage = 'required_message_f'
+                                    .trParams({'field_name': 'key_number'.tr});
                                 return "";
                               }
                               // if (value.isNotEmpty) {
@@ -967,7 +986,8 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                                     child: ButtonElevated(
                                         borderRadius: 20,
                                         text: 'connect'.tr,
-                                        backgroundColor: Color(0XFF3967d7),
+                                        backgroundColor:
+                                            const Color(0XFF3967d7),
                                         onPressed: _onPressed),
                                   ),
                                   if (widget.changeConnectionInfo)
@@ -979,7 +999,8 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                                       child: ButtonElevated(
                                           text: 'back'.tr,
                                           borderRadius: 20,
-                                          backgroundColor: Color(0XFF3967d7),
+                                          backgroundColor:
+                                              const Color(0XFF3967d7),
                                           onPressed: () async {
                                             Get.back();
                                           }),
@@ -1004,9 +1025,14 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   _onPressed() async {
     if (_formKey.currentState!.validate()) {
       remoteDatabaseSettingController
-          .checkDatabase(keyController.text)
+          .checkDatabase(
+              loginKey: keyController.text, odooModel: 'subscription.detail')
           .then((value) async {
         if (value.status) {
+          await SharedPr.setRemoteDatabaseInfo(
+              subscriptionInfo: SubscriptionInfo(
+                  url: SharedPrPackage.SharedPr.subscriptionDetailsObj!.url,
+                  db: SharedPrPackage.SharedPr.subscriptionDetailsObj!.db));
           appSnackBar(
             messageType: MessageTypes.success,
             message: 'success_key_login'.tr,
@@ -1090,7 +1116,7 @@ class RPSback extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Layer 1
 
-    Paint paint_fill_0 = Paint()
+    Paint paintFill0 = Paint()
       ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
       ..style = PaintingStyle.fill
       ..strokeWidth = size.width * 0.00
@@ -1113,18 +1139,18 @@ class RPSback extends CustomPainter {
         size.height * 0.6699667);
     path_0.close();
 
-    canvas.drawPath(path_0, paint_fill_0);
+    canvas.drawPath(path_0, paintFill0);
 
     // Layer 1
 
-    Paint paint_stroke_0 = Paint()
+    Paint paintStroke0 = Paint()
       ..color = const Color.fromARGB(255, 33, 150, 243)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.00
       ..strokeCap = StrokeCap.butt
       ..strokeJoin = StrokeJoin.miter;
 
-    canvas.drawPath(path_0, paint_stroke_0);
+    canvas.drawPath(path_0, paintStroke0);
   }
 
   @override
@@ -1142,7 +1168,7 @@ class RPSback2 extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Layer 1
 
-    Paint paint_fill_0 = Paint()
+    Paint paintFill0 = Paint()
       ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
       ..style = PaintingStyle.fill
       ..strokeWidth = size.width * 0.00
@@ -1165,18 +1191,18 @@ class RPSback2 extends CustomPainter {
     path_0.lineTo(0, size.height * -0.0033333);
     path_0.close();
 
-    canvas.drawPath(path_0, paint_fill_0);
+    canvas.drawPath(path_0, paintFill0);
 
     // Layer 1
 
-    Paint paint_stroke_0 = Paint()
+    Paint paintStroke0 = Paint()
       ..color = const Color.fromARGB(255, 33, 150, 243)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.00
       ..strokeCap = StrokeCap.butt
       ..strokeJoin = StrokeJoin.miter;
 
-    canvas.drawPath(path_0, paint_stroke_0);
+    canvas.drawPath(path_0, paintStroke0);
   }
 
   @override

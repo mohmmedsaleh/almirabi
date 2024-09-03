@@ -22,8 +22,7 @@ class AuthenticationService implements AuthenticationRepository {
   // ========================================== [ AUTHENTICATE ] =============================================
 
   @override
-  Future authenticate(
-      {required String visaNumber, required String pinNumber}) async {
+  Future authenticate({required String pinNumber}) async {
     try {
       OdooProjectOwnerConnectionHelper.odooSession = null;
       await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
@@ -43,7 +42,7 @@ class AuthenticationService implements AuthenticationRepository {
       var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
         'model': OdooModels.transfunctions,
         'method': 'authentication_login',
-        'args': [visaNumber, pinNumber],
+        'args': [pinNumber],
         'kwargs': {},
       });
       if (result is bool) {

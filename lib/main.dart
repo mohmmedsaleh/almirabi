@@ -1,17 +1,16 @@
 import 'dart:ui';
 
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
+import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
+import 'package:almirabi/features/remote_database_setting/domain/remote_database_setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_service.dart';
-import 'package:pos_package/pos_package.dart';
 import 'package:pos_package/core/config/app_shared_pr.dart' as SharedPrPackage;
 import 'core/config/app_colors.dart';
 import 'core/config/app_messages_translation.dart';
 import 'core/config/app_shared_pr.dart';
 import 'core/utils/db_helper.dart';
-import 'features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'features/remote_database_setting/presentation/remote_database_screen.dart';
 
 void main() async {
@@ -21,7 +20,7 @@ void main() async {
   await SharedPrPackage.SharedPr.init();
   SharedPr.retrieveInfo();
   await DbHelper.getInstance();
-  await RemoteDatabaseSettingService.instantiateOdooConnection();
+  await RemoteDatabaseSettingService.instantiateOdooConnection(url: );
   runApp(const MyApp());
 }
 
@@ -57,14 +56,14 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'Tajawal',
               ),
         ),
-        home: SharedPr.subscriptionDetailsObj?.url == null
-            ? const RemoteDatabaseScreen2()
-            :
-            // SharedPr.userObj?.name == null
-            //     ?
-            // TokenScreen()
-            const LoginScreen2()
-        // : const RequestListScreen2()
-        );
+        home:
+            //  SharedPrPackage.
+            SharedPr.subscriptionDetailsObj?.url == null
+                ? const RemoteDatabaseScreen2()
+                : SharedPr.userObj?.name == null
+                    ?
+                    // TokenScreen()
+                    const LoginScreen2()
+                    : const RequestListScreen2());
   }
 }

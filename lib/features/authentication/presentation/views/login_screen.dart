@@ -1,5 +1,3 @@
-import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/config/app_colors.dart';
@@ -11,8 +9,6 @@ import '../../../../core/shared_widgets/app_header_icons.dart';
 import '../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../core/utils/response_result.dart';
-import '../../../basic_data_management/request/presentation/view/request_list_screen.dart';
-import '../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../loading_synchronizing_data/presentation/views/data_loading_screen.dart';
 import '../../../remote_database_setting/presentation/remote_database_screen.dart';
 import '../../data/login_info.dart';
@@ -316,7 +312,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
             children: [
               CustomBack(
                 height: MediaQuery.of(context).size.height * 0.2,
-                color: Color(0XFF3967d7),
+                color: const Color(0XFF3967d7),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                   child: Row(
@@ -341,7 +337,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                             height: Get.width * 0.07,
                             darkBackground: true,
                             onTap: () async {
-                              Get.to(() => RemoteDatabaseScreen2(
+                              Get.to(() => const RemoteDatabaseScreen2(
                                     changeConnectionInfo: true,
                                   ));
                             }),
@@ -361,7 +357,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
 
               Form(
                 key: _formKey,
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.7,
                   // color: Color(0XFF3967d7),
                   child: Column(
@@ -371,12 +367,12 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     children: [
                       Container(
                         height: Get.width * 0.6,
-                        padding: EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.only(top: 30),
                         child: CustomIcon(
                           assetPath: 'assets/images/image.png',
                           size: Get.width * 0.6,
                           padding: 10,
-                          color: Color(0XFF3967d7),
+                          color: const Color(0XFF3967d7),
                         ),
                       ),
                       SizedBox(height: Get.height * 0.1),
@@ -385,7 +381,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                         style: TextStyle(
                             fontSize: Get.width * 0.05,
                             fontWeight: FontWeight.bold,
-                            color: Color(0XFF3967d7)),
+                            color: const Color(0XFF3967d7)),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -446,7 +442,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                               controller: pinNumberController,
                               prefixIcon: CustomIcon(
                                   padding: 10,
-                                  color: Color(0XFF3967d7),
+                                  color: const Color(0XFF3967d7),
                                   size: Get.width * 0.05,
                                   assetPath: 'assets/images/key.png'),
                               hintText: 'pin_number'.tr,
@@ -468,7 +464,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                                       });
                                     },
                                     icon: flag
-                                        ? Icon(
+                                        ? const Icon(
                                             Icons.visibility,
                                             color: Color(0XFF3967d7),
                                           )
@@ -511,7 +507,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                                     borderRadius: 20,
                                     text: 'login'.tr,
                                     width: Get.width,
-                                    backgroundColor: Color(0XFF3967d7),
+                                    backgroundColor: const Color(0XFF3967d7),
                                     onPressed: onPressed);
                               }
                             }),

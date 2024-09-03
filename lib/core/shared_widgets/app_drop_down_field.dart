@@ -95,15 +95,15 @@ class ContainerDropDownField extends StatelessWidget {
             ),
             focusedBorder: isPIN!
                 ? InputBorder.none
-                : OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                : const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(
                       color: Color(0XFF3967d7),
                     )),
             border: isPIN!
                 ? InputBorder.none
-                : OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                : const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(
                       color: Color(0XFF3967d7),
                     )),

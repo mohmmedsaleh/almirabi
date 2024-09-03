@@ -6,16 +6,13 @@ import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
-import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_month_select/flutter_month_select.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/config/app_shared_pr.dart';
-import '../../../../../core/shared_widgets/app_button.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
-import '../../../../../core/shared_widgets/app_custombackgrond.dart';
 import '../../../../../core/shared_widgets/app_drop_down_field.dart';
 import '../../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
@@ -1164,7 +1161,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0XFFfafafa),
+        backgroundColor: const Color(0XFFfafafa),
         appBar: customAppBar(headerBackground: true, userOpstionShow: true),
         body: GetBuilder<RequestController>(builder: (controller) {
           return Container(
@@ -1172,7 +1169,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
               children: [
                 CustomBack(
                   height: MediaQuery.of(context).size.height * 0.1,
-                  color: Color(0XFF3967d7),
+                  color: const Color(0XFF3967d7),
                   child: Row(
                     children: [
                       Expanded(
@@ -1184,13 +1181,13 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                   : Get.back();
                             },
                             icon: Container(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                     color: AppColor.white,
                                     shape: BoxShape.circle),
                                 child: Icon(
                                   Icons.arrow_back_ios_new_outlined,
-                                  color: Color(0XFF3967d7),
+                                  color: const Color(0XFF3967d7),
                                   size: Get.width * 0.05,
                                 ))),
                       ),
@@ -1482,16 +1479,18 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(20),
+                                                                .circular(10),
                                                         boxShadow: [
                                                           BoxShadow(
                                                               blurRadius: 100,
                                                               color: AppColor
                                                                   .backgroundTable,
                                                               offset:
-                                                                  Offset(2, 2))
+                                                                  const Offset(
+                                                                      2, 2))
                                                         ],
-                                                        color: Color(0XFF3967d7)
+                                                        color: const Color(
+                                                                0XFF3967d7)
                                                             .withOpacity(0.1)),
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -1545,34 +1544,70 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                             // );
                                             month = await _selectMonth();
                                             if (month != null) {
-                                              if (month! < 10) {
-                                                monthTextController =
-                                                    '0${month}';
+                                              var isFind = controller
+                                                  .requestList
+                                                  .any((e) =>
+                                                      e.fromDate ==
+                                                      DateTime(
+                                                              DateTime.now()
+                                                                  .year,
+                                                              month!,
+                                                              1)
+                                                          .toString()
+                                                          .substring(0, 10));
+                                              // var ss = controller.requestList
+                                              //     .firstWhere((e) =>
+                                              //         e.fromDate ==
+                                              //         DateTime(
+                                              //                 DateTime.now()
+                                              //                     .year,
+                                              //                 month!,
+                                              //                 1)
+                                              //             .toString()
+                                              //             .substring(0, 10));
+                                              // print(ss.fromDate);
+                                              if (isFind) {
+                                                ///snakbar
+                                                appSnackBar(
+                                                    message:
+                                                        'period_valdation'.tr);
                                               } else {
-                                                monthTextController =
-                                                    month.toString();
+                                                if (month! < 10) {
+                                                  monthTextController =
+                                                      '0$month';
+                                                } else {
+                                                  monthTextController =
+                                                      month.toString();
+                                                }
+                                                fromDateTextController =
+                                                    DateTime(
+                                                            DateTime.now().year,
+                                                            month!,
+                                                            1)
+                                                        .toString()
+                                                        .substring(0, 10);
+                                                toDateTextController = DateTime(
+                                                        DateTime.now().year,
+                                                        month! + 1,
+                                                        0)
+                                                    .toString()
+                                                    .substring(0, 10);
                                               }
-                                              fromDateTextController = DateTime(
-                                                      DateTime.now().year,
-                                                      month!,
-                                                      1)
-                                                  .toString()
-                                                  .substring(0, 10);
-                                              toDateTextController = DateTime(
-                                                      DateTime.now().year,
-                                                      month! + 1,
-                                                      0)
-                                                  .toString()
-                                                  .substring(0, 10);
                                             } else {
                                               ///snakbar
+
+                                              appSnackBar(
+                                                  message: 'required_message_f'
+                                                      .trParams({
+                                                'field_name': 'period'.tr
+                                              }));
                                             }
                                             controller.update();
                                           },
                                           child: Container(
                                             height: Get.height * 0.07,
                                             width: Get.width * 0.5,
-                                            padding: EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(8),
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -1581,9 +1616,10 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                       blurRadius: 100,
                                                       color: AppColor
                                                           .backgroundTable,
-                                                      offset: Offset(2, 2))
+                                                      offset:
+                                                          const Offset(2, 2))
                                                 ],
-                                                color: Color(0xffc3c3c6)
+                                                color: const Color(0xffc3c3c6)
                                                     .withOpacity(0.5)),
                                             child: Row(
                                               // mainAxisAlignment:
@@ -1595,7 +1631,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            15),
+                                                            10),
                                                     color: AppColor.white,
                                                   ),
                                                   child: Icon(
@@ -2122,7 +2158,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
-                                                                    color: Color(
+                                                                    color: const Color(
                                                                         0XFF3967d7))),
                                                             Padding(
                                                                 padding:
@@ -2139,24 +2175,23 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                   },
                                                                   child: Container(
                                                                       width: Get.width * 0.2,
-                                                                      height: Get.height * 0.05,
+                                                                      height: Get.height * 0.03,
                                                                       decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(20),
+                                                                          borderRadius: BorderRadius.circular(10),
                                                                           boxShadow: [
                                                                             BoxShadow(
                                                                                 blurRadius: 100,
                                                                                 color: AppColor.backgroundTable,
-                                                                                offset: Offset(2, 2))
+                                                                                offset: const Offset(2, 2))
                                                                           ],
-                                                                          color: Color(0XFF3967d7).withOpacity(0.1)),
+                                                                          color: const Color(0XFF3967d7).withOpacity(0.1)),
                                                                       child: Center(
                                                                           child: Text(
                                                                         'new'
                                                                             .tr,
                                                                         style: TextStyle(
-                                                                            color:
-                                                                                AppColor.black,
-                                                                            fontWeight: FontWeight.w600,
+                                                                            color: AppColor.black,
+                                                                            // fontWeight: FontWeight.w600,
                                                                             fontSize: Get.width * 0.04),
                                                                       ))),
                                                                 )),
@@ -2270,7 +2305,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                           orElse: () =>
                                                                               SourcePathLine());
 
-                                                                      var is_added =
+                                                                      var isAdded =
                                                                           requestLineList
                                                                               .any(
                                                                         (e) =>
@@ -2278,7 +2313,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                             sourcePathLine.destName,
                                                                       );
 
-                                                                      if (is_added) {
+                                                                      if (isAdded) {
                                                                         var index = requestLineList.indexWhere((e) =>
                                                                             e.destId ==
                                                                             sourcePathLine.destId);
@@ -2403,8 +2438,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                   child:
                                                                       Container(
                                                                     padding:
-                                                                        EdgeInsets
-                                                                            .all(8),
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            8),
                                                                     // margin:
                                                                     //     EdgeInsets
                                                                     //         .all(
@@ -2412,8 +2448,8 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                     decoration: BoxDecoration(
                                                                         borderRadius:
                                                                             BorderRadius.circular(
-                                                                                15),
-                                                                        color: Color(0XFF3967d7)
+                                                                                10),
+                                                                        color: const Color(0XFF3967d7)
                                                                             .withOpacity(0.05)),
                                                                     child: Row(
                                                                       children: [
@@ -2423,16 +2459,16 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                           child:
                                                                               ListTile(
                                                                             leading:
-                                                                                Icon(Icons.location_on),
+                                                                                const Icon(Icons.location_on),
                                                                             title:
                                                                                 Text(
                                                                               e.destName!,
-                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
                                                                             ),
                                                                             subtitle:
                                                                                 Text(
                                                                               e.destPrice.toString(),
-                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
                                                                             ),
                                                                             trailing:
                                                                                 Column(
@@ -2440,11 +2476,11 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                               children: [
                                                                                 Text(
                                                                                   e.quantity.toString(),
-                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
                                                                                 ),
                                                                                 Text(
                                                                                   e.destTotalPrice.toString(),
-                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -2486,7 +2522,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                                 // requests!.requestLines = requestLineList;
                                                                                 controller.update();
                                                                               },
-                                                                              icon: Icon(Icons.delete)),
+                                                                              icon: const Icon(Icons.delete)),
                                                                         )
                                                                       ],
                                                                     ),
@@ -2593,11 +2629,11 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                           requestLineList.isNotEmpty
                               ? Container(
                                   width: Get.width,
-                                  padding: const EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(15),
                                   decoration: BoxDecoration(
-                                      color:
-                                          Color(0XFF3967d7).withOpacity(0.07),
-                                      borderRadius: BorderRadius.only(
+                                      color: const Color(0XFF3967d7)
+                                          .withOpacity(0.07),
+                                      borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(20),
                                           topRight: Radius.circular(20))),
                                   child: Column(
@@ -2668,7 +2704,6 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
 
                                                   print(
                                                       'requests ${requests!.toJson()}');
-
                                                   if (widget.isAdd) {
                                                     result = await controller
                                                         .createRequest(
@@ -2723,11 +2758,11 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                             },
                                             child: Container(
                                               width: Get.width,
-                                              padding: EdgeInsets.all(7),
+                                              padding: const EdgeInsets.all(7),
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  color: Color(0XFF3967d7)
+                                                  color: const Color(0XFF3967d7)
                                                       .withOpacity(0.2)),
                                               child: Center(
                                                   child: Text(

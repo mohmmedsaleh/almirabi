@@ -66,7 +66,8 @@ class Requests {
     state = fromState(json['state'].toString());
     requestLines = [];
     for (var element in linsList) {
-      requestLines!.add(SourcePathLine.fromJson(element
+      requestLines!.add(SourcePathLine.fromJson(element,
+          fromTemblet: fromTemblet
           // destId:
           //     fromTemblet ? element['destination_path_id'] : element['dest_id'],
           // destName: fromTemblet
@@ -86,7 +87,7 @@ class Requests {
     List listId = [];
     if (isRemotelyAdded) {
       for (var element in requestLines!) {
-        listId.add(element.toJson());
+        listId.add(element.toJson(isRemotelyAdded: isRemotelyAdded));
       }
     }
     // print(requestLines);

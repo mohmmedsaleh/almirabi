@@ -1,16 +1,10 @@
-import 'dart:convert';
-
-import 'package:almirabi/core/shared_widgets/custom_app_bar.dart';
 import 'package:almirabi/core/utils/response_result.dart';
 import 'package:almirabi/features/basic_data_management/car/domain/car_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/domain/request_viewmodel.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
-import 'package:almirabi/features/basic_data_management/request/presentation/view/reports_list_screen.dart';
 import 'package:almirabi/features/basic_data_management/source_path/domain/source_path_viewmodel.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
@@ -18,17 +12,10 @@ import '../../../../../core/config/app_enums.dart';
 import '../../../../../core/config/app_lists.dart';
 import '../../../../../core/config/app_shared_pr.dart';
 import '../../../../../core/shared_widgets/app_custom_icon.dart';
-import '../../../../../core/shared_widgets/app_custombackgrond.dart';
-import '../../../../../core/shared_widgets/app_drop_down_field.dart';
 import '../../../../../core/shared_widgets/app_snack_bar.dart';
-import '../../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../../core/shared_widgets/cusuom_app_drawer.dart';
-import '../../../../authentication/presentation/views/login_screen.dart';
-import '../../../../authentication/utils/odoo_connection_helper.dart';
-import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../car/data/car.dart';
 import '../../../source_path/data/source_path.dart';
-import '../../utils/filtter_request.dart';
 import '../../data/request.dart';
 import '../../domain/request_service.dart';
 import '../widgets/show_months_dailog.dart';
@@ -663,17 +650,17 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
   Widget build(BuildContext context) {
     return GetBuilder<RequestController>(builder: (controller) {
       return Scaffold(
-        backgroundColor: Color(0XFFfafafa),
+        backgroundColor: const Color(0XFFfafafa),
         appBar: AppBar(
             backgroundColor: AppColor.white,
-            foregroundColor: Color(0XFF3967d7),
+            foregroundColor: const Color(0XFF3967d7),
             title: Center(
               child: Text(
                 "requests".tr,
                 style: TextStyle(
                     fontSize: Get.width * 0.05,
                     fontWeight: FontWeight.bold,
-                    color: Color(0XFF3967d7)),
+                    color: const Color(0XFF3967d7)),
               ),
             ),
             actions: [
@@ -700,10 +687,10 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                   await SharedPr.setLanguage(
                       lang: SharedPr.lang == 'en' ? 'ar' : 'en');
                 },
-                icon: Icon(Icons.language),
+                icon: const Icon(Icons.language),
               ),
             ]),
-        drawer: CustomDrawer(
+        drawer: const CustomDrawer(
           currentRoute: '/RequestListScreen',
         ),
         body: Column(
@@ -748,10 +735,10 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircularProgressIndicator(
-                              color: Color(0XFF3967d7),
+                              color: const Color(0XFF3967d7),
                               backgroundColor: AppColor.black,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text('data_isloading'.tr)
@@ -786,8 +773,8 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                         height: Get.width * 0.1,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Color(0XFF3967d7),
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0XFF3967d7),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -815,8 +802,8 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                     height: Get.width * 0.1,
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Color(0XFF3967d7),
-                      borderRadius: BorderRadius.circular(20),
+                      color: const Color(0XFF3967d7),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -852,21 +839,21 @@ class FiltterWidget extends StatelessWidget {
     return Container(
       height: Get.height * 0.1,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
                 blurRadius: 100,
                 color: AppColor.backgroundTable,
-                offset: Offset(2, 2))
+                offset: const Offset(2, 2))
           ],
           color: AppColor.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ...stateList.entries.map((e) => Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -905,11 +892,11 @@ class FiltterWidget extends StatelessWidget {
                         backgroundColor: isLoacl
                             ? requestController.searchRequstsController.text ==
                                     e.key.name
-                                ? Color(0XFF3967d7)
+                                ? const Color(0XFF3967d7)
                                 : AppColor.backgroundTable
                             : requestController.searchReportsController.text ==
                                     e.key.name
-                                ? Color(0XFF3967d7)
+                                ? const Color(0XFF3967d7)
                                 : AppColor.backgroundTable,
                         child: CustomIcon(
                             assetPath: e.value[0],
@@ -931,7 +918,8 @@ class FiltterWidget extends StatelessWidget {
                     Text(
                       e.key.toString(),
                       style: TextStyle(
-                          fontSize: Get.width * 0.03, color: Color(0XFF3967d7)),
+                          fontSize: Get.width * 0.03,
+                          color: const Color(0XFF3967d7)),
                     )
                   ],
                 ),
@@ -975,15 +963,15 @@ class card_data2 extends StatelessWidget {
       child: Container(
           height: Get.height * 0.14,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
                     blurRadius: 100,
                     color: AppColor.backgroundTable,
-                    offset: Offset(2, 2))
+                    offset: const Offset(2, 2))
               ],
               color: AppColor.white),
           child: Column(
@@ -995,11 +983,11 @@ class card_data2 extends StatelessWidget {
                     Container(
                       width: Get.width * 0.13,
                       height: Get.width * 0.13,
-                      margin: EdgeInsets.all(5),
-                      padding: EdgeInsets.all(7),
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                           color: AppColor.backgroundTable,
-                          borderRadius: BorderRadius.circular(15)),
+                          borderRadius: BorderRadius.circular(10)),
                       child: CustomIcon(
                           padding: 4,
                           size: Get.width * 0.1,
@@ -1085,11 +1073,11 @@ class card_data2 extends StatelessWidget {
                     Container(
                       // width: Get.width * 0.2,
                       height: Get.height * 0.03,
-                      margin: EdgeInsets.all(5),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 3),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(10),
                         color: AppColor.backgroundTable,
                       ),
                       child: Center(
@@ -1117,12 +1105,12 @@ class card_data2 extends StatelessWidget {
                                   width: Get.width * 0.2,
                                   height: Get.height,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(10),
                                     boxShadow: [
                                       BoxShadow(
                                           blurRadius: 100,
                                           color: AppColor.backgroundTable,
-                                          offset: Offset(2, 2))
+                                          offset: const Offset(2, 2))
                                     ],
                                     color: AppColor.backgroundTable,
                                   ),
@@ -1155,21 +1143,21 @@ class card_data2 extends StatelessWidget {
                                   width: Get.width * 0.2,
                                   height: Get.height,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(10),
                                       boxShadow: [
                                         BoxShadow(
                                             blurRadius: 100,
                                             color: AppColor.backgroundTable,
-                                            offset: Offset(2, 2))
+                                            offset: const Offset(2, 2))
                                       ],
-                                      color:
-                                          Color(0XFF3967d7).withOpacity(0.1)),
+                                      color: const Color(0XFF3967d7)
+                                          .withOpacity(0.1)),
                                   child: Center(
                                     child: Text("send".tr,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: Get.width * 0.03,
-                                            color: Color(0XFF3967d7))),
+                                            color: const Color(0XFF3967d7))),
                                   ),
                                 ),
                               ),

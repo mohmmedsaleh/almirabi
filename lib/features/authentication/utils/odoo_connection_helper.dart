@@ -1,7 +1,7 @@
+import 'package:almirabi/core/config/app_shared_pr.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:pos_package/core/config/app_shared_pr.dart';
 
 // import '../../../core/config/app_shared_pr.dart';
 import '../../../core/config/app_urls.dart';
@@ -14,6 +14,9 @@ class OdooProjectOwnerConnectionHelper {
   static Future instantiateOdooConnection() async {
     // change
     try {
+      print("======================================");
+      print(
+          'SharedPr.subscriptionDetailsObj!.url! ${SharedPr.subscriptionDetailsObj!.url!}');
       odooClient = OdooClient(SharedPr.subscriptionDetailsObj!.url!);
       odooSession = await odooClient.authenticate(
           SharedPr.subscriptionDetailsObj!.db!, remoteUsername, remotePassword);
@@ -25,9 +28,9 @@ class OdooProjectOwnerConnectionHelper {
       return 'login_information_incorrect'.tr;
     } catch (e) {
       // sessionClosed = true;
-      // if (kDebugMode) {
-      //   print('Exception : ${e.toString()}');
-      // }
+      if (kDebugMode) {
+        print('Exception : ${e.toString()}');
+      }
       return 'exception'.tr;
     }
   }

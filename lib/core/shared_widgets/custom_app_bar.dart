@@ -195,9 +195,9 @@ PreferredSizeWidget customAppBar(
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
         border: Border.all(
-          color: headerBackground ? Color(0XFF3967d7) : Colors.transparent,
+          color: headerBackground ? const Color(0XFF3967d7) : Colors.transparent,
         ),
-        color: headerBackground ? Color(0XFF3967d7) : Colors.transparent,
+        color: headerBackground ? const Color(0XFF3967d7) : Colors.transparent,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -221,7 +221,7 @@ PreferredSizeWidget customAppBar(
                       icon: Icons.settings,
                       darkBackground: headerBackground,
                       onTap: () async {
-                        Get.to(() => RemoteDatabaseScreen2(
+                        Get.to(() => const RemoteDatabaseScreen2(
                               changeConnectionInfo: true,
                             ));
                       }),

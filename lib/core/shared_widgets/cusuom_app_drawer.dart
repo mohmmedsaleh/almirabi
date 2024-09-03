@@ -16,7 +16,7 @@ import 'app_snack_bar.dart';
 import 'custom_app_bar.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({super.key, required this.currentRoute});
+  const CustomDrawer({super.key, required this.currentRoute});
   final String currentRoute;
   @override
   Widget build(BuildContext context) {
@@ -25,24 +25,24 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // color: Colors.green, // Change this to your desired color
               // You can also use a gradient if desired
               gradient: LinearGradient(
                 end: Alignment.topLeft,
                 colors: [
                   Color(0XFF3967d7),
-                  const Color.fromRGBO(173, 89, 31, 200),
+                  Color.fromRGBO(173, 89, 31, 200),
                 ],
               ),
             ),
             accountName: Text(
-              '${SharedPr.userObj?.name ?? ''}',
+              SharedPr.userObj?.name ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.width * 0.035),
             ),
-            accountEmail: Text(
+            accountEmail: const Text(
               '',
             ),
             currentAccountPicture: ClipRRect(
@@ -87,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
               : ListTile(
                   leading: CustomIcon(
                       assetPath: 'assets/images/report.png',
-                      color: Color(0XFF3967d7),
+                      color: const Color(0XFF3967d7),
                       size: MediaQuery.of(context).size.height * 0.03),
                   title: Text(
                     "Reports".tr,
@@ -118,13 +118,13 @@ class CustomDrawer extends StatelessWidget {
                     // Close the drawer
                   },
                 ),
-          currentRoute == '/ReportScreen' ? Container() : Divider(),
+          currentRoute == '/ReportScreen' ? Container() : const Divider(),
           currentRoute == '/RequestListScreen'
               ? Container()
               : ListTile(
                   leading: CustomIcon(
                       assetPath: 'assets/images/request.png',
-                      color: Color(0XFF3967d7),
+                      color: const Color(0XFF3967d7),
                       size: MediaQuery.of(context).size.height * 0.03),
                   title: Text(
                     "requests".tr,
@@ -142,11 +142,11 @@ class CustomDrawer extends StatelessWidget {
                         () => const RequestListScreen2()); // Close the drawer
                   },
                 ),
-          currentRoute == '/RequestListScreen' ? Container() : Divider(),
+          currentRoute == '/RequestListScreen' ? Container() : const Divider(),
           ListTile(
             leading: Icon(
               Icons.logout_rounded,
-              color: Color(0XFF3967d7),
+              color: const Color(0XFF3967d7),
               size: MediaQuery.of(context).size.height * 0.03,
             ),
             title: Text(

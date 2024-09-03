@@ -177,6 +177,7 @@ class RequestController extends GetxController {
     if (!connectivityResult.contains(ConnectivityResult.none)) {
       OdooProjectOwnerConnectionHelper.odooSession = null;
       if (requests.isNotEmpty) {
+        print("==============================================");
         await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
         var remoteResult =
             await requestService.createRequestRemotely(obj: requests);
@@ -198,7 +199,7 @@ class RequestController extends GetxController {
 
           // car.id = remoteResult;
           LoadingDataController loadingDataController =
-              Get.put(LoadingDataController());
+              Get.put(LoadingDataController(fromReportsScreen: true));
           // await requestService.create(obj: car, isRemotelyAdded: true);
           update();
           return ResponseResult(
@@ -250,7 +251,6 @@ class RequestController extends GetxController {
       OdooProjectOwnerConnectionHelper.odooSession = null;
       await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
       var remoteResult = await requestService.indexRemotly(obj: dataRepots);
-      reportsList.clear();
 
       if (remoteResult is List<Requests>) {
         print(remoteResult.length);
@@ -277,6 +277,7 @@ class RequestController extends GetxController {
           // }
           // }
         }
+        reportsList.clear();
         reportsList.addAll(remoteResult);
         LoadingDataController loadingDataController =
             Get.put(LoadingDataController(fromReportsScreen: true));
@@ -315,7 +316,7 @@ class RequestController extends GetxController {
             .where((e) => e.state == request.fromState(query))
             .toList();
 
-        searchResults.addAll(result as List<Requests>);
+        searchResults.addAll(result);
 
         update();
       }

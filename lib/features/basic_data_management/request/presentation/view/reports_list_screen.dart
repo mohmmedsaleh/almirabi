@@ -1,23 +1,14 @@
 import 'package:almirabi/core/utils/response_result.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
 import '../../../../../core/config/app_enums.dart';
-import '../../../../../core/config/app_lists.dart';
 import '../../../../../core/config/app_shared_pr.dart';
-import '../../../../../core/shared_widgets/app_custom_icon.dart';
-import '../../../../../core/shared_widgets/app_custombackgrond.dart';
-import '../../../../../core/shared_widgets/app_drop_down_field.dart';
 import '../../../../../core/shared_widgets/app_snack_bar.dart';
-import '../../../../../core/shared_widgets/app_text_field.dart';
-import '../../../../../core/shared_widgets/custom_app_bar.dart';
 import '../../../../../core/shared_widgets/cusuom_app_drawer.dart';
-import '../../../../loading_synchronizing_data/domain/loading_synchronizing_data_viewmodel.dart';
 import '../../../car/domain/car_viewmodel.dart';
 import '../../../source_path/domain/source_path_viewmodel.dart';
-import '../../utils/filtter_request.dart';
 import '../../domain/request_viewmodel.dart';
 import 'request_list_screen.dart';
 
@@ -407,17 +398,17 @@ class _ReportScreen2State extends State<ReportScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0XFFfafafa),
+        backgroundColor: const Color(0XFFfafafa),
         appBar: AppBar(
             backgroundColor: AppColor.white,
-            foregroundColor: Color(0XFF3967d7),
+            foregroundColor: const Color(0XFF3967d7),
             title: Center(
               child: Text(
                 "Reports".tr,
                 style: TextStyle(
                     fontSize: Get.width * 0.05,
                     fontWeight: FontWeight.bold,
-                    color: Color(0XFF3967d7)),
+                    color: const Color(0XFF3967d7)),
               ),
             ),
             actions: [
@@ -574,10 +565,10 @@ class _ReportScreen2State extends State<ReportScreen2> {
                   await SharedPr.setLanguage(
                       lang: SharedPr.lang == 'en' ? 'ar' : 'en');
                 },
-                icon: Icon(Icons.language),
+                icon: const Icon(Icons.language),
               ),
             ]),
-        drawer: CustomDrawer(
+        drawer: const CustomDrawer(
           currentRoute: '/ReportScreen',
         ),
         body: GetBuilder<RequestController>(builder: (controller) {
@@ -592,7 +583,7 @@ class _ReportScreen2State extends State<ReportScreen2> {
                         SharedPr.userObj!.sourcePath!.sourcePathName!.isNotEmpty
                     ? requestController.searchReportsController.text == ''
                         ? RefreshIndicator(
-                            color: Color(0XFF3967d7),
+                            color: const Color(0XFF3967d7),
                             onRefresh: getAllReports,
                             child: SizedBox(
                               height: Get.height,
@@ -627,28 +618,49 @@ class _ReportScreen2State extends State<ReportScreen2> {
                             //   ),
                             // ),
                             )
-                        : Wrap(
-                            direction: Axis.horizontal,
-                            children: [
-                              ...requestController.searchResults
-                                  .map((item) => card_data2(
-                                        sourcePathList:
-                                            sourcePathController.sourcePathList,
-                                        carList: carController.carList,
-                                        item: item,
-                                        isRequst: false,
-                                      ))
-                            ],
-                          )
+                        : RefreshIndicator(
+                            color: const Color(0XFF3967d7),
+                            onRefresh: getAllReports,
+                            child: SizedBox(
+                              height: Get.height,
+                              child: ListView.builder(
+                                itemCount:
+                                    requestController.searchResults.length,
+                                itemBuilder: (BuildContext Context, int index) {
+                                  var item =
+                                      requestController.searchResults[index];
+                                  return card_data2(
+                                    sourcePathList:
+                                        sourcePathController.sourcePathList,
+                                    carList: carController.carList,
+                                    item: item,
+                                    isRequst: false,
+                                  );
+                                },
+                              ),
+                            ))
+                    //  Wrap(
+                    //     direction: Axis.horizontal,
+                    //     children: [
+                    //       ...requestController.searchResults
+                    //           .map((item) => card_data2(
+                    //                 sourcePathList:
+                    //                     sourcePathController.sourcePathList,
+                    //                 carList: carController.carList,
+                    //                 item: item,
+                    //                 isRequst: false,
+                    //               ))
+                    //     ],
+                    //   )
                     : Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircularProgressIndicator(
-                              color: Color(0XFF3967d7),
+                              color: const Color(0XFF3967d7),
                               backgroundColor: AppColor.black,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text('data_isloading'.tr)

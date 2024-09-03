@@ -2,7 +2,6 @@
 
 import 'package:almirabi/features/authentication/data/user.dart';
 import 'package:almirabi/features/basic_data_management/source_path/data/source_path.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
@@ -12,7 +11,6 @@ import '../../../core/utils/define_type_function.dart';
 import '../../../core/utils/general_local_db.dart';
 import '../../authentication/utils/handle_exception_helper.dart';
 import '../../authentication/utils/odoo_connection_helper.dart';
-import '../../basic_data_management/car/data/car.dart';
 
 import 'loading_synchronizing_data_repository.dart';
 
@@ -92,10 +90,10 @@ class LoadingSynchronizingDataService
       required obj,
       required columnToUpdate,
       required String whereField}) async {
-    GeneralLocalDB<User>? _generalLocalDBInstance =
+    GeneralLocalDB<User>? generalLocalDBInstance =
         GeneralLocalDB.getInstance<User>(fromJsonFun: User.fromJson)
             as GeneralLocalDB<User>?;
-    return await _generalLocalDBInstance!.updatewhere(
+    return await generalLocalDBInstance!.updatewhere(
         id: id,
         obj: obj,
         whereField: whereField,
