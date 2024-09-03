@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:almirabi/core/config/app_urls.dart';
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'package:almirabi/features/remote_database_setting/domain/remote_database_setting_service.dart';
@@ -20,7 +21,11 @@ void main() async {
   await SharedPrPackage.SharedPr.init();
   SharedPr.retrieveInfo();
   await DbHelper.getInstance();
-  await RemoteDatabaseSettingService.instantiateOdooConnection(url: );
+  await RemoteDatabaseSettingService.instantiateOdooConnection(
+      url: remoteURL,
+      db: remotedB,
+      username: remoteUsername,
+      password: remotePassword);
   runApp(const MyApp());
 }
 
