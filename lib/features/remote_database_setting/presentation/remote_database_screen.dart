@@ -1,7 +1,9 @@
+import 'package:almirabi/core/config/app_urls.dart';
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
 import 'package:almirabi/features/remote_database_setting/data/subscription_info.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_service.dart';
 import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
 
 import '../../../core/config/app_colors.dart';
@@ -848,6 +850,7 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
                   children: [
                     Container(
                       height: Get.width * 0.6,
+                      // color: const Color(0XFF3967d7),
                       padding: const EdgeInsets.only(top: 30),
                       child: CustomIcon(
                         assetPath: 'assets/images/image.png',
@@ -1024,6 +1027,11 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
 
   _onPressed() async {
     if (_formKey.currentState!.validate()) {
+      await RemoteDatabaseSettingService.instantiateOdooConnection(
+          url: remoteURL,
+          db: remotedB,
+          username: remoteUsername,
+          password: remotePassword);
       remoteDatabaseSettingController
           .checkDatabase(
               loginKey: keyController.text, odooModel: 'subscription.detail')

@@ -21,11 +21,14 @@ void main() async {
   await SharedPrPackage.SharedPr.init();
   SharedPr.retrieveInfo();
   await DbHelper.getInstance();
+  print("====================");
   await RemoteDatabaseSettingService.instantiateOdooConnection(
       url: remoteURL,
       db: remotedB,
       username: remoteUsername,
       password: remotePassword);
+  print("====================");
+
   runApp(const MyApp());
 }
 
