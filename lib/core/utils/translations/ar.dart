@@ -251,5 +251,6 @@ var ar = {
   'add_requst': 'اضافه طلب',
   'refresh': 'تحديث',
   'period': 'الفتره',
-  'period_valdation': 'لا يمكنك اضافه طلبين لهما نفس الشهر '
+  'period_valdation': 'لا يمكنك اضافه طلبين لهما نفس الشهر ',
+  'quantity': 'الكمية',
 };

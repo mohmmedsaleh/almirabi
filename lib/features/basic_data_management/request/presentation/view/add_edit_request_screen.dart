@@ -1168,44 +1168,69 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
             child: Column(
               children: [
                 CustomBack(
-                  height: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.12,
                   color: const Color(0XFF3967d7),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                            onPressed: () {
-                              widget.isAdd
-                                  ? Get.offAll(() => const RequestListScreen2())
-                                  : Get.back();
-                            },
-                            icon: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: AppColor.white,
-                                    shape: BoxShape.circle),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_outlined,
-                                  color: const Color(0XFF3967d7),
-                                  size: Get.width * 0.05,
-                                ))),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Center(
-                          child: Text(
-                            widget.isAdd
-                                ? "add_new_requst".tr
-                                : "edit_requst".tr,
-                            style: TextStyle(
-                                fontSize: Get.width * 0.05,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.white),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                                onPressed: () {
+                                  widget.isAdd
+                                      ? Get.offAll(
+                                          () => const RequestListScreen2())
+                                      : Get.back();
+                                },
+                                icon: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: AppColor.white,
+                                        shape: BoxShape.circle),
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_outlined,
+                                      color: const Color(0XFF3967d7),
+                                      size: Get.width * 0.05,
+                                    ))),
                           ),
-                        ),
+                          Expanded(
+                            flex: 3,
+                            child: Center(
+                              child: Text(
+                                widget.isAdd
+                                    ? "add_new_requst".tr
+                                    : "edit_requst".tr,
+                                style: TextStyle(
+                                    fontSize: Get.width * 0.05,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.white),
+                              ),
+                            ),
+                          ),
+                          Expanded(flex: 1, child: Container())
+                        ],
                       ),
-                      Expanded(flex: 1, child: Container())
+                      SizedBox(
+                        height: Get.height * 0.01,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            SharedPr.userObj!.sourcePath!.sourcePathName!,
+                            style: TextStyle(
+                                color: AppColor.white,
+                                fontSize: Get.width * 0.03),
+                          ),
+                          Text(
+                            SharedPr.userObj!.sourcePath!.car!.name!,
+                            style: TextStyle(
+                                color: AppColor.white,
+                                fontSize: Get.width * 0.03),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -1216,7 +1241,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                 //   child: Text("ssssssssss"),
                 // ),
                 SizedBox(
-                  height: Get.height * 0.03,
+                  height: Get.height * 0.01,
                 ),
                 Expanded(
                   child: Form(
@@ -1397,30 +1422,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                   // ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Expanded(flex: 1, child: Container()),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              SharedPr.userObj!.sourcePath!
-                                                  .sourcePathName!,
-                                              style: TextStyle(
-                                                  color: AppColor.black,
-                                                  fontSize: Get.width * 0.04),
-                                            ),
-                                            Text(
-                                              SharedPr.userObj!.sourcePath!.car!
-                                                  .name!,
-                                              style: TextStyle(
-                                                  color: AppColor.black,
-                                                  fontSize: Get.width * 0.04),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      Expanded(flex: 2, child: Container()),
                                       Expanded(
                                         flex: 1,
                                         child: Obx(() {
@@ -1529,158 +1533,169 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            // final date =
-                                            //     await showDatePickerDialog(
-                                            //   context: context,
-                                            //   minDate: DateTime(1990, 1, 1),
-                                            //   maxDate: DateTime(2100, 12, 31),
-                                            //   height: Get.height / 3,
-                                            //   initialPickerType:
-                                            //       PickerType.months,
-                                            // );
-                                            month = await _selectMonth();
-                                            if (month != null) {
-                                              var isFind = controller
-                                                  .requestList
-                                                  .any((e) =>
-                                                      e.fromDate ==
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              // final date =
+                                              //     await showDatePickerDialog(
+                                              //   context: context,
+                                              //   minDate: DateTime(1990, 1, 1),
+                                              //   maxDate: DateTime(2100, 12, 31),
+                                              //   height: Get.height / 3,
+                                              //   initialPickerType:
+                                              //       PickerType.months,
+                                              // );
+                                              month = await _selectMonth();
+                                              if (month != null) {
+                                                var isFind = controller
+                                                    .requestList
+                                                    .any((e) =>
+                                                        e.fromDate ==
+                                                        DateTime(
+                                                                DateTime.now()
+                                                                    .year,
+                                                                month!,
+                                                                1)
+                                                            .toString()
+                                                            .substring(0, 10));
+                                                // var ss = controller.requestList
+                                                //     .firstWhere((e) =>
+                                                //         e.fromDate ==
+                                                //         DateTime(
+                                                //                 DateTime.now()
+                                                //                     .year,
+                                                //                 month!,
+                                                //                 1)
+                                                //             .toString()
+                                                //             .substring(0, 10));
+                                                // print(ss.fromDate);
+                                                if (isFind) {
+                                                  ///snakbar
+                                                  appSnackBar(
+                                                      message:
+                                                          'period_valdation'
+                                                              .tr);
+                                                } else {
+                                                  if (month! < 10) {
+                                                    monthTextController =
+                                                        '0$month';
+                                                  } else {
+                                                    monthTextController =
+                                                        month.toString();
+                                                  }
+                                                  fromDateTextController =
                                                       DateTime(
                                                               DateTime.now()
                                                                   .year,
                                                               month!,
                                                               1)
                                                           .toString()
-                                                          .substring(0, 10));
-                                              // var ss = controller.requestList
-                                              //     .firstWhere((e) =>
-                                              //         e.fromDate ==
-                                              //         DateTime(
-                                              //                 DateTime.now()
-                                              //                     .year,
-                                              //                 month!,
-                                              //                 1)
-                                              //             .toString()
-                                              //             .substring(0, 10));
-                                              // print(ss.fromDate);
-                                              if (isFind) {
+                                                          .substring(0, 10);
+                                                  toDateTextController =
+                                                      DateTime(
+                                                              DateTime.now()
+                                                                  .year,
+                                                              month! + 1,
+                                                              0)
+                                                          .toString()
+                                                          .substring(0, 10);
+                                                }
+                                              } else {
                                                 ///snakbar
+
                                                 appSnackBar(
                                                     message:
-                                                        'period_valdation'.tr);
-                                              } else {
-                                                if (month! < 10) {
-                                                  monthTextController =
-                                                      '0$month';
-                                                } else {
-                                                  monthTextController =
-                                                      month.toString();
-                                                }
-                                                fromDateTextController =
-                                                    DateTime(
-                                                            DateTime.now().year,
-                                                            month!,
-                                                            1)
-                                                        .toString()
-                                                        .substring(0, 10);
-                                                toDateTextController = DateTime(
-                                                        DateTime.now().year,
-                                                        month! + 1,
-                                                        0)
-                                                    .toString()
-                                                    .substring(0, 10);
+                                                        'required_message_f'
+                                                            .trParams({
+                                                  'field_name': 'period'.tr
+                                                }));
                                               }
-                                            } else {
-                                              ///snakbar
-
-                                              appSnackBar(
-                                                  message: 'required_message_f'
-                                                      .trParams({
-                                                'field_name': 'period'.tr
-                                              }));
-                                            }
-                                            controller.update();
-                                          },
-                                          child: Container(
-                                            height: Get.height * 0.07,
-                                            width: Get.width * 0.5,
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      blurRadius: 100,
-                                                      color: AppColor
-                                                          .backgroundTable,
-                                                      offset:
-                                                          const Offset(2, 2))
-                                                ],
-                                                color: const Color(0xffc3c3c6)
-                                                    .withOpacity(0.5)),
-                                            child: Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.,
-                                              children: [
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(6.0),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: AppColor.white,
+                                              controller.update();
+                                            },
+                                            child: Container(
+                                              height: Get.height * 0.05,
+                                              // width: Get.width * 0.89,
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        blurRadius: 100,
+                                                        color: AppColor
+                                                            .backgroundTable,
+                                                        offset:
+                                                            const Offset(2, 2))
+                                                  ],
+                                                  color: const Color(0xffc3c3c6)
+                                                      .withOpacity(0.5)),
+                                              child: Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.,
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: AppColor.white,
+                                                    ),
+                                                    child: Icon(
+                                                        Icons
+                                                            .date_range_outlined,
+                                                        color: AppColor.black
+                                                            .withOpacity(0.5),
+                                                        size:
+                                                            Get.height * 0.02),
                                                   ),
-                                                  child: Icon(
-                                                      Icons.date_range_outlined,
-                                                      color: AppColor.black
-                                                          .withOpacity(0.5),
-                                                      size: Get.height * 0.04),
-                                                ),
-                                                Expanded(
-                                                  child: Center(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'period'.tr,
-                                                          style: TextStyle(
-                                                              color: AppColor
-                                                                  .black,
-                                                              // fontWeight:
-                                                              //     FontWeight
-                                                              //         .bold,
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.04),
-                                                        ),
-                                                        monthTextController !=
-                                                                null
-                                                            ? Text(
-                                                                monthTextController !=
-                                                                        null
-                                                                    ? monthName(
-                                                                        int.parse(
-                                                                            monthTextController!))
-                                                                    : '',
-                                                                style: TextStyle(
-                                                                    color: AppColor.black,
-                                                                    // fontWeight:
-                                                                    //     FontWeight
-                                                                    //         .bold,
-                                                                    fontSize: Get.width * 0.03),
-                                                              )
-                                                            : Container()
-                                                      ],
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            '${'period'.tr} : ',
+                                                            style: TextStyle(
+                                                                color: AppColor
+                                                                    .black,
+                                                                // fontWeight:
+                                                                //     FontWeight
+                                                                //         .bold,
+                                                                fontSize:
+                                                                    Get.width *
+                                                                        0.03),
+                                                          ),
+                                                          monthTextController !=
+                                                                  null
+                                                              ? Text(
+                                                                  monthTextController !=
+                                                                          null
+                                                                      ? monthName(
+                                                                          int.parse(
+                                                                              monthTextController!))
+                                                                      : '',
+                                                                  style: TextStyle(
+                                                                      color: AppColor.black,
+                                                                      // fontWeight:
+                                                                      //     FontWeight
+                                                                      //         .bold,
+                                                                      fontSize: Get.width * 0.03),
+                                                                )
+                                                              : Container()
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -2139,64 +2154,54 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "destination"
-                                                                    .tr,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        Get.width *
-                                                                            0.04,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: const Color(
-                                                                        0XFF3967d7))),
-                                                            Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    isAdd =
-                                                                        true;
-                                                                    controller
-                                                                        .update();
-                                                                  },
-                                                                  child: Container(
-                                                                      width: Get.width * 0.2,
-                                                                      height: Get.height * 0.03,
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(10),
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                                blurRadius: 100,
-                                                                                color: AppColor.backgroundTable,
-                                                                                offset: const Offset(2, 2))
-                                                                          ],
-                                                                          color: const Color(0XFF3967d7).withOpacity(0.1)),
-                                                                      child: Center(
-                                                                          child: Text(
-                                                                        'new'
-                                                                            .tr,
-                                                                        style: TextStyle(
-                                                                            color: AppColor.black,
-                                                                            // fontWeight: FontWeight.w600,
-                                                                            fontSize: Get.width * 0.04),
-                                                                      ))),
-                                                                )),
-                                                          ],
-                                                        ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text("destination".tr,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.04,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: const Color(
+                                                                      0XFF3967d7))),
+                                                          Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  GestureDetector(
+                                                                onTap: () {
+                                                                  isAdd = true;
+                                                                  controller
+                                                                      .update();
+                                                                },
+                                                                child: Container(
+                                                                    width: Get.width * 0.2,
+                                                                    height: Get.height * 0.03,
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(10),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              blurRadius: 100,
+                                                                              color: AppColor.backgroundTable,
+                                                                              offset: const Offset(2, 2))
+                                                                        ],
+                                                                        color: const Color(0XFF3967d7).withOpacity(0.1)),
+                                                                    child: Center(
+                                                                        child: Text(
+                                                                      'new'.tr,
+                                                                      style: TextStyle(
+                                                                          color: AppColor.black,
+                                                                          // fontWeight: FontWeight.w600,
+                                                                          fontSize: Get.width * 0.04),
+                                                                    ))),
+                                                              )),
+                                                        ],
                                                       ),
                                                       // Container(
                                                       //   width: Get.width,
@@ -2418,9 +2423,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                           : Container(),
                                                       ...requestLineList
                                                           .map((e) => Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical:
                                                                         8.0),
                                                                 child: InkWell(
                                                                   onTap: () {
@@ -2437,10 +2442,10 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                   },
                                                                   child:
                                                                       Container(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8),
+                                                                    // padding:
+                                                                    //     const EdgeInsets
+                                                                    //         .all(
+                                                                    //         4),
                                                                     // margin:
                                                                     //     EdgeInsets
                                                                     //         .all(
@@ -2455,35 +2460,95 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                       children: [
                                                                         Expanded(
                                                                           flex:
-                                                                              10,
+                                                                              2,
                                                                           child:
-                                                                              ListTile(
-                                                                            leading:
-                                                                                const Icon(Icons.location_on),
-                                                                            title:
-                                                                                Text(
-                                                                              e.destName!,
-                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                              IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              totalPrice -= e.destTotalPrice!;
+                                                                              requestLineList.remove(e);
+                                                                              // requests!.requestLines = requestLineList;
+                                                                              controller.update();
+                                                                            },
+                                                                            icon:
+                                                                                Container(
+                                                                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+                                                                              decoration: BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                color: AppColor.backgroundTable.withOpacity(0.5),
+                                                                              ),
+                                                                              child: Icon(Icons.location_on, color: AppColor.black.withOpacity(0.5), size: Get.height * 0.025),
                                                                             ),
-                                                                            subtitle:
-                                                                                Text(
-                                                                              e.destPrice.toString(),
-                                                                              style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            ),
-                                                                            trailing:
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                            flex:
+                                                                                10,
+                                                                            child:
                                                                                 Column(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                               children: [
-                                                                                Text(
-                                                                                  e.quantity.toString(),
-                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                ListTile(
+                                                                                  dense: true,
+                                                                                  visualDensity: VisualDensity(vertical: -4.0),
+                                                                                  title: Text(
+                                                                                    e.destName!,
+                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                  ),
+                                                                                  trailing: Column(
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        '${'quantity'.tr}',
+                                                                                        style: TextStyle(fontSize: Get.width * 0.02, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                      ),
+                                                                                      Text(
+                                                                                        '${e.quantity.toString()}',
+                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
-                                                                                Text(
-                                                                                  e.destTotalPrice.toString(),
-                                                                                  style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Divider()),
+                                                                                ListTile(
+                                                                                  dense: true,
+                                                                                  visualDensity: VisualDensity(vertical: -4.0),
+                                                                                  title: Text(
+                                                                                    e.destPrice.toString(),
+                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                  ),
+                                                                                  trailing: Text(
+                                                                                    e.destTotalPrice.toString(),
+                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                                  ),
                                                                                 ),
                                                                               ],
-                                                                            ),
+                                                                            )
+                                                                            //   ListTile(
+                                                                            // leading:
+                                                                            //     const Icon(Icons.location_on),
+                                                                            // title:
+                                                                            //     Text(
+                                                                            //   e.destName!,
+                                                                            //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            // ),
+                                                                            // subtitle:
+                                                                            //     Text(
+                                                                            //   e.destPrice.toString(),
+                                                                            //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            // ),
+                                                                            // trailing:
+                                                                            //     Column(
+                                                                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                            //   children: [
+                                                                            //     Text(
+                                                                            //       e.quantity.toString(),
+                                                                            //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            //     ),
+                                                                            //     Text(
+                                                                            //       e.destTotalPrice.toString(),
+                                                                            //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+                                                                            //     ),
+                                                                            //   ],
+                                                                            // ),
 
                                                                             // Row(children: [ Text(
                                                                             //   e.destPrice
@@ -2510,19 +2575,30 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                             //       color: Color(0XFF3967d7)
                                                                             //           .withOpacity(0.7)),
                                                                             // ),],),
-                                                                          ),
-                                                                        ),
+                                                                            // ),
+                                                                            ),
                                                                         Expanded(
                                                                           flex:
-                                                                              1,
-                                                                          child: IconButton(
-                                                                              onPressed: () {
-                                                                                totalPrice -= e.destTotalPrice!;
-                                                                                requestLineList.remove(e);
-                                                                                // requests!.requestLines = requestLineList;
-                                                                                controller.update();
-                                                                              },
-                                                                              icon: const Icon(Icons.delete)),
+                                                                              2,
+                                                                          child:
+                                                                              IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              totalPrice -= e.destTotalPrice!;
+                                                                              requestLineList.remove(e);
+                                                                              // requests!.requestLines = requestLineList;
+                                                                              controller.update();
+                                                                            },
+                                                                            icon:
+                                                                                Container(
+                                                                              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+                                                                              decoration: BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                color: AppColor.backgroundTable.withOpacity(0.5),
+                                                                              ),
+                                                                              child: Icon(Icons.delete, color: AppColor.black.withOpacity(0.5), size: Get.height * 0.025),
+                                                                            ),
+                                                                          ),
                                                                         )
                                                                       ],
                                                                     ),

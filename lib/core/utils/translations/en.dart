@@ -255,5 +255,6 @@ var en = {
   'add_requst': 'Add Requst',
   'refresh': 'Refresh',
   'period': 'Period',
-  'period_valdation': 'You can not add 2 Requsts in same month'
+  'period_valdation': 'You can not add 2 Requsts in same month',
+  'quantity': 'Quantity',
 };
