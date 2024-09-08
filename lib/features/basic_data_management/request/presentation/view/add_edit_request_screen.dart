@@ -2428,182 +2428,34 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                     vertical:
                                                                         8.0),
                                                                 child: InkWell(
-                                                                  onTap: () {
-                                                                    e.quantity =
-                                                                        e.quantity! +
-                                                                            1;
-                                                                    e.destTotalPrice =
-                                                                        e.quantity! *
-                                                                            e.destPrice!;
-                                                                    totalPrice +=
-                                                                        e.destPrice!;
-                                                                    controller
-                                                                        .update();
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    // padding:
-                                                                    //     const EdgeInsets
-                                                                    //         .all(
-                                                                    //         4),
-                                                                    // margin:
-                                                                    //     EdgeInsets
-                                                                    //         .all(
-                                                                    //             8),
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                10),
-                                                                        color: const Color(0XFF3967d7)
-                                                                            .withOpacity(0.05)),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Expanded(
-                                                                          flex:
-                                                                              2,
-                                                                          child:
-                                                                              IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              totalPrice -= e.destTotalPrice!;
-                                                                              requestLineList.remove(e);
-                                                                              // requests!.requestLines = requestLineList;
-                                                                              controller.update();
-                                                                            },
-                                                                            icon:
-                                                                                Container(
-                                                                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
-                                                                              decoration: BoxDecoration(
-                                                                                shape: BoxShape.circle,
-                                                                                color: AppColor.backgroundTable.withOpacity(0.5),
-                                                                              ),
-                                                                              child: Icon(Icons.location_on, color: AppColor.black.withOpacity(0.5), size: Get.height * 0.025),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        Expanded(
-                                                                            flex:
-                                                                                10,
-                                                                            child:
-                                                                                Column(
-                                                                              children: [
-                                                                                ListTile(
-                                                                                  dense: true,
-                                                                                  visualDensity: VisualDensity(vertical: -4.0),
-                                                                                  title: Text(
-                                                                                    e.destName!,
-                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                                  ),
-                                                                                  trailing: Column(
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        '${'quantity'.tr}',
-                                                                                        style: TextStyle(fontSize: Get.width * 0.02, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                                      ),
-                                                                                      Text(
-                                                                                        '${e.quantity.toString()}',
-                                                                                        style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Divider()),
-                                                                                ListTile(
-                                                                                  dense: true,
-                                                                                  visualDensity: VisualDensity(vertical: -4.0),
-                                                                                  title: Text(
-                                                                                    e.destPrice.toString(),
-                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                                  ),
-                                                                                  trailing: Text(
-                                                                                    e.destTotalPrice.toString(),
-                                                                                    style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            )
-                                                                            //   ListTile(
-                                                                            // leading:
-                                                                            //     const Icon(Icons.location_on),
-                                                                            // title:
-                                                                            //     Text(
-                                                                            //   e.destName!,
-                                                                            //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            // ),
-                                                                            // subtitle:
-                                                                            //     Text(
-                                                                            //   e.destPrice.toString(),
-                                                                            //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            // ),
-                                                                            // trailing:
-                                                                            //     Column(
-                                                                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                            //   children: [
-                                                                            //     Text(
-                                                                            //       e.quantity.toString(),
-                                                                            //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            //     ),
-                                                                            //     Text(
-                                                                            //       e.destTotalPrice.toString(),
-                                                                            //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
-                                                                            //     ),
-                                                                            //   ],
-                                                                            // ),
-
-                                                                            // Row(children: [ Text(
-                                                                            //   e.destPrice
-                                                                            //       .toString(),
-                                                                            //   style: TextStyle(
-                                                                            //       fontSize:
-                                                                            //           Get.width *
-                                                                            //               0.03,
-                                                                            //       fontWeight:
-                                                                            //           FontWeight
-                                                                            //               .bold,
-                                                                            //       color: Color(0XFF3967d7)
-                                                                            //           .withOpacity(0.7)),
-                                                                            // ), Text(
-                                                                            //   e.destPrice
-                                                                            //       .toString(),
-                                                                            //   style: TextStyle(
-                                                                            //       fontSize:
-                                                                            //           Get.width *
-                                                                            //               0.03,
-                                                                            //       fontWeight:
-                                                                            //           FontWeight
-                                                                            //               .bold,
-                                                                            //       color: Color(0XFF3967d7)
-                                                                            //           .withOpacity(0.7)),
-                                                                            // ),],),
-                                                                            // ),
-                                                                            ),
-                                                                        Expanded(
-                                                                          flex:
-                                                                              2,
-                                                                          child:
-                                                                              IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              totalPrice -= e.destTotalPrice!;
-                                                                              requestLineList.remove(e);
-                                                                              // requests!.requestLines = requestLineList;
-                                                                              controller.update();
-                                                                            },
-                                                                            icon:
-                                                                                Container(
-                                                                              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
-                                                                              decoration: BoxDecoration(
-                                                                                shape: BoxShape.circle,
-                                                                                color: AppColor.backgroundTable.withOpacity(0.5),
-                                                                              ),
-                                                                              child: Icon(Icons.delete, color: AppColor.black.withOpacity(0.5), size: Get.height * 0.025),
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                                    onTap: () {
+                                                                      e.quantity =
+                                                                          e.quantity! +
+                                                                              1;
+                                                                      e.destTotalPrice =
+                                                                          e.quantity! *
+                                                                              e.destPrice!;
+                                                                      totalPrice +=
+                                                                          e.destPrice!;
+                                                                      controller
+                                                                          .update();
+                                                                    },
+                                                                    child:
+                                                                        SourcePathLineContainer(
+                                                                      e: e,
+                                                                      isAddOrEdit:
+                                                                          true,
+                                                                      onPressed:
+                                                                          () {
+                                                                        totalPrice -=
+                                                                            e.destTotalPrice!;
+                                                                        requestLineList
+                                                                            .remove(e);
+                                                                        // requests!.requestLines = requestLineList;
+                                                                        controller
+                                                                            .update();
+                                                                      },
+                                                                    )),
                                                               )),
                                                       // ...requestLineList
                                                       //     .map((e) => SizedBox(
@@ -2726,7 +2578,7 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                 fontSize: Get.width * 0.035),
                                           ),
                                           Text(
-                                            "$totalPrice",
+                                            "${totalPrice} SAR",
                                             style: TextStyle(
                                                 color: AppColor.black,
                                                 fontWeight: FontWeight.normal,
@@ -2873,5 +2725,175 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
       ),
     );
     return monthselcted;
+  }
+}
+
+class SourcePathLineContainer extends StatelessWidget {
+  SourcePathLineContainer(
+      {super.key, required this.e, this.isAddOrEdit = false, this.onPressed});
+  SourcePathLine e;
+  bool isAddOrEdit;
+  void Function()? onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      // margin:
+      //     EdgeInsets
+      //         .all(
+      //             8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color(0XFF3967d7).withOpacity(0.05)),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+              height: Get.height * 0.03,
+              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.backgroundTable.withOpacity(0.5),
+              ),
+              child: Icon(Icons.location_on,
+                  color: AppColor.black.withOpacity(0.5),
+                  size: Get.height * 0.02),
+            ),
+          ),
+          Expanded(
+              flex: 10,
+              child: Column(
+                children: [
+                  ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: -4.0),
+                    title: Text(
+                      e.destName!,
+                      style: TextStyle(
+                          fontSize: Get.width * 0.03,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0XFF3967d7).withOpacity(0.7)),
+                    ),
+                    trailing: Column(
+                      children: [
+                        Text(
+                          '${'quantity'.tr}',
+                          style: TextStyle(
+                              fontSize: Get.width * 0.02,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0XFF3967d7).withOpacity(0.7)),
+                        ),
+                        Text(
+                          '${e.quantity.toString()}',
+                          style: TextStyle(
+                              fontSize: Get.width * 0.03,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0XFF3967d7).withOpacity(0.7)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider()),
+                  ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: -4.0),
+                    title: Text(
+                      '${e.destPrice.toString()} SAR',
+                      style: TextStyle(
+                          fontSize: Get.width * 0.03,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0XFF3967d7).withOpacity(0.7)),
+                    ),
+                    trailing: Text(
+                      '${e.destTotalPrice.toString()} SAR',
+                      style: TextStyle(
+                          fontSize: Get.width * 0.03,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0XFF3967d7).withOpacity(0.7)),
+                    ),
+                  ),
+                ],
+              )
+              //   ListTile(
+              // leading:
+              //     const Icon(Icons.location_on),
+              // title:
+              //     Text(
+              //   e.destName!,
+              //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+              // ),
+              // subtitle:
+              //     Text(
+              //   e.destPrice.toString(),
+              //   style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+              // ),
+              // trailing:
+              //     Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Text(
+              //       e.quantity.toString(),
+              //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+              //     ),
+              //     Text(
+              //       e.destTotalPrice.toString(),
+              //       style: TextStyle(fontSize: Get.width * 0.03, fontWeight: FontWeight.bold, color: const Color(0XFF3967d7).withOpacity(0.7)),
+              //     ),
+              //   ],
+              // ),
+
+              // Row(children: [ Text(
+              //   e.destPrice
+              //       .toString(),
+              //   style: TextStyle(
+              //       fontSize:
+              //           Get.width *
+              //               0.03,
+              //       fontWeight:
+              //           FontWeight
+              //               .bold,
+              //       color: Color(0XFF3967d7)
+              //           .withOpacity(0.7)),
+              // ), Text(
+              //   e.destPrice
+              //       .toString(),
+              //   style: TextStyle(
+              //       fontSize:
+              //           Get.width *
+              //               0.03,
+              //       fontWeight:
+              //           FontWeight
+              //               .bold,
+              //       color: Color(0XFF3967d7)
+              //           .withOpacity(0.7)),
+              // ),],),
+              // ),
+              ),
+          isAddOrEdit
+              ? Expanded(
+                  flex: 2,
+                  child: IconButton(
+                    onPressed: onPressed,
+                    icon: Container(
+                      height: Get.height * 0.03,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColor.backgroundTable.withOpacity(0.5),
+                      ),
+                      child: Icon(Icons.delete,
+                          color: AppColor.black.withOpacity(0.5),
+                          size: Get.height * 0.02),
+                    ),
+                  ),
+                )
+              : Container()
+        ],
+      ),
+    );
   }
 }

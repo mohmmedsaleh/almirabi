@@ -245,9 +245,9 @@ var en = {
   'requests': 'Requsts',
   'Almirabi': 'Almirabi',
   'draft': 'Draft',
-  'done_seended': 'Done Seended',
-  'confirm': 'Done confirm',
-  'done_cancel': 'Done Cancel',
+  'done_seended': 'Sent',
+  'confirm': 'confirmed',
+  'done_cancel': 'Canceled',
   'data_isloading': 'the data is loading now ...',
   'date_match_error':
       '''The month you entered doesn't match with start date or end date''',

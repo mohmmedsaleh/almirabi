@@ -961,7 +961,7 @@ class card_data2 extends StatelessWidget {
             ));
       },
       child: Container(
-          height: Get.height * 0.14,
+          height: Get.height * 0.15,
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -980,84 +980,221 @@ class card_data2 extends StatelessWidget {
                 flex: 3,
                 child: Row(
                   children: [
-                    Container(
-                      width: Get.width * 0.13,
-                      height: Get.width * 0.13,
-                      margin: const EdgeInsets.all(5),
-                      padding: const EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                          color: AppColor.backgroundTable,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: CustomIcon(
-                          padding: 4,
-                          size: Get.width * 0.1,
-                          assetPath: stateList[item.state]!.first),
+                    Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            width: Get.width * 0.13,
+                            height: Get.width * 0.13,
+                            margin: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(7),
+                            decoration: BoxDecoration(
+                                color: AppColor.backgroundTable,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: CustomIcon(
+                                padding: 4,
+                                size: Get.width * 0.1,
+                                assetPath: stateList[item.state]!.first),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: Get.width * 0.3,
+                                height: Get.height * 0.03,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColor.backgroundTable,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    item.state!.toString(),
+                                    style: TextStyle(
+                                      fontSize: Get.width * 0.03,
+                                      color: AppColor.black,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: CustomIcon(
-                                    padding: 0,
-                                    assetPath:
-                                        'assets/images/delivery-truck.png',
-                                    color: AppColor.black.withOpacity(0.5),
-                                    size: Get.width * 0.06),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              // height: Get.width * 0.13,
+                              // margin: const EdgeInsets.all(5),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: CustomIcon(
+                                            padding: 0,
+                                            assetPath:
+                                                'assets/images/delivery-truck.png',
+                                            color:
+                                                AppColor.black.withOpacity(0.5),
+                                            size: Get.width * 0.06),
+                                      ),
+                                      Text(
+                                        "${'car'.tr}  :  ${car.name ?? ''}",
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            color: AppColor.black),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 11.0),
+                                        child: Icon(
+                                          Icons.date_range_outlined,
+                                          color:
+                                              AppColor.black.withOpacity(0.5),
+                                          size: Get.width * 0.04,
+                                        ),
+                                      ),
+                                      Text(
+                                        "${'period'.tr}  :  ${monthName(int.parse(item.monthName!))}",
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            color: AppColor.grey),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 11.0),
+                                        child: Icon(
+                                          Icons.location_on,
+                                          color:
+                                              AppColor.black.withOpacity(0.5),
+                                          size: Get.width * 0.04,
+                                        ),
+                                      ),
+                                      // SizedBox(
+                                      //   width: Get.width * 0.03,
+                                      // ),
+                                      Text(
+                                        "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
+                                        style: TextStyle(
+                                            fontSize: Get.width * 0.03,
+                                            color: AppColor.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${'car'.tr}  :  ${car.name ?? ''}",
-                                style: TextStyle(
-                                    fontSize: Get.width * 0.03,
-                                    color: AppColor.black),
-                              ),
-                            ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 11.0),
-                                child: Icon(
-                                  Icons.date_range_outlined,
-                                  color: AppColor.black.withOpacity(0.5),
-                                  size: Get.width * 0.04,
-                                ),
-                              ),
-                              Text(
-                                "${'period'.tr}  :  ${monthName(int.parse(item.monthName!))}",
-                                style: TextStyle(
-                                    fontSize: Get.width * 0.03,
-                                    color: AppColor.grey),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 11.0),
-                                child: Icon(
-                                  Icons.location_on,
-                                  color: AppColor.black.withOpacity(0.5),
-                                  size: Get.width * 0.04,
-                                ),
-                              ),
-                              // SizedBox(
-                              //   width: Get.width * 0.03,
-                              // ),
-                              Text(
-                                "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
-                                style: TextStyle(
-                                    fontSize: Get.width * 0.03,
-                                    color: AppColor.grey),
-                              ),
-                            ],
+                          Expanded(
+                            flex: 2,
+                            child: item.state == RequestState.draft
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Get.to(() => AddEditRequestScreen2(
+                                                objectToEdit: item,
+                                                isAdd: false,
+                                              ));
+                                        },
+                                        icon: Container(
+                                          width: Get.width * 0.2,
+                                          height: Get.height * 0.03,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  blurRadius: 100,
+                                                  color:
+                                                      AppColor.backgroundTable,
+                                                  offset: const Offset(2, 2))
+                                            ],
+                                            color: AppColor.backgroundTable,
+                                          ),
+                                          child: Center(
+                                            child: Text("edit".tr,
+                                                style: TextStyle(
+                                                    fontSize: Get.width * 0.03,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColor.black)),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () async {
+                                          ResponseResult responseResult =
+                                              await requestController!
+                                                  .createRequestRemotely(
+                                                      requests: [item]);
+                                          if (responseResult.status) {
+                                            await requestController!
+                                                .requestData();
+                                            appSnackBar(
+                                                messageType:
+                                                    MessageTypes.success,
+                                                message: 'Successful'.tr);
+                                          } else {
+                                            appSnackBar(
+                                                message:
+                                                    responseResult.message);
+                                          }
+                                        },
+                                        icon: Container(
+                                          width: Get.width * 0.2,
+                                          height: Get.height * 0.03,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: 100,
+                                                    color: AppColor
+                                                        .backgroundTable,
+                                                    offset: const Offset(2, 2))
+                                              ],
+                                              color: const Color(0XFF3967d7)
+                                                  .withOpacity(0.1)),
+                                          child: Center(
+                                            child: Text("send".tr,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: Get.width * 0.03,
+                                                    color: const Color(
+                                                        0XFF3967d7))),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
                           ),
                         ],
                       ),
@@ -1065,108 +1202,108 @@ class card_data2 extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      // width: Get.width * 0.2,
-                      height: Get.height * 0.03,
-                      margin: const EdgeInsets.all(5),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 3),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColor.backgroundTable,
-                      ),
-                      child: Center(
-                        child: Text(
-                          " ${item.state!.toString()}",
-                          style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            color: AppColor.black,
-                            // fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                    ),
-                    item.state == RequestState.draft
-                        ? Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Get.to(() => AddEditRequestScreen2(
-                                        objectToEdit: item,
-                                        isAdd: false,
-                                      ));
-                                },
-                                icon: Container(
-                                  width: Get.width * 0.2,
-                                  height: Get.height,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 100,
-                                          color: AppColor.backgroundTable,
-                                          offset: const Offset(2, 2))
-                                    ],
-                                    color: AppColor.backgroundTable,
-                                  ),
-                                  child: Center(
-                                    child: Text("edit".tr,
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColor.black)),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  ResponseResult responseResult =
-                                      await requestController!
-                                          .createRequestRemotely(
-                                              requests: [item]);
-                                  if (responseResult.status) {
-                                    await requestController!.requestData();
-                                    appSnackBar(
-                                        messageType: MessageTypes.success,
-                                        message: 'Successful'.tr);
-                                  } else {
-                                    appSnackBar(
-                                        message: responseResult.message);
-                                  }
-                                },
-                                icon: Container(
-                                  width: Get.width * 0.2,
-                                  height: Get.height,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 100,
-                                            color: AppColor.backgroundTable,
-                                            offset: const Offset(2, 2))
-                                      ],
-                                      color: const Color(0XFF3967d7)
-                                          .withOpacity(0.1)),
-                                  child: Center(
-                                    child: Text("send".tr,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: Get.width * 0.03,
-                                            color: const Color(0XFF3967d7))),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                  ],
-                ),
-              )
+              // Expanded(
+              //   flex: 2,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Container(
+              //         // width: Get.width * 0.2,
+              //         height: Get.height * 0.03,
+              //         margin: const EdgeInsets.all(5),
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 15, vertical: 3),
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(10),
+              //           color: AppColor.backgroundTable,
+              //         ),
+              //         child: Center(
+              //           child: Text(
+              //             " ${item.state!.toString()}",
+              //             style: TextStyle(
+              //               fontSize: Get.width * 0.03,
+              //               color: AppColor.black,
+              //               // fontWeight: FontWeight.bold
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       item.state == RequestState.draft
+              //           ? Row(
+              //               children: [
+              //                 IconButton(
+              //                   onPressed: () {
+              //                     Get.to(() => AddEditRequestScreen2(
+              //                           objectToEdit: item,
+              //                           isAdd: false,
+              //                         ));
+              //                   },
+              //                   icon: Container(
+              //                     width: Get.width * 0.2,
+              //                     height: Get.height,
+              //                     decoration: BoxDecoration(
+              //                       borderRadius: BorderRadius.circular(10),
+              //                       boxShadow: [
+              //                         BoxShadow(
+              //                             blurRadius: 100,
+              //                             color: AppColor.backgroundTable,
+              //                             offset: const Offset(2, 2))
+              //                       ],
+              //                       color: AppColor.backgroundTable,
+              //                     ),
+              //                     child: Center(
+              //                       child: Text("edit".tr,
+              //                           style: TextStyle(
+              //                               fontSize: Get.width * 0.03,
+              //                               fontWeight: FontWeight.bold,
+              //                               color: AppColor.black)),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 IconButton(
+              //                   onPressed: () async {
+              //                     ResponseResult responseResult =
+              //                         await requestController!
+              //                             .createRequestRemotely(
+              //                                 requests: [item]);
+              //                     if (responseResult.status) {
+              //                       await requestController!.requestData();
+              //                       appSnackBar(
+              //                           messageType: MessageTypes.success,
+              //                           message: 'Successful'.tr);
+              //                     } else {
+              //                       appSnackBar(
+              //                           message: responseResult.message);
+              //                     }
+              //                   },
+              //                   icon: Container(
+              //                     width: Get.width * 0.2,
+              //                     height: Get.height,
+              //                     decoration: BoxDecoration(
+              //                         borderRadius: BorderRadius.circular(10),
+              //                         boxShadow: [
+              //                           BoxShadow(
+              //                               blurRadius: 100,
+              //                               color: AppColor.backgroundTable,
+              //                               offset: const Offset(2, 2))
+              //                         ],
+              //                         color: const Color(0XFF3967d7)
+              //                             .withOpacity(0.1)),
+              //                     child: Center(
+              //                       child: Text("send".tr,
+              //                           style: TextStyle(
+              //                               fontWeight: FontWeight.bold,
+              //                               fontSize: Get.width * 0.03,
+              //                               color: const Color(0XFF3967d7))),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ],
+              //             )
+              //           : Container(),
+              //     ],
+              //   ),
+              // )
             ],
           )),
 
