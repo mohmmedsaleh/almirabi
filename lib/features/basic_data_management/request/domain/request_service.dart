@@ -1,4 +1,3 @@
-
 import 'package:almirabi/features/basic_data_management/request/data/request.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -361,5 +360,13 @@ class RequestService extends RequestRepository {
     //   return handleException(
     //       exception: e, navigation: true, methodName: "updateProductRemotely");
     // }
+  }
+  deleteRequste({
+    required int id,
+  }) async {
+    _generalLocalDBInstance =
+        GeneralLocalDB.getInstance<Requests>(fromJsonFun: Requests.fromJson)
+            as GeneralLocalDB<Requests>?;
+    return await _generalLocalDBInstance!.delete(id: id, whereField: 'id');
   }
 }

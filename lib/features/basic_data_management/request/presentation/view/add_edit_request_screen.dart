@@ -7,6 +7,7 @@ import 'package:almirabi/features/basic_data_management/request/data/request.dar
 import 'package:almirabi/features/basic_data_management/request/presentation/view/details_request_screen.dart';
 import 'package:almirabi/features/basic_data_management/request/presentation/view/request_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:flutter_month_select/flutter_month_select.dart';
 import 'package:get/get.dart';
 
@@ -1605,13 +1606,15 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                 }
                                               } else {
                                                 ///snakbar
-
-                                                appSnackBar(
-                                                    message:
-                                                        'required_message_f'
-                                                            .trParams({
-                                                  'field_name': 'period'.tr
-                                                }));
+                                                if (monthTextController ==
+                                                    null) {
+                                                  appSnackBar(
+                                                      message:
+                                                          'required_message_f'
+                                                              .trParams({
+                                                    'field_name': 'period'.tr
+                                                  }));
+                                                }
                                               }
                                               controller.update();
                                             },
@@ -2422,13 +2425,64 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                             )
                                                           : Container(),
                                                       ...requestLineList
-                                                          .map((e) => Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        8.0),
-                                                                child: InkWell(
-                                                                    onTap: () {
+                                                          .map((e) => Slidable(
+                                                                key: ValueKey(
+                                                                    requestLineList
+                                                                        .indexOf(
+                                                                            e)),
+                                                                startActionPane:
+                                                                    ActionPane(
+                                                                  // A motion is a widget used to control how the pane animates.
+                                                                  motion:
+                                                                      const ScrollMotion(),
+
+                                                                  // A pane can dismiss the Slidable.
+                                                                  dismissible:
+                                                                      DismissiblePane(
+                                                                          onDismissed:
+                                                                              () async {
+                                                                    totalPrice -=
+                                                                        e.destTotalPrice!;
+                                                                    requestLineList
+                                                                        .remove(
+                                                                            e);
+                                                                    // requests!.requestLines = requestLineList;
+                                                                    controller
+                                                                        .update();
+                                                                  }),
+
+                                                                  // All actions are defined in the children parameter.
+                                                                  children: [
+                                                                    // A SlidableAction can have an icon and/or a label.
+                                                                    SlidableAction(
+                                                                      backgroundColor:
+                                                                          Color(
+                                                                              0xFFFE4A49),
+                                                                      foregroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      icon: Icons
+                                                                          .delete,
+                                                                      label:
+                                                                          'Delete',
+                                                                      onPressed:
+                                                                          (BuildContext
+                                                                              context) async {},
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          8.0),
+                                                                  child:
+                                                                      SourcePathLineContainer(
+                                                                    e: e,
+                                                                    isAddOrEdit:
+                                                                        true,
+                                                                    onPressedAdd:
+                                                                        () {
                                                                       e.quantity =
                                                                           e.quantity! +
                                                                               1;
@@ -2440,13 +2494,11 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                       controller
                                                                           .update();
                                                                     },
-                                                                    child:
-                                                                        SourcePathLineContainer(
-                                                                      e: e,
-                                                                      isAddOrEdit:
-                                                                          true,
-                                                                      onPressed:
-                                                                          () {
+                                                                    onPressedRemove:
+                                                                        () {
+                                                                      if (e.quantity! -
+                                                                              1 ==
+                                                                          0) {
                                                                         totalPrice -=
                                                                             e.destTotalPrice!;
                                                                         requestLineList
@@ -2454,8 +2506,21 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                         // requests!.requestLines = requestLineList;
                                                                         controller
                                                                             .update();
-                                                                      },
-                                                                    )),
+                                                                      } else {
+                                                                        e.quantity =
+                                                                            e.quantity! -
+                                                                                1;
+                                                                        e.destTotalPrice =
+                                                                            e.quantity! *
+                                                                                e.destPrice!;
+                                                                        totalPrice -=
+                                                                            e.destPrice!;
+                                                                        controller
+                                                                            .update();
+                                                                      }
+                                                                    },
+                                                                  ),
+                                                                ),
                                                               )),
                                                       // ...requestLineList
                                                       //     .map((e) => SizedBox(
@@ -2730,10 +2795,15 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
 
 class SourcePathLineContainer extends StatelessWidget {
   SourcePathLineContainer(
-      {super.key, required this.e, this.isAddOrEdit = false, this.onPressed});
+      {super.key,
+      required this.e,
+      this.isAddOrEdit = false,
+      this.onPressedAdd,
+      this.onPressedRemove});
   SourcePathLine e;
   bool isAddOrEdit;
-  void Function()? onPressed;
+  void Function()? onPressedAdd;
+  void Function()? onPressedRemove;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -2875,23 +2945,35 @@ class SourcePathLineContainer extends StatelessWidget {
           isAddOrEdit
               ? Expanded(
                   flex: 2,
-                  child: IconButton(
-                    onPressed: onPressed,
-                    icon: Container(
-                      height: Get.height * 0.03,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 5),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColor.backgroundTable.withOpacity(0.5),
-                      ),
-                      child: Icon(Icons.delete,
-                          color: AppColor.black.withOpacity(0.5),
-                          size: Get.height * 0.02),
-                    ),
-                  ),
-                )
+                  child: Column(
+                    children: [
+                      IconButton(
+                          onPressed: onPressedAdd, icon: Icon(Icons.add)),
+                      IconButton(
+                          onPressed: onPressedRemove, icon: Icon(Icons.remove))
+                    ],
+                  ))
               : Container()
+          // isAddOrEdit
+          //     ? Expanded(
+          //         flex: 2,
+          //         child: IconButton(
+          //           onPressed: onPressed,
+          //           icon: Container(
+          //             height: Get.height * 0.03,
+          //             padding: const EdgeInsets.symmetric(
+          //                 vertical: 5.0, horizontal: 5),
+          //             decoration: BoxDecoration(
+          //               shape: BoxShape.circle,
+          //               color: AppColor.backgroundTable.withOpacity(0.5),
+          //             ),
+          //             child: Icon(Icons.delete,
+          //                 color: AppColor.black.withOpacity(0.5),
+          //                 size: Get.height * 0.02),
+          //           ),
+          //         ),
+          //       )
+          //     : Container()
         ],
       ),
     );

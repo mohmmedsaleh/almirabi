@@ -7,6 +7,7 @@ var ar = {
   'error_message': 'رسالة خطأ',
   'invalid_dborurl_message': 'اسم قاعدة البيانات أو عنوان URL غير صالح',
   'failed_connect_server': 'فشل الإتصال بالخادم',
+  'failed_delete': 'فشل بالحذف',
   'subscription_ended': 'انتهى الاشتراك',
   'success_key_login': "تمت إضافة قاعدة البيانات وعنوان URL بنجاح",
   'send_ticket': 'أرسل تذكرة',

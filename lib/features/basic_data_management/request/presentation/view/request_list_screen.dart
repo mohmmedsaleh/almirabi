@@ -5,6 +5,7 @@ import 'package:almirabi/features/basic_data_management/request/presentation/vie
 import 'package:almirabi/features/basic_data_management/source_path/domain/source_path_viewmodel.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/config/app_colors.dart';
@@ -707,27 +708,83 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                         ? Wrap(
                             direction: Axis.horizontal,
                             children: [
-                              ...requestController.requestList
-                                  .map((item) => card_data2(
-                                        sourcePathList:
-                                            sourcePathController.sourcePathList,
-                                        carList: carController.carList,
-                                        item: item,
-                                        requestController: requestController,
-                                      ))
+                              ...requestController.requestList.map((item) {
+                                return Slidable(
+                                  key: ValueKey(requestController.requestList
+                                      .indexOf(item)),
+                                  startActionPane: ActionPane(
+                                    // A motion is a widget used to control how the pane animates.
+                                    motion: const ScrollMotion(),
+
+                                    // A pane can dismiss the Slidable.
+                                    dismissible:
+                                        DismissiblePane(onDismissed: () async {
+                                      ResponseResult responseResult =
+                                          await requestController.deleteRequste(
+                                              id: item.id!);
+                                      if (responseResult.status) {
+                                        await requestController.requestData();
+                                        appSnackBar(
+                                            messageType: MessageTypes.success,
+                                            message: 'Successful'.tr);
+                                      } else {
+                                        appSnackBar(
+                                            message: responseResult.message);
+                                      }
+                                    }),
+
+                                    // All actions are defined in the children parameter.
+                                    children: [
+                                      // A SlidableAction can have an icon and/or a label.
+                                      SlidableAction(
+                                        backgroundColor: Color(0xFFFE4A49),
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.delete,
+                                        label: 'Delete',
+                                        onPressed:
+                                            (BuildContext context) async {
+                                          ResponseResult responseResult =
+                                              await requestController
+                                                  .deleteRequste(id: item.id!);
+                                          if (responseResult.status) {
+                                            await requestController
+                                                .requestData();
+                                            appSnackBar(
+                                                messageType:
+                                                    MessageTypes.success,
+                                                message: 'Successful'.tr);
+                                          } else {
+                                            appSnackBar(
+                                                message:
+                                                    responseResult.message);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  child: card_data2(
+                                    sourcePathList:
+                                        sourcePathController.sourcePathList,
+                                    carList: carController.carList,
+                                    item: item,
+                                    requestController: requestController,
+                                  ),
+                                );
+                              })
                             ],
                           )
                         : Wrap(
                             direction: Axis.horizontal,
                             children: [
-                              ...requestController.searchResults
-                                  .map((item) => card_data2(
-                                        sourcePathList:
-                                            sourcePathController.sourcePathList,
-                                        carList: carController.carList,
-                                        item: item,
-                                        requestController: requestController,
-                                      ))
+                              ...requestController.searchResults.map(
+                                (item) => card_data2(
+                                  sourcePathList:
+                                      sourcePathController.sourcePathList,
+                                  carList: carController.carList,
+                                  item: item,
+                                  requestController: requestController,
+                                ),
+                              )
                             ],
                           )
                     : Center(
@@ -1039,74 +1096,105 @@ class card_data2 extends StatelessWidget {
                             child: Container(
                               // height: Get.width * 0.13,
                               // margin: const EdgeInsets.all(5),
-                              child: Column(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: CustomIcon(
-                                            padding: 0,
-                                            assetPath:
-                                                'assets/images/delivery-truck.png',
-                                            color:
-                                                AppColor.black.withOpacity(0.5),
-                                            size: Get.width * 0.06),
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: CustomIcon(
+                                                padding: 0,
+                                                assetPath:
+                                                    'assets/images/delivery-truck.png',
+                                                color: AppColor.black
+                                                    .withOpacity(0.5),
+                                                size: Get.width * 0.06),
+                                          ),
+                                          Text(
+                                            "${'car'.tr}  :  ${car.name ?? ''}",
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                color: AppColor.black),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "${'car'.tr}  :  ${car.name ?? ''}",
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            color: AppColor.black),
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11.0),
+                                            child: Icon(
+                                              Icons.date_range_outlined,
+                                              color: AppColor.black
+                                                  .withOpacity(0.5),
+                                              size: Get.width * 0.04,
+                                            ),
+                                          ),
+                                          Text(
+                                            "${'period'.tr}  :  ${monthName(int.parse(item.monthName!))}",
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                color: AppColor.grey),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11.0),
+                                            child: Icon(
+                                              Icons.location_on,
+                                              color: AppColor.black
+                                                  .withOpacity(0.5),
+                                              size: Get.width * 0.04,
+                                            ),
+                                          ),
+                                          // SizedBox(
+                                          //   width: Get.width * 0.03,
+                                          // ),
+                                          Text(
+                                            "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
+                                            style: TextStyle(
+                                                fontSize: Get.width * 0.03,
+                                                color: AppColor.grey),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11.0),
-                                        child: Icon(
-                                          Icons.date_range_outlined,
-                                          color:
-                                              AppColor.black.withOpacity(0.5),
-                                          size: Get.width * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${'period'.tr}  :  ${monthName(int.parse(item.monthName!))}",
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            color: AppColor.grey),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11.0),
-                                        child: Icon(
-                                          Icons.location_on,
-                                          color:
-                                              AppColor.black.withOpacity(0.5),
-                                          size: Get.width * 0.04,
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: Get.width * 0.03,
-                                      // ),
-                                      Text(
-                                        "${sourcePath.sourcePathName == null ? '' : sourcePath.sourcePathName!.length > 30 ? '${sourcePath.sourcePathName!.substring(0, 30)}...' : sourcePath.sourcePathName} ",
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.03,
-                                            color: AppColor.grey),
-                                      ),
-                                    ],
-                                  ),
+                                  item.state == RequestState.draft
+                                      ? IconButton(
+                                          onPressed: () async {
+                                            ResponseResult responseResult =
+                                                await requestController!
+                                                    .deleteRequste(
+                                                        id: item.id!);
+                                            if (responseResult.status) {
+                                              await requestController!
+                                                  .requestData();
+                                              appSnackBar(
+                                                  messageType:
+                                                      MessageTypes.success,
+                                                  message: 'Successful'.tr);
+                                            } else {
+                                              appSnackBar(
+                                                  message:
+                                                      responseResult.message);
+                                            }
+                                          },
+                                          icon: Icon(Icons.delete))
+                                      : Container()
                                 ],
                               ),
                             ),
@@ -1198,7 +1286,7 @@ class card_data2 extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

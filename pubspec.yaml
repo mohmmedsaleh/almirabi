@@ -54,6 +54,7 @@ dependencies:
     git:
       url: https://github.com/mohmmedsaleh/pos-package.git
       ref: huda
+  flutter_slidable: ^3.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

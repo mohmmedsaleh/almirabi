@@ -323,6 +323,18 @@ class RequestController extends GetxController {
     }
   }
 
+  deleteRequste({required int id}) async {
+    try {
+      var result = await requestService.deleteRequste(
+        id: id,
+      );
+
+      return ResponseResult(status: true, message: "Successful".tr);
+    } catch (e) {
+      return ResponseResult(status: false, message: 'failed_delete');
+    }
+  }
+
 // ============================================ [ SEARCH PRODUCT ] ===============================================
 
   updateHideMenu(bool value) {

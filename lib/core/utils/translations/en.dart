@@ -7,6 +7,7 @@ var en = {
   'error_message': 'Error Message',
   'invalid_dborurl_message': 'Invalid Database name or URL',
   'failed_connect_server': 'Failed to connect with server',
+  'failed_delete': 'Failed to delete',
   'subscription_ended': 'Subscription ended',
   'success_key_login': 'Add DataBase & URL successfully!',
   'send_ticket': 'Send ticket',
