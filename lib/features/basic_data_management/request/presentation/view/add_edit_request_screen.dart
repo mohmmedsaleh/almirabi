@@ -2051,8 +2051,8 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                 .quantity! *
                                                             sourcePathLine
                                                                 .destPrice!;
-                                                    requestLineList
-                                                        .add(sourcePathLine);
+                                                    requestLineList.insert(
+                                                        0, sourcePathLine);
                                                     totalPrice = sourcePathLine
                                                         .destPrice!;
                                                     // requests!.requestLines =
@@ -2336,8 +2336,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                             sourcePathLine.destPrice!;
                                                                         requestLineList
                                                                             .remove(requestLineList[index]);
-                                                                        requestLineList
-                                                                            .add(sourcePathLine);
+                                                                        requestLineList.insert(
+                                                                            0,
+                                                                            sourcePathLine);
                                                                       } else {
                                                                         sourcePathLine
                                                                             .quantity = 1;
@@ -2345,8 +2346,9 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                                             .destTotalPrice = sourcePathLine
                                                                                 .quantity! *
                                                                             sourcePathLine.destPrice!;
-                                                                        requestLineList
-                                                                            .add(sourcePathLine);
+                                                                        requestLineList.insert(
+                                                                            0,
+                                                                            sourcePathLine);
                                                                       }
                                                                       print(
                                                                           'sourcePathLine.destTotalPrice ${sourcePathLine.destTotalPrice}');
@@ -2425,103 +2427,130 @@ class _AddEditRequestScreen2State extends State<AddEditRequestScreen2> {
                                                             )
                                                           : Container(),
                                                       ...requestLineList
-                                                          .map((e) => Slidable(
-                                                                key: ValueKey(
-                                                                    requestLineList
-                                                                        .indexOf(
-                                                                            e)),
-                                                                startActionPane:
-                                                                    ActionPane(
-                                                                  // A motion is a widget used to control how the pane animates.
-                                                                  motion:
-                                                                      const ScrollMotion(),
-
-                                                                  // A pane can dismiss the Slidable.
-                                                                  dismissible:
-                                                                      DismissiblePane(
-                                                                          onDismissed:
-                                                                              () async {
-                                                                    totalPrice -=
-                                                                        e.destTotalPrice!;
-                                                                    requestLineList
-                                                                        .remove(
-                                                                            e);
-                                                                    // requests!.requestLines = requestLineList;
-                                                                    controller
-                                                                        .update();
-                                                                  }),
-
-                                                                  // All actions are defined in the children parameter.
-                                                                  children: [
-                                                                    // A SlidableAction can have an icon and/or a label.
-                                                                    SlidableAction(
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              0xFFFE4A49),
-                                                                      foregroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      icon: Icons
-                                                                          .delete,
-                                                                      label:
-                                                                          'Delete',
-                                                                      onPressed:
-                                                                          (BuildContext
-                                                                              context) async {},
+                                                          .map(
+                                                              (e) =>
+                                                                  Dismissible(
+                                                                    background:
+                                                                        Container(
+                                                                      color: Color(
+                                                                          0xFFFE4A49),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Icon(
+                                                                              Icons.delete,
+                                                                              color: AppColor.white,
+                                                                              size: Get.width * 0.05),
+                                                                          Text(
+                                                                            'Delete',
+                                                                            style:
+                                                                                TextStyle(color: AppColor.white, fontSize: Get.width * 0.05),
+                                                                          )
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          8.0),
-                                                                  child:
-                                                                      SourcePathLineContainer(
-                                                                    e: e,
-                                                                    isAddOrEdit:
-                                                                        true,
-                                                                    onPressedAdd:
-                                                                        () {
-                                                                      e.quantity =
-                                                                          e.quantity! +
-                                                                              1;
-                                                                      e.destTotalPrice =
-                                                                          e.quantity! *
-                                                                              e.destPrice!;
-                                                                      totalPrice +=
-                                                                          e.destPrice!;
+
+                                                                    key: ValueKey(
+                                                                        requestLineList
+                                                                            .indexOf(e)),
+                                                                    onDismissed:
+                                                                        (direction) {
+                                                                      totalPrice -=
+                                                                          e.destTotalPrice!;
+                                                                      requestLineList
+                                                                          .remove(
+                                                                              e);
+                                                                      // requests!.requestLines = requestLineList;
                                                                       controller
                                                                           .update();
                                                                     },
-                                                                    onPressedRemove:
-                                                                        () {
-                                                                      if (e.quantity! -
-                                                                              1 ==
-                                                                          0) {
-                                                                        totalPrice -=
-                                                                            e.destTotalPrice!;
-                                                                        requestLineList
-                                                                            .remove(e);
-                                                                        // requests!.requestLines = requestLineList;
-                                                                        controller
-                                                                            .update();
-                                                                      } else {
-                                                                        e.quantity =
-                                                                            e.quantity! -
-                                                                                1;
-                                                                        e.destTotalPrice =
-                                                                            e.quantity! *
+                                                                    // startActionPane:
+                                                                    //     ActionPane(
+                                                                    //   // A motion is a widget used to control how the pane animates.
+                                                                    //   motion:
+                                                                    //       const ScrollMotion(),
+
+                                                                    //   // A pane can dismiss the Slidable.
+                                                                    //   dismissible:
+                                                                    //       DismissiblePane(
+                                                                    //           onDismissed:
+                                                                    //               () async {
+                                                                    //     totalPrice -=
+                                                                    //         e.destTotalPrice!;
+                                                                    //     requestLineList
+                                                                    //         .remove(
+                                                                    //             e);
+                                                                    //     // requests!.requestLines = requestLineList;
+                                                                    //     controller
+                                                                    //         .update();
+                                                                    //   }),
+
+                                                                    //   // All actions are defined in the children parameter.
+                                                                    //   children: [
+                                                                    //     // A SlidableAction can have an icon and/or a label.
+                                                                    //     SlidableAction(
+                                                                    //       backgroundColor:
+                                                                    //           Color(
+                                                                    //               0xFFFE4A49),
+                                                                    //       foregroundColor:
+                                                                    //           Colors
+                                                                    //               .white,
+                                                                    //       icon: Icons
+                                                                    //           .delete,
+                                                                    //       label:
+                                                                    //           'Delete',
+                                                                    //       onPressed:
+                                                                    //           (BuildContext
+                                                                    //               context) async {},
+                                                                    //     ),
+                                                                    //   ],
+                                                                    // ),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          vertical:
+                                                                              8.0),
+                                                                      child:
+                                                                          SourcePathLineContainer(
+                                                                        e: e,
+                                                                        isAddOrEdit:
+                                                                            true,
+                                                                        onPressedAdd:
+                                                                            () {
+                                                                          e.quantity =
+                                                                              e.quantity! + 1;
+                                                                          e.destTotalPrice =
+                                                                              e.quantity! * e.destPrice!;
+                                                                          totalPrice +=
+                                                                              e.destPrice!;
+                                                                          controller
+                                                                              .update();
+                                                                        },
+                                                                        onPressedRemove:
+                                                                            () {
+                                                                          if (e.quantity! - 1 ==
+                                                                              0) {
+                                                                            totalPrice -=
+                                                                                e.destTotalPrice!;
+                                                                            requestLineList.remove(e);
+                                                                            // requests!.requestLines = requestLineList;
+                                                                            controller.update();
+                                                                          } else {
+                                                                            e.quantity =
+                                                                                e.quantity! - 1;
+                                                                            e.destTotalPrice =
+                                                                                e.quantity! * e.destPrice!;
+                                                                            totalPrice -=
                                                                                 e.destPrice!;
-                                                                        totalPrice -=
-                                                                            e.destPrice!;
-                                                                        controller
-                                                                            .update();
-                                                                      }
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              )),
+                                                                            controller.update();
+                                                                          }
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  )),
                                                       // ...requestLineList
                                                       //     .map((e) => SizedBox(
                                                       //           width:

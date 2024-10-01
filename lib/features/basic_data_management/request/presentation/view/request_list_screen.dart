@@ -709,66 +709,12 @@ class _RequestListScreen2State extends State<RequestListScreen2> {
                             direction: Axis.horizontal,
                             children: [
                               ...requestController.requestList.map((item) {
-                                return Slidable(
-                                  key: ValueKey(requestController.requestList
-                                      .indexOf(item)),
-                                  startActionPane: ActionPane(
-                                    // A motion is a widget used to control how the pane animates.
-                                    motion: const ScrollMotion(),
-
-                                    // A pane can dismiss the Slidable.
-                                    dismissible:
-                                        DismissiblePane(onDismissed: () async {
-                                      ResponseResult responseResult =
-                                          await requestController.deleteRequste(
-                                              id: item.id!);
-                                      if (responseResult.status) {
-                                        await requestController.requestData();
-                                        appSnackBar(
-                                            messageType: MessageTypes.success,
-                                            message: 'Successful'.tr);
-                                      } else {
-                                        appSnackBar(
-                                            message: responseResult.message);
-                                      }
-                                    }),
-
-                                    // All actions are defined in the children parameter.
-                                    children: [
-                                      // A SlidableAction can have an icon and/or a label.
-                                      SlidableAction(
-                                        backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        label: 'Delete',
-                                        onPressed:
-                                            (BuildContext context) async {
-                                          ResponseResult responseResult =
-                                              await requestController
-                                                  .deleteRequste(id: item.id!);
-                                          if (responseResult.status) {
-                                            await requestController
-                                                .requestData();
-                                            appSnackBar(
-                                                messageType:
-                                                    MessageTypes.success,
-                                                message: 'Successful'.tr);
-                                          } else {
-                                            appSnackBar(
-                                                message:
-                                                    responseResult.message);
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  child: card_data2(
-                                    sourcePathList:
-                                        sourcePathController.sourcePathList,
-                                    carList: carController.carList,
-                                    item: item,
-                                    requestController: requestController,
-                                  ),
+                                return card_data2(
+                                  sourcePathList:
+                                      sourcePathController.sourcePathList,
+                                  carList: carController.carList,
+                                  item: item,
+                                  requestController: requestController,
                                 );
                               })
                             ],
