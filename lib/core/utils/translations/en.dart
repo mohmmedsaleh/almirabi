@@ -1,7 +1,8 @@
 var en = {
-  'key_number': "Key Number",
-  'key_number_message': "Key Number is required",
-  'connect': 'Check & Connect',
+  'lang': 'English',
+  'key_number': 'Enter PIN',
+  'key_number_message': "PIN is required",
+  'connect': 'Internet connection',
   'no_connection': 'You Don\'t have an Internet Connection',
   'connection_is_back': 'You are Connected to Internet',
   'error_message': 'Error Message',
@@ -258,4 +259,6 @@ var en = {
   'period': 'Period',
   'period_valdation': 'You can not add 2 Requsts in same month',
   'quantity': 'Quantity',
+  'header_remote_setting': 'Enter your PIN',
+  'sub_header_remote_setting': 'Enter your PIN to connect to the Internet'
 };

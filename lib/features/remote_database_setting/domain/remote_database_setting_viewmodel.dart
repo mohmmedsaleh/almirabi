@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'remote_database_setting_service.dart';
 
-class DatabaseSettingController extends GetxController {
-  static DatabaseSettingController? _instance;
+class DatabaseSettingLocalController extends GetxController {
+  static DatabaseSettingLocalController? _instance;
   var isLoading = false.obs;
+  RxString errorMessage = ''.obs;
   late RemoteDatabaseSettingService databaseSettingService;
 
-  DatabaseSettingController._() {
+  DatabaseSettingLocalController._() {
     databaseSettingService = RemoteDatabaseSettingService();
   }
 
-  static DatabaseSettingController getInstance() {
-    _instance ??= DatabaseSettingController._();
+  static DatabaseSettingLocalController getInstance() {
+    _instance ??= DatabaseSettingLocalController._();
     return _instance!;
   }
 

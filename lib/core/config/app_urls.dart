@@ -3,7 +3,7 @@ String amalUrl2 = "http://localhost:8069/";
 // String amalUrl3 = "http://192.168.1.39:8069/";
 String hudaUrl = "http://20.20.20.159:8017/";
 
-String remoteURL = "https://almirabi.qimamhd.com";
+String remoteURL = "http://164.90.215.116:8072/";
 String remotedB = "almirabi_2022_2023_app",
     remoteUsername = "demo",
     remotePassword = "demo";

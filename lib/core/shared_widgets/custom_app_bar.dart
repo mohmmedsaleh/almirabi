@@ -195,7 +195,8 @@ PreferredSizeWidget customAppBar(
       height: !headerBackground ? Get.height * 0.07 : Get.height * 0.05,
       decoration: BoxDecoration(
         border: Border.all(
-          color: headerBackground ? const Color(0XFF3967d7) : Colors.transparent,
+          color:
+              headerBackground ? const Color(0XFF3967d7) : Colors.transparent,
         ),
         color: headerBackground ? const Color(0XFF3967d7) : Colors.transparent,
       ),
@@ -219,7 +220,7 @@ PreferredSizeWidget customAppBar(
                 children: [
                   HeaderIcons(
                       icon: Icons.settings,
-                      darkBackground: headerBackground,
+                      color: AppColor.azure,
                       onTap: () async {
                         Get.to(() => const RemoteDatabaseScreen2(
                               changeConnectionInfo: true,
@@ -231,7 +232,7 @@ PreferredSizeWidget customAppBar(
               children: [
                 HeaderIcons(
                     icon: Icons.language,
-                    darkBackground: headerBackground,
+                    color: AppColor.azure,
                     onTap: () async {
                       await SharedPr.setLanguage(
                           lang: SharedPr.lang == 'en' ? 'ar' : 'en');

@@ -6,6 +6,7 @@ import 'package:almirabi/features/basic_data_management/request/presentation/vie
 import 'package:almirabi/features/remote_database_setting/domain/remote_database_setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_package/core/config/app_shared_pr.dart' as SharedPrPackage;
 import 'core/config/app_colors.dart';
@@ -38,40 +39,43 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-        title: 'Almirabi'.tr,
-        debugShowCheckedModeBanner: false,
-        translations: Messages(),
-        locale: Locale(SharedPr.lang ?? 'en'),
-        fallbackLocale: const Locale('en'),
-        supportedLocales: const [Locale('en'), Locale('ar')],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        scrollBehavior: const MaterialScrollBehavior().copyWith(
-          dragDevices: {
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.touch,
-            PointerDeviceKind.stylus,
-            PointerDeviceKind.unknown
-          },
-        ),
-        theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: AppColor.black,
-                fontFamily: 'Tajawal',
-              ),
-        ),
-        home:
-            //  SharedPrPackage.
+    return ScreenUtilInit(
+        child: //  SharedPrPackage.
             SharedPr.subscriptionDetailsObj?.url == null
                 ? const RemoteDatabaseScreen2()
                 : SharedPr.userObj?.name == null
                     ?
                     // TokenScreen()
                     const LoginScreen2()
-                    : const RequestListScreen2());
+                    : const RequestListScreen2(),
+        builder: (_, child) {
+          return GetMaterialApp(
+              title: 'Almirabi'.tr,
+              debugShowCheckedModeBanner: false,
+              translations: Messages(),
+              locale: Locale(SharedPr.lang ?? 'en'),
+              fallbackLocale: const Locale('en'),
+              supportedLocales: const [Locale('en'), Locale('ar')],
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              scrollBehavior: const MaterialScrollBehavior().copyWith(
+                dragDevices: {
+                  PointerDeviceKind.mouse,
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.stylus,
+                  PointerDeviceKind.unknown
+                },
+              ),
+              theme: ThemeData(
+                textTheme: Theme.of(context).textTheme.apply(
+                      bodyColor: AppColor.black,
+                      fontFamily: 'Tajawal',
+                    ),
+              ),
+              home: child);
+        });
   }
 }

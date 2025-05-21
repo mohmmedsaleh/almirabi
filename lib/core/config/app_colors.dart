@@ -24,6 +24,13 @@ class AppColor {
   static Color shadepurple = const Color(0xFF5F27CD);
   static Color iconsMenuActavit = const Color(0xFF5F27CD);
   static Color iconsMenu = const Color(0xFFA0A0A5);
+  static Color azure = const Color(0xFF007AFF);
+  static Color lightgray = const Color(0xFFF1F3F9);
+  static Color gunmetal = const Color(0xFF1C1F26);
+  static Color steelblue = const Color(0xFF96A0B6);
+  static Color charcoal = const Color(0xFF40444C);
+  static Color crimson = const Color(0xFFD64F4F);
+  static Color shadowcharcoalblue = const Color(0x0C101828);
 
   ///Create a list of color shades
   static List<Color> generateShades(Color baseColor, {int numShades = 5}) {

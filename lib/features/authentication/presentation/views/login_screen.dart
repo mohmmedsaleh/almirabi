@@ -323,7 +323,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                         child: HeaderIcons(
                             height: Get.width * 0.07,
                             icon: Icons.language,
-                            darkBackground: true,
+                            color: AppColor.azure,
                             onTap: () async {
                               await SharedPr.setLanguage(
                                   lang: SharedPr.lang == 'en' ? 'ar' : 'en');
@@ -335,7 +335,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                         child: HeaderIcons(
                             icon: Icons.settings,
                             height: Get.width * 0.07,
-                            darkBackground: true,
+                            color: AppColor.azure,
                             onTap: () async {
                               Get.to(() => const RemoteDatabaseScreen2(
                                     changeConnectionInfo: true,

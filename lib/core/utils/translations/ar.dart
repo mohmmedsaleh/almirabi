@@ -1,7 +1,8 @@
 var ar = {
-  "key_number": 'الرقم المفتاحي',
-  "key_number_message": 'الرقم المفتاحي مطلوب',
-  'connect': 'التحقق والإتصال',
+  'lang': 'عربي',
+  "key_number": 'أدخل الرقم السري',
+  "key_number_message": 'الرقم السري مطلوب',
+  'connect': 'اتصال بالإنترنت',
   'no_connection': 'لايتوفر إتصال إنترنت',
   'connection_is_back': 'إتصال الإنترنت متوفر',
   'error_message': 'رسالة خطأ',
@@ -254,4 +255,6 @@ var ar = {
   'period': 'الفتره',
   'period_valdation': 'لا يمكنك اضافه طلبين لهما نفس الشهر ',
   'quantity': 'الكمية',
+  'header_remote_setting': 'أدخل رقم السري الخاص بك',
+  'sub_header_remote_setting': 'أدخل الرقم السري مخصص للاتصال بالأنترنت',
 };

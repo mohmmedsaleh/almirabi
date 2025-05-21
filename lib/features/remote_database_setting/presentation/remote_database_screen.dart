@@ -2,10 +2,11 @@ import 'package:almirabi/core/config/app_urls.dart';
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
 import 'package:almirabi/features/remote_database_setting/data/subscription_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_service.dart';
 import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
-
+import 'package:almirabi/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
 import '../../../core/config/app_colors.dart';
 import '../../../core/config/app_enums.dart';
 import '../../../core/config/app_shared_pr.dart';
@@ -15,6 +16,7 @@ import '../../../core/shared_widgets/app_custom_icon.dart';
 import '../../../core/shared_widgets/app_header_icons.dart';
 import '../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../core/shared_widgets/app_text_field.dart';
+import 'package:flutter_svg/svg.dart';
 
 // class RemoteDatabaseScreen extends StatefulWidget {
 //   final bool changeConnectionInfo;
@@ -779,6 +781,8 @@ class RemoteDatabaseScreen2 extends StatefulWidget {
 class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   DatabaseSettingController remoteDatabaseSettingController =
       Get.put(DatabaseSettingController.getInstance());
+  DatabaseSettingLocalController remoteDatabaseSettinglocalController =
+      Get.put(DatabaseSettingLocalController.getInstance());
   // TokenController tokenClassController = Get.put(TokenController.getInstance());
   // TextEditingController dbNameController = TextEditingController();
   TextEditingController keyController = TextEditingController();
@@ -809,213 +813,289 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.white,
-      body: SingleChildScrollView(
-        child: Container(
-          color: AppColor.white,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.white,
+        body: SingleChildScrollView(
           child: Column(
             children: [
-              CustomBack(
-                height: MediaQuery.of(context).size.height * 0.2,
-                color: const Color(0XFF3967d7),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: HeaderIcons(
-                            height: Get.width * 0.07,
-                            icon: Icons.language,
-                            darkBackground: true,
-                            onTap: () async {
-                              await SharedPr.setLanguage(
-                                  lang: SharedPr.lang == 'en' ? 'ar' : 'en');
-                            }),
-                      ),
-                      Expanded(flex: 3, child: Container()),
-                      Expanded(flex: 1, child: Container())
-                    ],
-                  ),
-                ),
-              ),
-              Form(
-                key: _formKey,
+              SizedBox(
+                height: 0.1.sh,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      height: Get.width * 0.6,
-                      // color: const Color(0XFF3967d7),
-                      padding: const EdgeInsets.only(top: 30),
-                      child: CustomIcon(
-                        assetPath: 'assets/images/image.png',
-                        size: Get.width * 0.6,
-                        padding: 10,
-                        color: const Color(0XFF3967d7),
-                      ),
-                    ),
-                    SizedBox(height: Get.height * 0.1),
-                    Text(
-                      'remote_connection_information'.tr,
-                      style: TextStyle(
-                          fontSize: Get.width * 0.05,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0XFF3967d7)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // SizedBox(height: Get.height * 0.05),
-                          // Text(
-                          //   'dbName'.tr,
-                          //   style: TextStyle(
-                          //       fontSize: Get.width * 0.03,
-                          //       fontWeight: FontWeight.bold,
-                          //       color: AppColor.black),
-                          // ),
-                          // SizedBox(height: Get.height * 0.01),
-                          // ContainerTextField(
-                          //   controller: dbNameController,
-                          //   backgroundColor: AppColor.white,
-                          //   prefixIcon: CustomIcon(
-                          //       size: Get.width * 0.05,
-                          //       padding: 10,
-                          //       color: Color(0XFF3967d7),
-                          //       assetPath:
-                          //           'assets/images/database-storage.png'),
-                          //   hintText: 'dbName'.tr,
-                          //   labelText: 'dbName'.tr,
-                          //   width: Get.width,
-                          //   height: MediaQuery.sizeOf(context).height * 0.05,
-                          //   hintcolor: AppColor.black.withOpacity(0.5),
-                          //   iconcolor: AppColor.black,
-                          //   color: AppColor.black,
-                          //   fontSize: Get.width * 0.03,
-                          //   validator: (value) {
-                          //     if (value == null || value.isEmpty) {
-                          //       errorMessage = 'required_message'
-                          //           .trParams({'field_name': 'dbName'.tr});
-
-                          //       return "";
-                          //     }
-
-                          //     return null;
-                          //   },
-                          // ),
-                          // SizedBox(
-                          //     height: MediaQuery.sizeOf(context).height * 0.03),
-                          Text(
-                            'key_number'.tr,
-                            style: TextStyle(
-                                fontSize: Get.width * 0.03,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.black),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            children: [
+                              HeaderIcons(
+                                  height: 20.r,
+                                  icon: Icons.language,
+                                  color: AppColor.azure,
+                                  onTap: () async {
+                                    await SharedPr.setLanguage(
+                                        lang: SharedPr.lang == 'en'
+                                            ? 'ar'
+                                            : 'en');
+                                  }),
+                              Text('lang'.tr)
+                            ],
                           ),
-                          SizedBox(height: Get.height * 0.01),
-                          ContainerTextField(
-                            controller: keyController,
-                            backgroundColor: AppColor.white,
-                            prefixIcon: const Icon(
-                              Icons.key,
-                              color: Color(0XFF3967d7),
-                            ),
-                            hintText: 'key_number'.tr,
-                            labelText: 'key_number'.tr,
-                            width: Get.width,
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            hintcolor: AppColor.black.withOpacity(0.5),
-                            iconcolor: AppColor.black,
-                            color: AppColor.black,
-                            fontSize: Get.width * 0.03,
-                            obscureText: flag ? false : true,
-                            suffixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 10),
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      flag = !flag;
-                                    });
-                                  },
-                                  icon: flag
-                                      ? const Icon(
-                                          Icons.visibility,
-                                          color: Color(0XFF3967d7),
-                                        )
-                                      : Icon(
-                                          Icons.visibility_off,
-                                          color: AppColor.black,
-                                        )),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                errorMessage = 'required_message_f'
-                                    .trParams({'field_name': 'key_number'.tr});
-                                return "";
-                              }
-                              // if (value.isNotEmpty) {
-                              //   var message = ValidatorHelper.passWordValidation(value: value);
-                              //   if (message == "") {
-                              //     return null;
-                              //   }
-                              //   errorMessage = message;
-                              //   return "";
-                              // }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.1),
-                          Obx(() {
-                            if (remoteDatabaseSettingController
-                                .isLoading.value) {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColor.white,
-                                  backgroundColor: AppColor.black,
-                                ),
-                              );
-                            } else {
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    child: ButtonElevated(
-                                        borderRadius: 20,
-                                        text: 'connect'.tr,
-                                        backgroundColor:
-                                            const Color(0XFF3967d7),
-                                        onPressed: _onPressed),
-                                  ),
-                                  if (widget.changeConnectionInfo)
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                  if (widget.changeConnectionInfo)
-                                    Expanded(
-                                      child: ButtonElevated(
-                                          text: 'back'.tr,
-                                          borderRadius: 20,
-                                          backgroundColor:
-                                              const Color(0XFF3967d7),
-                                          onPressed: () async {
-                                            Get.back();
-                                          }),
-                                    ),
-                                ],
-                              );
-                            }
-                          }),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 10.r,
+                      color: AppColor.lightgray,
                     ),
                   ],
+                ),
+              ),
+
+              // CustomBack(
+              //   height: MediaQuery.of(context).size.height * 0.2,
+              //   color: const Color(0XFF3967d7),
+              //   child: SizedBox(
+              //     height: MediaQuery.of(context).size.height * 0.2,
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         Expanded(
+              //           flex: 1,
+              //           child: HeaderIcons(
+              //               height: Get.width * 0.07,
+              //               icon: Icons.language,
+              //               darkBackground: true,
+              //               onTap: () async {
+              //                 await SharedPr.setLanguage(
+              //                     lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+              //               }),
+              //         ),
+              //         Expanded(flex: 3, child: Container()),
+              //         Expanded(flex: 1, child: Container())
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 0.85.sh,
+                child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.all(10.r),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 40.h),
+                        CustomIcon(
+                          assetPath: 'assets/images/logov.png',
+                          size: 200.r,
+                        ),
+                        SizedBox(height: 10.r),
+                        Text(
+                          'header_remote_setting'.tr,
+                          style: TextStyle(
+                              fontSize: 20.r,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.gunmetal),
+                        ),
+                        SizedBox(height: 10.r),
+                        Text(
+                          'sub_header_remote_setting'.tr,
+                          style: TextStyle(
+                              fontSize: 10.r,
+                              fontWeight: FontWeight.w300,
+                              color: AppColor.steelblue),
+                        ),
+                        SizedBox(height: 20.r),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'key_number'.tr,
+                                style: TextStyle(
+                                    fontSize: 10.r,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColor.charcoal),
+                              ),
+                              SizedBox(height: 10.r),
+                              ContainerTextField(
+                                borderRadius: 10.r,
+                                controller: keyController,
+                                backgroundColor: AppColor.white,
+                                hintText: 'key_number'.tr,
+                                labelText: 'key_number'.tr,
+                                width: Get.width,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                hintcolor: AppColor.steelblue,
+                                iconcolor: AppColor.steelblue,
+                                color: AppColor.black,
+                                fontSize: 12.r,
+                                obscureText: flag ? false : true,
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          flag = !flag;
+                                        });
+                                      },
+                                      icon: flag
+                                          ? SvgPicture.asset(
+                                              'assets/images/eye-open.svg',
+                                              fit: BoxFit.scaleDown,
+                                              color: AppColor.steelblue,
+                                              // Adjust this to control scaling
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/images/eye-closed.svg',
+                                              fit: BoxFit.scaleDown,
+                                              color: AppColor
+                                                  .steelblue, // Adjust this to control scaling
+                                            )),
+                                ),
+                                onChanged: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    remoteDatabaseSettinglocalController
+                                            .errorMessage.value =
+                                        'required_message_f'.trParams(
+                                            {'field_name': 'key_number'.tr});
+                                    remoteDatabaseSettinglocalController
+                                        .update();
+                                  } else {
+                                    remoteDatabaseSettinglocalController
+                                        .errorMessage.value = '';
+                                    remoteDatabaseSettinglocalController
+                                        .update();
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    // remoteDatabaseSettinglocalController
+                                    //         .errorMessage.value =
+                                    //     'required_message_f'.trParams(
+                                    //         {'field_name': 'key_number'.tr});
+                                    // remoteDatabaseSettinglocalController
+                                    //         .errorMessage.value =
+                                    //     'required_message_f'.trParams(
+                                    //         {'field_name': 'key_number'.tr});
+                                    // remoteDatabaseSettinglocalController.update();
+                                    return "";
+                                  }
+                                  // if (value.isNotEmpty) {
+                                  //   var message = ValidatorHelper.passWordValidation(value: value);
+                                  //   if (message == "") {
+                                  //     return null;
+                                  //   }
+                                  //   errorMessage = message;
+                                  //   return "";
+                                  // }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10.r),
+                              Obx(() {
+                                return Text(
+                                  remoteDatabaseSettinglocalController
+                                      .errorMessage.value,
+                                  style: TextStyle(
+                                      fontSize: 10.r,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColor.crimson),
+                                );
+                              }),
+                              Spacer(),
+                              SizedBox(height: 10.r),
+                              Obx(() {
+                                if (remoteDatabaseSettingController
+                                    .isLoading.value) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.white,
+                                      backgroundColor: AppColor.black,
+                                    ),
+                                  );
+                                } else {
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: _onPressed,
+                                        child: Container(
+                                            height: 0.05.sh,
+                                            width: ScreenUtil().screenWidth,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.r,
+                                                vertical: 5.r),
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: ShapeDecoration(
+                                              color: AppColor.azure,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                              ),
+                                              shadows: [
+                                                BoxShadow(
+                                                  color: AppColor
+                                                      .shadowcharcoalblue,
+                                                  blurRadius: 2,
+                                                  offset: const Offset(0, 1),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
+                                            ),
+                                            child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/images/arrow-right.svg',
+                                                    color: AppColor.white,
+                                                  ),
+                                                  SizedBox(width: 10.r),
+                                                  Text(
+                                                    'connect'.tr,
+                                                    style: TextStyle(
+                                                      color: AppColor.white,
+                                                      fontSize: 13.r,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ])),
+                                      ),
+                                      if (widget.changeConnectionInfo)
+                                        SizedBox(
+                                          height: 10.r,
+                                        ),
+                                      if (widget.changeConnectionInfo)
+                                        ButtonElevated(
+                                            text: 'back'.tr,
+                                            borderRadius: 10.r,
+                                            backgroundColor:
+                                                const Color(0XFF3967d7),
+                                            onPressed: () async {
+                                              Get.back();
+                                            }),
+                                    ],
+                                  );
+                                }
+                              }),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -1034,13 +1114,14 @@ class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
           password: remotePassword);
       remoteDatabaseSettingController
           .checkDatabase(
-              loginKey: keyController.text, odooModel: 'subscription.detail')
+              loginKey: keyController.text,
+              subscriptionDetails: 'subscription.detail')
           .then((value) async {
+        print(value.status);
         if (value.status) {
           await SharedPr.setRemoteDatabaseInfo(
-              subscriptionInfo: SubscriptionInfo(
-                  url: SharedPrPackage.SharedPr.subscriptionDetailsObj!.url,
-                  db: SharedPrPackage.SharedPr.subscriptionDetailsObj!.db));
+              subscriptionInfo:
+                  SubscriptionInfo(url: value.data.url11, db: value.data.db));
           appSnackBar(
             messageType: MessageTypes.success,
             message: 'success_key_login'.tr,

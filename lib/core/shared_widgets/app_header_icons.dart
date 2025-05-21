@@ -6,7 +6,7 @@ import '../config/app_colors.dart';
 class HeaderIcons extends StatelessWidget {
   final IconData icon;
   final Function()? onTap;
-  final bool darkBackground;
+  final Color? color;
   final double? height;
 
   const HeaderIcons(
@@ -14,7 +14,7 @@ class HeaderIcons extends StatelessWidget {
       required this.icon,
       required this.onTap,
       this.height,
-      this.darkBackground = false});
+      this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,10 @@ class HeaderIcons extends StatelessWidget {
       // padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          border: Border.all(
-              color: !darkBackground ? AppColor.brawn : Colors.transparent,
-              width: 1)),
+          border: Border.all(color: Colors.transparent, width: 1)),
       child: IconButton(
         icon: Icon(icon),
-        color: !darkBackground ? AppColor.brawn : AppColor.white,
+        color: color ?? AppColor.white,
         iconSize: height ?? Get.height * 0.025,
         onPressed: onTap,
       ),
