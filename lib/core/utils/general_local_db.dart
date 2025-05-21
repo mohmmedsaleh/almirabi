@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../features/authentication/utils/handle_exception_helper.dart';
 import 'db_helper.dart';
@@ -72,19 +71,23 @@ class GeneralLocalDB<T> {
   }
 
   Future<List<T>> index(
-      {int? offset, int? limit, bool fromLocal = true}) async {
+      {int? offset, int? limit, String? orderBy, bool fromLocal = true}) async {
     try {
       List<Map<String, dynamic>> result;
       if (offset != null) {
-        result =
-            await DbHelper.db!.query(tableName, offset: offset, limit: limit);
+        result = await DbHelper.db!
+            .query(tableName, offset: offset, orderBy: orderBy, limit: limit);
       } else {
-        result = await DbHelper.db!.query(tableName);
+        if (orderBy != null) {
+          result = await DbHelper.db!.query(tableName, orderBy: orderBy);
+        } else {
+          result = await DbHelper.db!.query(tableName);
+        }
       }
-      // if (kDebugMode) {
-      //      print('$tableName index');
-      //      print('$tableName result : $result');
-      // }
+      if (kDebugMode) {
+        print('$tableName index');
+        print('$tableName result : $result');
+      }
       return result.map((e) => fromJson(e)).toList();
     } catch (e) {
       throw handleException(
@@ -195,6 +198,7 @@ class GeneralLocalDB<T> {
           final List<dynamic> result = await batch.commit();
           affectedRows = result.reduce((sum, element) => sum + element);
         }
+
         return affectedRows;
       } catch (e) {
         if (kDebugMode) {
@@ -217,9 +221,7 @@ class GeneralLocalDB<T> {
     try {
       return await DbHelper.db!.update(
         tableName,
-        obj is Map<String, dynamic>
-            ? obj
-            : obj.toJson(isRemotelyAdded: isRemotelyAdded),
+        obj is Map<String, dynamic> ? obj : obj.toJson(),
         where: '$whereField = ?',
         whereArgs: [id],
       );
@@ -227,6 +229,24 @@ class GeneralLocalDB<T> {
       // print("create Exception : $e");
       // throw Exception(e.toString());
 
+      throw handleException(
+          exception: e, navigation: false, methodName: "GeneralLocalDB update");
+    }
+  }
+
+  Future updatewhere(
+      {required dynamic id,
+      required obj,
+      required columnToUpdate,
+      required String whereField,
+      // bool isRemotelyAdded = false
+      bool isRemotelyAdded = true}) async {
+    try {
+      return await DbHelper.db!.execute(
+          'UPDATE $tableName SET $columnToUpdate WHERE $whereField = $id', obj);
+    } catch (e) {
+      // throw Exception(e.toString());
+      print(e);
       throw handleException(
           exception: e, navigation: false, methodName: "GeneralLocalDB update");
     }

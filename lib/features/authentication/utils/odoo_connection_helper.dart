@@ -1,21 +1,25 @@
+import 'package:almirabi/core/config/app_shared_pr.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
-import '../../../core/config/app_shared_pr.dart';
+// import '../../../core/config/app_shared_pr.dart';
+import '../../../core/config/app_urls.dart';
 
 class OdooProjectOwnerConnectionHelper {
   static late OdooClient odooClient;
   static OdooSession? odooSession;
   static bool sessionClosed = false;
 
-  static Future instantiateOdooConnection(
-      {required String username, required String password}) async {
+  static Future instantiateOdooConnection() async {
     // change
     try {
+      print("======================================");
+      print(
+          'SharedPr.subscriptionDetailsObj!.url! ${SharedPr.subscriptionDetailsObj!.url!}');
       odooClient = OdooClient(SharedPr.subscriptionDetailsObj!.url!);
       odooSession = await odooClient.authenticate(
-          SharedPr.subscriptionDetailsObj!.db!, username, password);
+          SharedPr.subscriptionDetailsObj!.db!, remoteUsername, remotePassword);
       SharedPr.setSessionId(sessionId: "session_id=${odooSession!.id}");
     } on OdooException {
       if (kDebugMode) {
@@ -24,9 +28,9 @@ class OdooProjectOwnerConnectionHelper {
       return 'login_information_incorrect'.tr;
     } catch (e) {
       // sessionClosed = true;
-      // if (kDebugMode) {
-      //   print('Exception : ${e.toString()}');
-      // }
+      if (kDebugMode) {
+        print('Exception : ${e.toString()}');
+      }
       return 'exception'.tr;
     }
   }

@@ -1,28 +1,291 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../../core/config/app_colors.dart';
 import '../../../../core/config/app_enums.dart';
 import '../../../../core/config/app_shared_pr.dart';
-import '../../../../core/config/app_styles.dart';
 import '../../../../core/shared_widgets/app_button.dart';
+import '../../../../core/shared_widgets/app_custom_icon.dart';
+import '../../../../core/shared_widgets/app_header_icons.dart';
 import '../../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../../core/shared_widgets/app_text_field.dart';
 import '../../../../core/utils/response_result.dart';
+import '../../../loading_synchronizing_data/presentation/views/data_loading_screen.dart';
+import '../../../remote_database_setting/presentation/remote_database_screen.dart';
 import '../../data/login_info.dart';
 import '../../domain/authentication_viewmodel.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+// class LoginScreen extends StatefulWidget {
+//   const LoginScreen({super.key});
+
+//   @override
+//   State<LoginScreen> createState() => _LoginScreenState();
+// }
+
+// class _LoginScreenState extends State<LoginScreen> {
+//   TextEditingController visaNumberController = TextEditingController();
+//   TextEditingController pinNumberController = TextEditingController();
+//   AuthenticationController authenticationController =
+//       Get.put(AuthenticationController.getInstance());
+//   final _formKey = GlobalKey<FormState>();
+//   String? errorMessage;
+//   int countErrors = 0;
+//   bool flag = false;
+//   final _buttonFocusNode = FocusNode();
+//   var userNameFocusNode = FocusNode();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     userNameFocusNode.requestFocus();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (kDebugMode) {
+//       //print(SharedPr.isForgetPass!);
+//     }
+
+//     return SafeArea(
+//       child: Scaffold(
+//         appBar: customAppBar(),
+//         body: Center(
+//           child: SingleChildScrollView(
+//             child: Form(
+//               key: _formKey,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   Directionality(
+//                     textDirection: TextDirection.ltr,
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Column(
+//                           children: [
+//                             Text(
+//                               "ابي",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.15,
+//                                   fontWeight: FontWeight.w100,
+//                                   color: AppColor.grey),
+//                             ),
+//                             const Text("")
+//                           ],
+//                         ),
+//                         Column(
+//                           children: [
+//                             Text(
+//                               "المير",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.15,
+//                                   fontWeight: FontWeight.w900,
+//                                   color: AppColor.brawn),
+//                             ),
+//                             Text(
+//                               "Almirabi",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.05,
+//                                   fontWeight: FontWeight.bold,
+//                                   color: AppColor.black),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(height: Get.height * 0.02),
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Row(
+//                           children: [
+//                             Expanded(
+//                               child: Text(
+//                                 'login'.tr,
+//                                 style: TextStyle(
+//                                     fontSize: Get.width * 0.05,
+//                                     fontWeight: FontWeight.bold,
+//                                     color: AppColor.black),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(height: Get.height * 0.02),
+//                         Text(
+//                           'visa_number'.tr,
+//                           style: TextStyle(
+//                               fontSize: Get.width * 0.03,
+//                               fontWeight: FontWeight.bold,
+//                               color: AppColor.black),
+//                         ),
+//                         SizedBox(height: Get.height * 0.01),
+//                         ContainerTextField(
+//                           controller: visaNumberController,
+//                           prefixIcon: const CustomIcon(
+//                               size: 5, assetPath: 'assets/images/passport.png'),
+//                           hintText: 'visa_number'.tr,
+//                           labelText: 'visa_number'.tr,
+//                           width: Get.width,
+//                           height: MediaQuery.sizeOf(context).height * 0.05,
+//                           hintcolor: AppColor.black.withOpacity(0.5),
+//                           iconcolor: AppColor.black,
+//                           color: AppColor.black,
+//                           fontSize: Get.width * 0.03,
+//                           validator: (value) {
+//                             if (value == null || value.isEmpty) {
+//                               errorMessage = 'required_message'
+//                                   .trParams({'field_name': 'visa_number'.tr});
+//                               countErrors++;
+//                               return "";
+//                             }
+
+//                             return null;
+//                           },
+//                         ),
+//                         SizedBox(
+//                             height: MediaQuery.sizeOf(context).height * 0.02),
+//                         Text(
+//                           'pin_number'.tr,
+//                           style: TextStyle(
+//                               fontSize: Get.width * 0.03,
+//                               fontWeight: FontWeight.bold,
+//                               color: AppColor.black),
+//                         ),
+//                         SizedBox(height: Get.height * 0.01),
+//                         ContainerTextField(
+//                           keyboardType: TextInputType.number,
+//                           controller: pinNumberController,
+//                           prefixIcon: const CustomIcon(
+//                               size: 5, assetPath: 'assets/images/key.png'),
+//                           hintText: 'pin_number'.tr,
+//                           labelText: 'pin_number'.tr,
+//                           obscureText: flag ? false : true,
+//                           width: Get.width,
+//                           height: MediaQuery.sizeOf(context).height * 0.05,
+//                           hintcolor: AppColor.black.withOpacity(0.5),
+//                           iconcolor: AppColor.black,
+//                           color: AppColor.black,
+//                           fontSize: Get.width * 0.03,
+//                           suffixIcon: Padding(
+//                             padding:
+//                                 const EdgeInsets.only(left: 10.0, right: 10),
+//                             child: IconButton(
+//                                 onPressed: () {
+//                                   setState(() {
+//                                     flag = !flag;
+//                                   });
+//                                 },
+//                                 icon: flag
+//                                     ? Icon(
+//                                         Icons.visibility,
+//                                         color: AppColor.black,
+//                                       )
+//                                     : Icon(
+//                                         Icons.visibility_off,
+//                                         color: AppColor.black,
+//                                       )),
+//                           ),
+//                           validator: (value) {
+//                             if (value == null || value.isEmpty) {
+//                               errorMessage = 'required_message_f'
+//                                   .trParams({'field_name': 'pin_number'.tr});
+//                               return "";
+//                             }
+//                             // if (value.isNotEmpty) {
+//                             //   var message = ValidatorHelper.passWordValidation(value: value);
+//                             //   if (message == "") {
+//                             //     return null;
+//                             //   }
+//                             //   errorMessage = message;
+//                             //   return "";
+//                             // }
+//                             return null;
+//                           },
+//                         ),
+//                         SizedBox(
+//                             height: MediaQuery.sizeOf(context).height * 0.04),
+//                         // Obx(() {
+//                         //   if (authenticationController.loading.value) {
+//                         //     return Center(
+//                         //       child: CircularProgressIndicator(
+//                         //         color: AppColor.white,
+//                         //         backgroundColor: AppColor.black,
+//                         //       ),
+//                         //     );
+//                         //   } else {
+//                         //     return ButtonElevated(
+//                         //         borderRadius: 20,
+//                         //         text: 'login'.tr,
+//                         //         width: Get.width,
+//                         //         backgroundColor: AppColor.brawn,
+//                         //         onPressed: onPressed);
+//                         //   }
+//                         // }),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   onPressed() async {
+//     // if (usernameController.text != SharedPr.chosenUserObj!.userName) {
+
+//     // appSnackBar(
+//     //     message:
+//     //         'user_does_not_match'.trParams({'field_name': 'username'.tr}));
+//     // return;
+//     // }
+
+//     countErrors = 0;
+//     if (_formKey.currentState!.validate()) {
+//       // print("validate true");
+
+//       ResponseResult responseResult = await authenticationController
+//           .authenticateUsingUsernameAndPassword(LoginInfo(
+//               visaNumber: visaNumberController.text,
+//               pinNumber: pinNumberController.text));
+//       if (responseResult.status) {
+//         Get.offAll(() => const DataLoadingScreen());
+
+//         // Get.to(() => const DashboardScreen());
+//         appSnackBar(
+//           messageType: MessageTypes.success,
+//           message: responseResult.message,
+//         );
+//       } else {
+//         appSnackBar(
+//           message: responseResult.message,
+//         );
+//         return;
+//       }
+//     } else {
+//       // print("countErrors $countErrors");
+//       appSnackBar(
+//         message: countErrors > 1 ? 'enter_required_info'.tr : errorMessage!,
+//       );
+//     }
+//   }
+// }
+
+class LoginScreen2 extends StatefulWidget {
+  const LoginScreen2({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen2> createState() => _LoginScreen2State();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _LoginScreen2State extends State<LoginScreen2> {
+  TextEditingController visaNumberController = TextEditingController();
+  TextEditingController pinNumberController = TextEditingController();
   AuthenticationController authenticationController =
       Get.put(AuthenticationController.getInstance());
   final _formKey = GlobalKey<FormState>();
@@ -40,182 +303,259 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      //print(SharedPr.isForgetPass!);
-    }
-
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          "ابي",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.1,
-                              fontWeight: FontWeight.w100,
-                              color: AppColor.grey),
-                        ),
-                        Text("")
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "المير",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.1,
-                              fontWeight: FontWeight.w900,
-                              color: AppColor.brawn),
-                        ),
-                        Text(
-                          "Almirabi",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.03,
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.black),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: AppColor.white,
+      body: SingleChildScrollView(
+        child: Container(
+          color: AppColor.white,
+          child: Column(
+            children: [
+              CustomBack(
+                height: MediaQuery.of(context).size.height * 0.2,
+                color: const Color(0XFF3967d7),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'login'.tr,
-                              style: TextStyle(
-                                  fontSize: Get.width * 0.05,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColor.black),
-                            ),
-                          ),
-                        ],
+                      Expanded(
+                        flex: 1,
+                        child: HeaderIcons(
+                            height: Get.width * 0.07,
+                            icon: Icons.language,
+                            color: AppColor.azure,
+                            onTap: () async {
+                              await SharedPr.setLanguage(
+                                  lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+                            }),
                       ),
-                      SizedBox(height: Get.height * 0.01),
-                      Text(
-                        'username'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: usernameController,
-                        prefixIcon: Icons.person,
-                        hintText: 'username'.tr,
-                        labelText: 'username'.tr,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message'
-                                .trParams({'field_name': 'username'.tr});
-                            countErrors++;
-                            return "";
-                          }
-
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.02),
-                      Text(
-                        'password'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: passwordController,
-                        prefixIcon: Icons.key,
-                        hintText: 'password'.tr,
-                        labelText: 'password'.tr,
-                        obscureText: flag ? false : true,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 10.0, right: 10),
-                          child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  flag = !flag;
-                                });
-                              },
-                              icon: flag
-                                  ? Icon(
-                                      Icons.visibility,
-                                      color: AppColor.black,
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                      color: AppColor.black,
-                                    )),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message_f'
-                                .trParams({'field_name': 'password'.tr});
-                            return "";
-                          }
-                          // if (value.isNotEmpty) {
-                          //   var message = ValidatorHelper.passWordValidation(value: value);
-                          //   if (message == "") {
-                          //     return null;
-                          //   }
-                          //   errorMessage = message;
-                          //   return "";
-                          // }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.02),
-                      Obx(() {
-                        if (authenticationController.loading.value) {
-                          return CircularProgressIndicator(
-                            color: AppColor.white,
-                            backgroundColor: AppColor.black,
-                          );
-                        } else {
-                          return ButtonElevated(
-                              borderRadius: 20,
-                              text: 'login'.tr,
-                              width: Get.width,
-                              backgroundColor: AppColor.brawn,
-                              onPressed: onPressed);
-                        }
-                      }),
+                      Expanded(flex: 3, child: Container()),
+                      Expanded(
+                        flex: 1,
+                        child: HeaderIcons(
+                            icon: Icons.settings,
+                            height: Get.width * 0.07,
+                            color: AppColor.azure,
+                            onTap: () async {
+                              Get.to(() => const RemoteDatabaseScreen2(
+                                    changeConnectionInfo: true,
+                                  ));
+                            }),
+                      )
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              //  Center(
+              //   child: CustomIcon(
+              //     assetPath: 'assets/images/image.png',
+              //     size: Get.width * 0.3,
+              //     padding: 30,
+              //     color: AppColor.white,
+              //   ),
+              // ),
+
+              Form(
+                key: _formKey,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  // color: Color(0XFF3967d7),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: Get.width * 0.6,
+                        padding: const EdgeInsets.only(top: 30),
+                        child: CustomIcon(
+                          assetPath: 'assets/images/image.png',
+                          size: Get.width * 0.6,
+                          padding: 10,
+                          color: const Color(0XFF3967d7),
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.1),
+                      Text(
+                        'login'.tr,
+                        style: TextStyle(
+                            fontSize: Get.width * 0.05,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0XFF3967d7)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // SizedBox(height: Get.height * 0.05),
+                            // Text(
+                            //   'visa_number'.tr,
+                            //   style: TextStyle(
+                            //       fontSize: Get.width * 0.03,
+                            //       fontWeight: FontWeight.bold,
+                            //       color: AppColor.black),
+                            // ),
+                            // SizedBox(height: Get.height * 0.01),
+                            // ContainerTextField(
+                            //   controller: visaNumberController,
+                            //   backgroundColor: AppColor.white,
+                            //   prefixIcon: CustomIcon(
+                            //       padding: 10,
+                            //       color: Color(0XFF3967d7),
+                            //       size: Get.width * 0.05,
+                            //       assetPath: 'assets/images/passport.png'),
+                            //   hintText: 'visa_number'.tr,
+                            //   labelText: 'visa_number'.tr,
+                            //   width: Get.width,
+                            //   height: MediaQuery.sizeOf(context).height * 0.05,
+                            //   hintcolor: AppColor.black.withOpacity(0.5),
+                            //   iconcolor: AppColor.black,
+                            //   color: AppColor.black,
+                            //   fontSize: Get.width * 0.03,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       errorMessage = 'required_message'
+                            //           .trParams({'field_name': 'visa_number'.tr});
+                            //       countErrors++;
+                            //       return "";
+                            //     }
+
+                            //     return null;
+                            //   },
+                            // ),
+
+                            SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.03),
+                            Text(
+                              'pin_number'.tr,
+                              style: TextStyle(
+                                  fontSize: Get.width * 0.03,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black),
+                            ),
+                            SizedBox(height: Get.height * 0.01),
+                            ContainerTextField(
+                              backgroundColor: AppColor.white,
+                              keyboardType: TextInputType.number,
+                              controller: pinNumberController,
+                              prefixIcon: CustomIcon(
+                                  padding: 10,
+                                  color: const Color(0XFF3967d7),
+                                  size: Get.width * 0.05,
+                                  assetPath: 'assets/images/key.png'),
+                              hintText: 'pin_number'.tr,
+                              labelText: 'pin_number'.tr,
+                              obscureText: flag ? false : true,
+                              width: Get.width,
+                              height: MediaQuery.sizeOf(context).height * 0.05,
+                              hintcolor: AppColor.black.withOpacity(0.5),
+                              iconcolor: AppColor.black,
+                              color: AppColor.black,
+                              fontSize: Get.width * 0.03,
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10),
+                                child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        flag = !flag;
+                                      });
+                                    },
+                                    icon: flag
+                                        ? const Icon(
+                                            Icons.visibility,
+                                            color: Color(0XFF3967d7),
+                                          )
+                                        : Icon(
+                                            Icons.visibility_off,
+                                            color: AppColor.black,
+                                          )),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  errorMessage = 'required_message_f'.trParams(
+                                      {'field_name': 'pin_number'.tr});
+                                  return "";
+                                }
+                                // if (value.isNotEmpty) {
+                                //   var message = ValidatorHelper.passWordValidation(value: value);
+                                //   if (message == "") {
+                                //     return null;
+                                //   }
+                                //   errorMessage = message;
+                                //   return "";
+                                // }
+                                return null;
+                              },
+                            ),
+
+                            SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.1),
+                            Obx(() {
+                              if (authenticationController.loading.value) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.white,
+                                    backgroundColor: AppColor.black,
+                                  ),
+                                );
+                              } else {
+                                return ButtonElevated(
+                                    borderRadius: 20,
+                                    text: 'login'.tr,
+                                    width: Get.width,
+                                    backgroundColor: const Color(0XFF3967d7),
+                                    onPressed: onPressed);
+                              }
+                            }),
+                            // Obx(() {
+                            //   if (remoteDatabaseSettingController
+                            //       .isLoading.value) {
+                            //     return Center(
+                            //       child: CircularProgressIndicator(
+                            //         color: AppColor.white,
+                            //         backgroundColor: AppColor.black,
+                            //       ),
+                            //     );
+                            //   } else {
+                            //     return Row(
+                            //       children: [
+                            //         Expanded(
+                            //           child: ButtonElevated(
+                            //               borderRadius: 20,
+                            //               text: 'connect'.tr,
+                            //               backgroundColor: Color(0XFF3967d7),
+                            //               onPressed: _onPressed),
+                            //         ),
+                            //         if (widget.changeConnectionInfo)
+                            //           const SizedBox(
+                            //             width: 20,
+                            //           ),
+                            //         if (widget.changeConnectionInfo)
+                            //           Expanded(
+                            //             child: ButtonElevated(
+                            //                 text: 'back'.tr,
+                            //                 borderRadius: 20,
+                            //                 backgroundColor: Color(0XFF3967d7),
+                            //                 onPressed: () async {
+                            //                   Get.back();
+                            //                 }),
+                            //           ),
+                            //       ],
+                            //     );
+                            //   }
+                            // }),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -237,10 +577,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
       ResponseResult responseResult = await authenticationController
           .authenticateUsingUsernameAndPassword(LoginInfo(
-              userName: usernameController.text,
-              password: passwordController.text));
+              visaNumber: visaNumberController.text,
+              pinNumber: pinNumberController.text));
       if (responseResult.status) {
-        Get.to(() => const HomePage());
+        Get.offAll(() => const DataLoadingScreen());
 
         // Get.to(() => const DashboardScreen());
         appSnackBar(
@@ -259,19 +599,5 @@ class _LoginScreenState extends State<LoginScreen> {
         message: countErrors > 1 ? 'enter_required_info'.tr : errorMessage!,
       );
     }
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

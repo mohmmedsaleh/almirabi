@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ContainerTextField extends StatelessWidget {
-  final IconData? prefixIcon;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final String labelText;
@@ -22,7 +22,7 @@ class ContainerTextField extends StatelessWidget {
   double? width;
   double? height;
   double? borderRadius;
-  Color? color, hintcolor, iconcolor, borderColor;
+  Color? color, hintcolor, iconcolor, borderColor, backgroundColor;
   double? fontSize;
   double? horizontal;
   double? vertical;
@@ -56,6 +56,7 @@ class ContainerTextField extends StatelessWidget {
       this.width,
       this.height,
       this.borderRadius = 20,
+      this.backgroundColor,
       this.fontSize,
       this.textAlign = TextAlign.start,
       this.color,
@@ -69,6 +70,7 @@ class ContainerTextField extends StatelessWidget {
       width: width ?? MediaQuery.sizeOf(context).width / 2.7,
       height: height ?? MediaQuery.sizeOf(context).height * 0.07,
       child: TextFormField(
+        keyboardType: keyboardType,
         // maxLength: maxLength ?? 10,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
@@ -86,15 +88,14 @@ class ContainerTextField extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.bold),
         decoration: InputDecoration(
+            filled: true,
+            fillColor: backgroundColor,
             labelText:
                 isAddOrEdit != null && isAddOrEdit == true ? labelText : null,
             counterText: "",
             hintText:
                 isAddOrEdit != null && isAddOrEdit == true ? null : hintText,
-            prefixIcon: Icon(
-              prefixIcon,
-              color: iconcolor,
-            ),
+            prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius!)),
@@ -113,6 +114,10 @@ class ContainerTextField extends StatelessWidget {
                 )),
             // border: isPIN! ? InputBorder.none : const OutlineInputBorder(),
             contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            labelStyle: TextStyle(
+                color: hintcolor ?? AppColor.greyWithOpcity,
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold),
             hintStyle: TextStyle(
                 color: hintcolor ?? AppColor.greyWithOpcity,
                 fontSize: fontSize,

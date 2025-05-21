@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:io';
 import 'package:almirabi/features/authentication/domain/authentication_service.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/config/app_shared_pr.dart';
@@ -34,20 +34,25 @@ class AuthenticationController extends GetxController {
   Future<ResponseResult> authenticateUsingUsernameAndPassword(
       LoginInfo loginInfo) async {
     loading.value = true;
-    dynamic authResult = await authenticateService.authenticate(
-        username: loginInfo.userName!, password: loginInfo.password!);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    dynamic authResult;
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
+      authResult = await authenticateService.authenticate(
+          pinNumber: loginInfo.pinNumber!);
+      print(authResult);
+      if (authResult is User) {
+        await saveUserDataLocally(authResult: authResult);
+        SharedPr.setUserObj(userObj: authResult);
+        authResult = ResponseResult(
+            status: true, message: "Successful".tr, data: authResult);
 
-    if (authResult is User) {
-      authResult.password = loginInfo.password;
-      await saveUserDataLocally(authResult: authResult);
-      authResult = ResponseResult(
-          status: true, message: "Successful".tr, data: authResult);
-
-      await SharedPr.setUserObj(userObj: authResult.data);
+        await SharedPr.setUserObj(userObj: authResult.data);
+      } else {
+        authResult = ResponseResult(message: authResult);
+      }
     } else {
-      authResult = ResponseResult(message: authResult);
+      authResult = ResponseResult(message: "no_connection".tr);
     }
-
     loading.value = false;
     return authResult;
   }
@@ -58,21 +63,21 @@ class AuthenticationController extends GetxController {
         GeneralLocalDB.getInstance<User>(fromJsonFun: User.fromJson);
     await _generalLocalDBinstance!
         .createTable(structure: LocalDatabaseStructure.userStructure);
-    Map<String, dynamic>? objToCreate = {
-      'username': authResult.userName,
-      'pincode': authResult.pinCode,
-    };
-    objToCreate.addIf(
-        authResult.password != null, 'password', authResult.password);
+    // Map<String, dynamic>? objToCreate = {
+    //   'username': authResult.userName,
+    //   'pincode': authResult.pinCode,
+    // };
+    // objToCreate.addIf(
+    //     authResult.password != null, 'password', authResult.password);
 
     // print(objToCreate);
     bool userExist = await _generalLocalDBinstance!
-        .checkRowExists(val: authResult.userName, whereKey: 'username');
+        .checkRowExists(val: authResult.id, whereKey: 'driver_id');
     if (userExist) {
-      await _generalLocalDBinstance!.update(
-          id: authResult.userName, obj: objToCreate, whereField: 'username');
+      await _generalLocalDBinstance!
+          .update(id: authResult.id, obj: authResult, whereField: 'driver_id');
     } else {
-      await _generalLocalDBinstance!.create(obj: objToCreate);
+      await _generalLocalDBinstance!.create(obj: authResult);
     }
   }
 

@@ -1,12 +1,20 @@
 import 'dart:io';
+import 'package:almirabi/features/basic_data_management/car/domain/car_service.dart';
+import 'package:almirabi/features/basic_data_management/source_path/domain/source_path_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io' as io;
 
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import '../../features/basic_data_management/request/domain/request_service.dart';
+
 class DBHelper {
   static createDBTables() async {
+    await CarService.getInstance().createTable();
+    await RequestService.getInstance().createTable();
+    await SourcePathService.getInstance().createTable();
+
     // await NotificationService.getInstance().createNotificationTable();
     // await CustomerService.getInstance().createTable();
     // await PosCategoryService.getInstance().createTable();

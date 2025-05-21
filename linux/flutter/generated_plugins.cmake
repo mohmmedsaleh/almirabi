@@ -3,6 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_selector_linux
+  flutter_window_close
+  local_notifier
+  sqlite3_flutter_libs
+  window_size
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

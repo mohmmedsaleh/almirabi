@@ -43,6 +43,20 @@ dependencies:
   odoo_rpc: ^0.5.4
   flutter_localizations:
     sdk: flutter
+  connectivity_plus: ^6.0.5
+  path: any
+  http: any
+  date_picker_plus: ^4.1.0
+  flutter_month_select: ^0.0.2
+  font_awesome_flutter: ^10.7.0
+  flutter_screenutil: ^5.9.3
+
+  # device_info_plus: ^10.1.0
+  pos_package:
+    git:
+      url: https://github.com/mohmmedsaleh/pos-package.git
+      ref: huda
+  flutter_slidable: ^3.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,10 +79,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
-
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Medium.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

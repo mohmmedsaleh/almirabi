@@ -1,33 +1,791 @@
+import 'package:almirabi/core/config/app_urls.dart';
 import 'package:almirabi/features/authentication/presentation/views/login_screen.dart';
+import 'package:almirabi/features/remote_database_setting/data/subscription_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_service.dart';
+import 'package:pos_package/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
+import 'package:almirabi/features/remote_database_setting/domain/remote_database_setting_viewmodel.dart';
 import '../../../core/config/app_colors.dart';
 import '../../../core/config/app_enums.dart';
 import '../../../core/config/app_shared_pr.dart';
-import '../../../core/config/app_styles.dart';
-
+import 'package:pos_package/core/config/app_shared_pr.dart' as SharedPrPackage;
 import '../../../core/shared_widgets/app_button.dart';
+import '../../../core/shared_widgets/app_custom_icon.dart';
+import '../../../core/shared_widgets/app_header_icons.dart';
 import '../../../core/shared_widgets/app_snack_bar.dart';
 import '../../../core/shared_widgets/app_text_field.dart';
-import '../../../core/shared_widgets/custom_app_bar.dart';
-import '../domain/remote_database_setting_viewmodel.dart';
+import 'package:flutter_svg/svg.dart';
 
-class RemoteDatabaseScreen extends StatefulWidget {
-  final bool changeConnectionInfo;
+// class RemoteDatabaseScreen extends StatefulWidget {
+//   final bool changeConnectionInfo;
+//   final SubscriptionInfo? subscriptionInfo;
 
-  const RemoteDatabaseScreen({super.key, this.changeConnectionInfo = false});
+//   const RemoteDatabaseScreen(
+//       {super.key, this.changeConnectionInfo = false, this.subscriptionInfo});
+
+//   @override
+//   State<RemoteDatabaseScreen> createState() => _RemoteDatabaseScreenState();
+// }
+
+// class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
+//   DatabaseSettingController remoteDatabaseSettingController =
+//       Get.put(DatabaseSettingController.getInstance());
+//   TextEditingController dbNameController = TextEditingController();
+//   TextEditingController urlController = TextEditingController();
+//   final _formKey = GlobalKey<FormState>();
+//   String? errorMessage;
+//   final keyFocusNode = FocusNode();
+//   final _buttonFocusNode = FocusNode();
+//   bool flag = false;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     if (widget.changeConnectionInfo) {
+//       dbNameController.text = widget.subscriptionInfo!.db!;
+//       urlController.text = widget.subscriptionInfo!.url!;
+//     }
+
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       keyFocusNode.requestFocus();
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _buttonFocusNode.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Scaffold(
+//         appBar: customAppBar(),
+//         body: Center(
+//           child: SingleChildScrollView(
+//             child: Form(
+//               key: _formKey,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   Directionality(
+//                     textDirection: TextDirection.ltr,
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Column(
+//                           children: [
+//                             Text(
+//                               "ابي",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.1,
+//                                   fontWeight: FontWeight.w100,
+//                                   color: AppColor.grey),
+//                             ),
+//                             const Text("")
+//                           ],
+//                         ),
+//                         Column(
+//                           children: [
+//                             Text(
+//                               "المير",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.1,
+//                                   fontWeight: FontWeight.w900,
+//                                   color: AppColor.brawn),
+//                             ),
+//                             Text(
+//                               "Almirabi",
+//                               style: TextStyle(
+//                                   fontSize: Get.width * 0.03,
+//                                   fontWeight: FontWeight.bold,
+//                                   color: AppColor.black),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(height: Get.height * 0.02),
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Row(
+//                           children: [
+//                             Expanded(
+//                               child: Text(
+//                                 'remote_connection_information'.tr,
+//                                 style: TextStyle(
+//                                     fontSize: Get.width * 0.05,
+//                                     fontWeight: FontWeight.bold,
+//                                     color: AppColor.black),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(height: Get.height * 0.02),
+//                         Text(
+//                           'dbName'.tr,
+//                           style: TextStyle(
+//                               fontSize: Get.width * 0.03,
+//                               fontWeight: FontWeight.bold,
+//                               color: AppColor.black),
+//                         ),
+//                         SizedBox(height: Get.height * 0.01),
+//                         ContainerTextField(
+//                           controller: dbNameController,
+//                           prefixIcon: CustomIcon(
+//                               size: Get.width * 0.05,
+//                               assetPath: 'assets/images/database-storage.png'),
+//                           hintText: 'dbName'.tr,
+//                           labelText: 'dbName'.tr,
+//                           width: Get.width,
+//                           height: MediaQuery.sizeOf(context).height * 0.05,
+//                           hintcolor: AppColor.black.withOpacity(0.5),
+//                           iconcolor: AppColor.black,
+//                           color: AppColor.black,
+//                           fontSize: Get.width * 0.03,
+//                           validator: (value) {
+//                             if (value == null || value.isEmpty) {
+//                               errorMessage = 'required_message'
+//                                   .trParams({'field_name': 'dbName'.tr});
+
+//                               return "";
+//                             }
+
+//                             return null;
+//                           },
+//                         ),
+//                         SizedBox(
+//                             height: MediaQuery.sizeOf(context).height * 0.02),
+//                         Text(
+//                           'url'.tr,
+//                           style: TextStyle(
+//                               fontSize: Get.width * 0.03,
+//                               fontWeight: FontWeight.bold,
+//                               color: AppColor.black),
+//                         ),
+//                         SizedBox(height: Get.height * 0.01),
+//                         ContainerTextField(
+//                           controller: urlController,
+//                           prefixIcon: Icon(
+//                             Icons.http_outlined,
+//                             color: AppColor.black,
+//                           ),
+//                           hintText: 'url'.tr,
+//                           labelText: 'url'.tr,
+//                           width: Get.width,
+//                           height: MediaQuery.sizeOf(context).height * 0.05,
+//                           hintcolor: AppColor.black.withOpacity(0.5),
+//                           iconcolor: AppColor.black,
+//                           color: AppColor.black,
+//                           fontSize: Get.width * 0.03,
+//                           validator: (value) {
+//                             if (value == null || value.isEmpty) {
+//                               errorMessage = 'required_message_f'
+//                                   .trParams({'field_name': 'url'.tr});
+//                               return "";
+//                             }
+//                             // if (value.isNotEmpty) {
+//                             //   var message = ValidatorHelper.passWordValidation(value: value);
+//                             //   if (message == "") {
+//                             //     return null;
+//                             //   }
+//                             //   errorMessage = message;
+//                             //   return "";
+//                             // }
+//                             return null;
+//                           },
+//                         ),
+//                         SizedBox(
+//                             height: MediaQuery.sizeOf(context).height * 0.04),
+//                         Obx(() {
+//                           if (remoteDatabaseSettingController.isLoading.value) {
+//                             return Center(
+//                               child: CircularProgressIndicator(
+//                                 color: AppColor.white,
+//                                 backgroundColor: AppColor.black,
+//                               ),
+//                             );
+//                           } else {
+//                             return Row(
+//                               children: [
+//                                 Expanded(
+//                                   child: ButtonElevated(
+//                                       borderRadius: 20,
+//                                       text: 'connect'.tr,
+//                                       backgroundColor: AppColor.brawn,
+//                                       onPressed: _onPressed),
+//                                 ),
+//                                 if (widget.changeConnectionInfo)
+//                                   const SizedBox(
+//                                     width: 20,
+//                                   ),
+//                                 if (widget.changeConnectionInfo)
+//                                   Expanded(
+//                                     child: ButtonElevated(
+//                                         text: 'back'.tr,
+//                                         borderRadius: 20,
+//                                         backgroundColor: AppColor.brawn,
+//                                         onPressed: () async {
+//                                           Get.back();
+//                                         }),
+//                                   ),
+//                               ],
+//                             );
+//                           }
+//                         }),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   _onPressed() {
+//     if (_formKey.currentState!.validate()) {
+//       remoteDatabaseSettingController
+//           .checkDatabase(SubscriptionInfo(
+//               url: urlController.text, db: dbNameController.text))
+//           .then((value) async {
+//         if (value.status) {
+//           appSnackBar(
+//             messageType: MessageTypes.success,
+//             message: 'success_key_login'.tr,
+//           );
+//           await SharedPr.removeUserObj();
+//           // Get.to(() => const EmployeesListScreen());
+//           Get.to(() => const LoginScreen2());
+//         } else {
+//           appSnackBar(
+//             message: value.message!,
+//           );
+//         }
+//       });
+//     } else {
+//       appSnackBar(
+//         message: errorMessage!,
+//       );
+//     }
+//   }
+// }
+
+// class test extends StatefulWidget {
+//   final bool changeConnectionInfo;
+//   final SubscriptionInfo? subscriptionInfo;
+
+//   const test(
+//       {super.key, this.changeConnectionInfo = false, this.subscriptionInfo});
+//   @override
+//   State<test> createState() => _testState();
+// }
+
+// class _testState extends State<test> {
+//   DatabaseSettingController remoteDatabaseSettingController =
+//       Get.put(DatabaseSettingController.getInstance());
+//   TextEditingController dbNameController = TextEditingController();
+//   TextEditingController urlController = TextEditingController();
+//   final _formKey = GlobalKey<FormState>();
+//   String? errorMessage;
+//   final keyFocusNode = FocusNode();
+//   final _buttonFocusNode = FocusNode();
+//   bool flag = false;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     if (widget.changeConnectionInfo) {
+//       dbNameController.text = widget.subscriptionInfo!.db!;
+//       urlController.text = widget.subscriptionInfo!.url!;
+//     }
+
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       keyFocusNode.requestFocus();
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _buttonFocusNode.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//         child: Scaffold(
+//       body: SingleChildScrollView(
+//         child: SizedBox(
+//           height: Get.height,
+//           child: Column(
+//             children: [
+//               Expanded(
+//                   flex: 1,
+//                   child: Row(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Expanded(
+//                         child: CustomBackHeader(
+//                           height: MediaQuery.of(context).size.height * 0.18,
+//                           child: CustomIcon(
+//                             assetPath: 'assets/images/image.png',
+//                             size: Get.width * 0.3,
+//                             color: AppColor.white,
+//                           ),
+//                         ),
+//                       ),
+//                       Expanded(
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.end,
+//                           children: [
+//                             IconButton(
+//                                 onPressed: () {},
+//                                 icon: Container(
+//                                     color: Color(0xFFecebf0),
+//                                     padding: EdgeInsets.all(5),
+//                                     margin: EdgeInsets.all(5),
+//                                     child: Icon(
+//                                       Icons.info_outline,
+//                                       size: Get.width * 0.07,
+//                                     ))),
+//                             IconButton(
+//                                 onPressed: () {},
+//                                 icon: Container(
+//                                     color: Color(0xFFecebf0),
+//                                     padding: EdgeInsets.all(5),
+//                                     margin: EdgeInsets.all(5),
+//                                     child: Icon(
+//                                       Icons.language,
+//                                       size: Get.width * 0.07,
+//                                     )))
+//                           ],
+//                         ),
+//                       )
+//                     ],
+//                   )),
+//               Expanded(
+//                   flex: 3,
+//                   child: backgroundlogin(
+//                     child: Form(
+//                       key: _formKey,
+//                       child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         mainAxisSize: MainAxisSize.min,
+//                         children: [
+//                           SizedBox(height: Get.height * 0.07),
+//                           Padding(
+//                             padding:
+//                                 const EdgeInsets.symmetric(horizontal: 20.0),
+//                             child: Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Row(
+//                                   children: [
+//                                     Expanded(
+//                                       child: Text(
+//                                         'remote_connection_information'.tr,
+//                                         style: TextStyle(
+//                                             fontSize: Get.width * 0.05,
+//                                             fontWeight: FontWeight.bold,
+//                                             color: AppColor.white),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 SizedBox(height: Get.height * 0.02),
+//                                 Text(
+//                                   'dbName'.tr,
+//                                   style: TextStyle(
+//                                       fontSize: Get.width * 0.03,
+//                                       fontWeight: FontWeight.bold,
+//                                       color: AppColor.white),
+//                                 ),
+//                                 SizedBox(height: Get.height * 0.01),
+//                                 ContainerTextField(
+//                                   controller: dbNameController,
+//                                   borderRadius: 0,
+//                                   backgroundColor: Color(0xff1d2e4a),
+//                                   prefixIcon: CustomIcon(
+//                                     size: Get.width * 0.05,
+//                                     padding: 10,
+//                                     color: AppColor.white,
+//                                     assetPath:
+//                                         'assets/images/database-storage.png',
+//                                   ),
+//                                   hintText: 'dbName'.tr,
+//                                   labelText: 'dbName'.tr,
+//                                   width: Get.width,
+//                                   height:
+//                                       MediaQuery.sizeOf(context).height * 0.05,
+//                                   hintcolor: AppColor.white.withOpacity(0.5),
+//                                   iconcolor: AppColor.white,
+//                                   color: AppColor.white,
+//                                   fontSize: Get.width * 0.03,
+//                                   validator: (value) {
+//                                     if (value == null || value.isEmpty) {
+//                                       errorMessage = 'required_message'
+//                                           .trParams(
+//                                               {'field_name': 'dbName'.tr});
+
+//                                       return "";
+//                                     }
+
+//                                     return null;
+//                                   },
+//                                 ),
+//                                 SizedBox(
+//                                     height: MediaQuery.sizeOf(context).height *
+//                                         0.02),
+//                                 Text(
+//                                   'url'.tr,
+//                                   style: TextStyle(
+//                                       fontSize: Get.width * 0.03,
+//                                       fontWeight: FontWeight.bold,
+//                                       color: AppColor.white),
+//                                 ),
+//                                 SizedBox(height: Get.height * 0.01),
+//                                 ContainerTextField(
+//                                   backgroundColor: Color(0xff1d2e4a),
+//                                   borderRadius: 0,
+//                                   controller: urlController,
+//                                   prefixIcon: Icon(
+//                                     Icons.http_outlined,
+//                                     color: AppColor.white,
+//                                   ),
+//                                   hintText: 'url'.tr,
+//                                   labelText: 'url'.tr,
+//                                   width: Get.width,
+//                                   height:
+//                                       MediaQuery.sizeOf(context).height * 0.05,
+//                                   hintcolor: AppColor.white.withOpacity(0.5),
+//                                   iconcolor: AppColor.white,
+//                                   color: AppColor.white,
+//                                   fontSize: Get.width * 0.03,
+//                                   validator: (value) {
+//                                     if (value == null || value.isEmpty) {
+//                                       errorMessage = 'required_message_f'
+//                                           .trParams({'field_name': 'url'.tr});
+//                                       return "";
+//                                     }
+//                                     // if (value.isNotEmpty) {
+//                                     //   var message = ValidatorHelper.passWordValidation(value: value);
+//                                     //   if (message == "") {
+//                                     //     return null;
+//                                     //   }
+//                                     //   errorMessage = message;
+//                                     //   return "";
+//                                     // }
+//                                     return null;
+//                                   },
+//                                 ),
+//                                 SizedBox(
+//                                     height: MediaQuery.sizeOf(context).height *
+//                                         0.04),
+//                                 Obx(() {
+//                                   if (remoteDatabaseSettingController
+//                                       .isLoading.value) {
+//                                     return Center(
+//                                       child: CircularProgressIndicator(
+//                                         color: AppColor.white,
+//                                         backgroundColor: AppColor.black,
+//                                       ),
+//                                     );
+//                                   } else {
+//                                     return Row(
+//                                       children: [
+//                                         if (!widget.changeConnectionInfo)
+//                                           Expanded(child: Container()),
+//                                         Expanded(
+//                                           flex: 2,
+//                                           child: ButtonElevated(
+//                                               borderRadius: 20,
+//                                               text: 'connect'.tr,
+//                                               backgroundColor:
+//                                                   Color(0xff3157e8),
+//                                               onPressed: _onPressed),
+//                                         ),
+//                                         if (!widget.changeConnectionInfo)
+//                                           Expanded(child: Container()),
+//                                         if (widget.changeConnectionInfo)
+//                                           const SizedBox(
+//                                             width: 20,
+//                                           ),
+//                                         if (widget.changeConnectionInfo)
+//                                           Expanded(
+//                                             child: ButtonElevated(
+//                                                 text: 'back'.tr,
+//                                                 borderRadius: 20,
+//                                                 backgroundColor:
+//                                                     Color(0xff3157e8),
+//                                                 onPressed: () async {
+//                                                   Get.back();
+//                                                 }),
+//                                           ),
+//                                       ],
+//                                     );
+//                                   }
+//                                 }),
+//                               ],
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ))
+//             ],
+//           ),
+//         ),
+//       ),
+//     ));
+//   }
+
+//   _onPressed() {
+//     if (_formKey.currentState!.validate()) {
+//       remoteDatabaseSettingController
+//           .checkDatabase(SubscriptionInfo(
+//               url: urlController.text, db: dbNameController.text))
+//           .then((value) async {
+//         if (value.status) {
+//           appSnackBar(
+//             messageType: MessageTypes.success,
+//             message: 'success_key_login'.tr,
+//           );
+//           await SharedPr.removeUserObj();
+//           // Get.to(() => const EmployeesListScreen());
+//           Get.to(() => const LoginScreen());
+//         } else {
+//           appSnackBar(
+//             message: value.message!,
+//           );
+//         }
+//       });
+//     } else {
+//       appSnackBar(
+//         message: errorMessage!,
+//       );
+//     }
+//   }
+// }
+
+// class backgroundlogin extends StatelessWidget {
+//   backgroundlogin({super.key, required this.child});
+//   Widget? child;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         CustomBack(
+//           height: MediaQuery.of(context).size.height,
+//           color: Color(0xFFf4f4f4),
+//         ),
+//         Column(
+//           mainAxisAlignment: MainAxisAlignment.end,
+//           children: [
+//             CustomBack(
+//               height: MediaQuery.of(context).size.height * 0.62,
+//               color: Color(0xFFecebf0),
+//             ),
+//           ],
+//         ),
+//         Column(
+//           mainAxisAlignment: MainAxisAlignment.end,
+//           children: [
+//             CustomBack(
+//               height: MediaQuery.of(context).size.height * 0.52,
+//               color: Color(0xFF0f1f40),
+//               child: child,
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+class CustomBack extends StatelessWidget {
+  CustomBack({super.key, this.child, this.color, this.height});
+  Widget? child;
+  double? height;
+  final Color? color;
 
   @override
-  State<RemoteDatabaseScreen> createState() => _RemoteDatabaseScreenState();
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CustomPaint(
+          size: Size(
+              Get.width,
+              height ??
+                  Get.height *
+                      0.12), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+          painter: RPSback2(color: color),
+        ),
+        child ?? Container()
+      ],
+    );
+  }
 }
 
-class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
+// class RPSback extends CustomPainter {
+//   RPSback({required this.color});
+
+//   final Color? color;
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     // Layer 1
+
+//     Paint paint_fill_0 = Paint()
+//       ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
+//       ..style = PaintingStyle.fill
+//       ..strokeWidth = size.width * 0.00
+//       ..strokeCap = StrokeCap.butt
+//       ..strokeJoin = StrokeJoin.miter;
+
+//     Path path_0 = Path();
+//     path_0.moveTo(size.width * -0.0021833, size.height * 0.1011700);
+//     path_0.cubicTo(
+//         size.width * 0.1057500,
+//         size.height * 0.0247300,
+//         size.width * 0.3575667,
+//         size.height * 0.0015300,
+//         size.width * 0.5000000,
+//         size.height * -0.0020000);
+//     path_0.cubicTo(
+//         size.width * 0.6461833,
+//         size.height * 0.0006623,
+//         size.width * 0.8767500,
+//         size.height * 0.0216600,
+//         size.width * 1.0055500,
+//         size.height * 0.1016800);
+//     path_0.quadraticBezierTo(size.width * 1.0051333, size.height * 0.3023500,
+//         size.width * 1.0016667, size.height * 1.0068552);
+//     path_0.lineTo(size.width * -0.0016667, size.height * 1.0048535);
+//     path_0.quadraticBezierTo(size.width * -0.0034333, size.height * 0.7016800,
+//         size.width * -0.0021833, size.height * 0.1011700);
+//     path_0.close();
+
+//     canvas.drawPath(path_0, paint_fill_0);
+
+//     // Layer 1
+
+//     Paint paint_stroke_0 = Paint()
+//       ..color = color ?? const Color.fromARGB(255, 33, 150, 243)
+//       ..style = PaintingStyle.stroke
+//       ..strokeWidth = size.width * 0.00
+//       ..strokeCap = StrokeCap.butt
+//       ..strokeJoin = StrokeJoin.miter;
+
+//     canvas.drawPath(path_0, paint_stroke_0);
+//   }
+
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     return true;
+//   }
+// }
+
+// class RPSHeaderbackground extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     // Layer 1
+
+//     Paint paint_fill_0 = Paint()
+//       ..color = Color(0xff3157e8)
+//       ..style = PaintingStyle.fill
+//       ..strokeWidth = size.width * 0.00
+//       ..strokeCap = StrokeCap.butt
+//       ..strokeJoin = StrokeJoin.miter;
+
+//     Path path_0 = Path();
+//     path_0.moveTo(size.width * -0.0052668, size.height * 1.0052888);
+//     path_0.cubicTo(
+//         size.width * 0.9770031,
+//         size.height * 1.0246030,
+//         size.width * 1.0014808,
+//         size.height * 0.5602680,
+//         size.width * 0.9983725,
+//         size.height * 0.0019566);
+//     path_0.quadraticBezierTo(size.width * 0.7474627, size.height * 0.0036206,
+//         size.width * -0.0090966, size.height * -0.0046399);
+//     path_0.quadraticBezierTo(size.width * -0.0052668, size.height * 0.2643733,
+//         size.width * -0.0052668, size.height * 1.0052888);
+//     path_0.close();
+
+//     canvas.drawPath(path_0, paint_fill_0);
+
+//     // Layer 1
+
+//     Paint paint_stroke_0 = Paint()
+//       ..color = const Color.fromARGB(255, 33, 150, 243)
+//       ..style = PaintingStyle.stroke
+//       ..strokeWidth = size.width * 0.00
+//       ..strokeCap = StrokeCap.butt
+//       ..strokeJoin = StrokeJoin.miter;
+
+//     canvas.drawPath(path_0, paint_stroke_0);
+//   }
+
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     return true;
+//   }
+// }
+
+// class CustomBackHeader extends StatelessWidget {
+//   CustomBackHeader({super.key, this.child, this.color, this.height});
+//   Widget? child;
+//   double? height;
+//   final Color? color;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         CustomPaint(
+//           size: Size(
+//               Get.width,
+//               height ??
+//                   Get.height *
+//                       0.12), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+//           painter: RPSHeaderbackground(),
+//         ),
+//         child ?? Container()
+//       ],
+//     );
+//   }
+// }
+class RemoteDatabaseScreen2 extends StatefulWidget {
+  final bool changeConnectionInfo;
+  // final SubscriptionInfo? subscriptionInfo;
+
+  const RemoteDatabaseScreen2({
+    super.key,
+    this.changeConnectionInfo = false,
+  });
+
+  @override
+  State<RemoteDatabaseScreen2> createState() => _RemoteDatabaseScreen2State();
+}
+
+class _RemoteDatabaseScreen2State extends State<RemoteDatabaseScreen2> {
   DatabaseSettingController remoteDatabaseSettingController =
       Get.put(DatabaseSettingController.getInstance());
-  TextEditingController dbNameController = TextEditingController();
-  TextEditingController urlController = TextEditingController();
+  DatabaseSettingLocalController remoteDatabaseSettinglocalController =
+      Get.put(DatabaseSettingLocalController.getInstance());
+  // TokenController tokenClassController = Get.put(TokenController.getInstance());
+  // TextEditingController dbNameController = TextEditingController();
+  TextEditingController keyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? errorMessage;
   final keyFocusNode = FocusNode();
@@ -37,6 +795,11 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
   @override
   void initState() {
     super.initState();
+    // if (widget.changeConnectionInfo) {
+    //   // dbNameController.text = widget.subscriptionInfo!.db!;
+    //   keyController.text = widget.subscriptionInfo!.url!;
+    // }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       keyFocusNode.requestFocus();
     });
@@ -50,220 +813,354 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.white,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 0.1.sh,
+                child: Column(
                   children: [
-                    Column(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "ابي",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.1,
-                              fontWeight: FontWeight.w100,
-                              color: AppColor.grey),
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            children: [
+                              HeaderIcons(
+                                  height: 20.r,
+                                  icon: Icons.language,
+                                  color: AppColor.azure,
+                                  onTap: () async {
+                                    await SharedPr.setLanguage(
+                                        lang: SharedPr.lang == 'en'
+                                            ? 'ar'
+                                            : 'en');
+                                  }),
+                              Text('lang'.tr)
+                            ],
+                          ),
                         ),
-                        Text("")
                       ],
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          "المير",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.1,
-                              fontWeight: FontWeight.w900,
-                              color: AppColor.brawn),
-                        ),
-                        Text(
-                          "Almirabi",
-                          style: TextStyle(
-                              fontSize: Get.width * 0.03,
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.black),
-                        ),
-                      ],
+                    Divider(
+                      height: 10.r,
+                      color: AppColor.lightgray,
                     ),
                   ],
                 ),
-                SizedBox(height: Get.height * 0.02),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'remote_connection_information'.tr,
-                              style: TextStyle(
-                                  fontSize: Get.width * 0.05,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColor.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                      Text(
-                        'dbName'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: dbNameController,
-                        prefixIcon: Icons.person,
-                        hintText: 'dbName'.tr,
-                        labelText: 'dbName'.tr,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message'
-                                .trParams({'field_name': 'dbName'.tr});
+              ),
 
-                            return "";
-                          }
-
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.02),
-                      Text(
-                        'url'.tr,
-                        style: TextStyle(
-                            fontSize: Get.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black),
-                      ),
-                      SizedBox(height: Get.height * 0.01),
-                      ContainerTextField(
-                        controller: urlController,
-                        prefixIcon: Icons.key,
-                        hintText: 'url'.tr,
-                        labelText: 'url'.tr,
-                        obscureText: flag ? false : true,
-                        width: Get.width,
-                        height: MediaQuery.sizeOf(context).height * 0.05,
-                        hintcolor: AppColor.black.withOpacity(0.5),
-                        iconcolor: AppColor.black,
-                        color: AppColor.black,
-                        fontSize: Get.width * 0.03,
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 10.0, right: 10),
-                          child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  flag = !flag;
-                                });
-                              },
-                              icon: flag
-                                  ? Icon(
-                                      Icons.visibility,
-                                      color: AppColor.black,
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                      color: AppColor.black,
-                                    )),
+              // CustomBack(
+              //   height: MediaQuery.of(context).size.height * 0.2,
+              //   color: const Color(0XFF3967d7),
+              //   child: SizedBox(
+              //     height: MediaQuery.of(context).size.height * 0.2,
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         Expanded(
+              //           flex: 1,
+              //           child: HeaderIcons(
+              //               height: Get.width * 0.07,
+              //               icon: Icons.language,
+              //               darkBackground: true,
+              //               onTap: () async {
+              //                 await SharedPr.setLanguage(
+              //                     lang: SharedPr.lang == 'en' ? 'ar' : 'en');
+              //               }),
+              //         ),
+              //         Expanded(flex: 3, child: Container()),
+              //         Expanded(flex: 1, child: Container())
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 0.85.sh,
+                child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.all(10.r),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 40.h),
+                        CustomIcon(
+                          assetPath: 'assets/images/logov.png',
+                          size: 200.r,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            errorMessage = 'required_message_f'
-                                .trParams({'field_name': 'url'.tr});
-                            return "";
-                          }
-                          // if (value.isNotEmpty) {
-                          //   var message = ValidatorHelper.passWordValidation(value: value);
-                          //   if (message == "") {
-                          //     return null;
-                          //   }
-                          //   errorMessage = message;
-                          //   return "";
-                          // }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.04),
-                      Obx(() {
-                        if (remoteDatabaseSettingController.isLoading.value) {
-                          return CircularProgressIndicator(
-                            color: AppColor.white,
-                            backgroundColor: AppColor.black,
-                          );
-                        } else {
-                          return Row(
+                        SizedBox(height: 10.r),
+                        Text(
+                          'header_remote_setting'.tr,
+                          style: TextStyle(
+                              fontSize: 20.r,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.gunmetal),
+                        ),
+                        SizedBox(height: 10.r),
+                        Text(
+                          'sub_header_remote_setting'.tr,
+                          style: TextStyle(
+                              fontSize: 10.r,
+                              fontWeight: FontWeight.w300,
+                              color: AppColor.steelblue),
+                        ),
+                        SizedBox(height: 20.r),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: ButtonElevated(
-                                    borderRadius: 20,
-                                    text: 'connect'.tr,
-                                    backgroundColor: AppColor.brawn,
-                                    onPressed: _onPressed),
+                              Text(
+                                'key_number'.tr,
+                                style: TextStyle(
+                                    fontSize: 10.r,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColor.charcoal),
                               ),
-                              if (widget.changeConnectionInfo)
-                                const SizedBox(
-                                  width: 20,
+                              SizedBox(height: 10.r),
+                              ContainerTextField(
+                                borderRadius: 10.r,
+                                controller: keyController,
+                                backgroundColor: AppColor.white,
+                                hintText: 'key_number'.tr,
+                                labelText: 'key_number'.tr,
+                                width: Get.width,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                hintcolor: AppColor.steelblue,
+                                iconcolor: AppColor.steelblue,
+                                color: AppColor.black,
+                                fontSize: 12.r,
+                                obscureText: flag ? false : true,
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          flag = !flag;
+                                        });
+                                      },
+                                      icon: flag
+                                          ? SvgPicture.asset(
+                                              'assets/images/eye-open.svg',
+                                              fit: BoxFit.scaleDown,
+                                              color: AppColor.steelblue,
+                                              // Adjust this to control scaling
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/images/eye-closed.svg',
+                                              fit: BoxFit.scaleDown,
+                                              color: AppColor
+                                                  .steelblue, // Adjust this to control scaling
+                                            )),
                                 ),
-                              if (widget.changeConnectionInfo)
-                                Expanded(
-                                  child: ButtonElevated(
-                                      text: 'back'.tr,
-                                      width: MediaQuery.sizeOf(context).width /
-                                          3.5,
-                                      borderColor: AppColor.shadepurple,
-                                      onPressed: () async {
-                                        Get.back();
-                                      }),
-                                ),
+                                onChanged: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    remoteDatabaseSettinglocalController
+                                            .errorMessage.value =
+                                        'required_message_f'.trParams(
+                                            {'field_name': 'key_number'.tr});
+                                    remoteDatabaseSettinglocalController
+                                        .update();
+                                  } else {
+                                    remoteDatabaseSettinglocalController
+                                        .errorMessage.value = '';
+                                    remoteDatabaseSettinglocalController
+                                        .update();
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    // remoteDatabaseSettinglocalController
+                                    //         .errorMessage.value =
+                                    //     'required_message_f'.trParams(
+                                    //         {'field_name': 'key_number'.tr});
+                                    // remoteDatabaseSettinglocalController
+                                    //         .errorMessage.value =
+                                    //     'required_message_f'.trParams(
+                                    //         {'field_name': 'key_number'.tr});
+                                    // remoteDatabaseSettinglocalController.update();
+                                    return "";
+                                  }
+                                  // if (value.isNotEmpty) {
+                                  //   var message = ValidatorHelper.passWordValidation(value: value);
+                                  //   if (message == "") {
+                                  //     return null;
+                                  //   }
+                                  //   errorMessage = message;
+                                  //   return "";
+                                  // }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10.r),
+                              Obx(() {
+                                return Text(
+                                  remoteDatabaseSettinglocalController
+                                      .errorMessage.value,
+                                  style: TextStyle(
+                                      fontSize: 10.r,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColor.crimson),
+                                );
+                              }),
+                              Spacer(),
+                              SizedBox(height: 10.r),
+                              Obx(() {
+                                if (remoteDatabaseSettingController
+                                    .isLoading.value) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.white,
+                                      backgroundColor: AppColor.black,
+                                    ),
+                                  );
+                                } else {
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: _onPressed,
+                                        child: Container(
+                                            height: 0.05.sh,
+                                            width: ScreenUtil().screenWidth,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.r,
+                                                vertical: 5.r),
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: ShapeDecoration(
+                                              color: AppColor.azure,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                              ),
+                                              shadows: [
+                                                BoxShadow(
+                                                  color: AppColor
+                                                      .shadowcharcoalblue,
+                                                  blurRadius: 2,
+                                                  offset: const Offset(0, 1),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
+                                            ),
+                                            child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/images/arrow-right.svg',
+                                                    color: AppColor.white,
+                                                  ),
+                                                  SizedBox(width: 10.r),
+                                                  Text(
+                                                    'connect'.tr,
+                                                    style: TextStyle(
+                                                      color: AppColor.white,
+                                                      fontSize: 13.r,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ])),
+                                      ),
+                                      if (widget.changeConnectionInfo)
+                                        SizedBox(
+                                          height: 10.r,
+                                        ),
+                                      if (widget.changeConnectionInfo)
+                                        ButtonElevated(
+                                            text: 'back'.tr,
+                                            borderRadius: 10.r,
+                                            backgroundColor:
+                                                const Color(0XFF3967d7),
+                                            onPressed: () async {
+                                              Get.back();
+                                            }),
+                                    ],
+                                  );
+                                }
+                              }),
                             ],
-                          );
-                        }
-                      }),
-                    ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  _onPressed() {
+  _onPressed() async {
     if (_formKey.currentState!.validate()) {
-      remoteDatabaseSettingController.checkDatabase("").then((value) async {
+      await RemoteDatabaseSettingService.instantiateOdooConnection(
+          url: remoteURL,
+          db: remotedB,
+          username: remoteUsername,
+          password: remotePassword);
+      remoteDatabaseSettingController
+          .checkDatabase(
+              loginKey: keyController.text,
+              subscriptionDetails: 'subscription.detail')
+          .then((value) async {
+        print(value.status);
         if (value.status) {
+          await SharedPr.setRemoteDatabaseInfo(
+              subscriptionInfo:
+                  SubscriptionInfo(url: value.data.url11, db: value.data.db));
           appSnackBar(
             messageType: MessageTypes.success,
             message: 'success_key_login'.tr,
           );
           await SharedPr.removeUserObj();
           // Get.to(() => const EmployeesListScreen());
-          Get.to(() => const LoginScreen());
+          Get.to(() => const LoginScreen2());
         } else {
+          // if (value.data != null) {
+          //   CustomDialog.getInstance().dialog(
+          //       title: 'error_message',
+          //       message: value.message!,
+          //       onPressed: () async {
+          //         await remoteDatabaseSettingController
+          //             .sendTicket(
+          //                 subscriptionId: SharedPr
+          //                     .subscriptionDetailsObj!.subscriptionId
+          //                     .toString(),
+          //                 message: value.message!)
+          //             .then((value) {
+          //           if (value.status) {
+          //             Get.back();
+          //             appSnackBar(
+          //                 message: 'success_send_ticket'.tr,
+          //                 messageType: MessageTypes.success);
+          //           } else {
+          //             appSnackBar(
+          //               message: value.message!,
+          //             );
+          //           }
+          //         });
+          //       },
+          //       dialogType: MessageTypes.error,
+          //       primaryButtonText: 'send_ticket');
+          // } else {
           appSnackBar(
             message: value.message!,
           );
+          // }
         }
       });
     } else {
@@ -271,5 +1168,134 @@ class _RemoteDatabaseScreenState extends State<RemoteDatabaseScreen> {
         message: errorMessage!,
       );
     }
+  }
+  //   if (_formKey.currentState!.validate()) {
+  //     remoteDatabaseSettingController
+  //         .checkDatabase(SubscriptionInfo(
+  //             url: tokenController.text, db: dbNameController.text))
+  //         .then((value) async {
+  //       if (value.status) {
+  //         appSnackBar(
+  //           messageType: MessageTypes.success,
+  //           message: 'success_key_login'.tr,
+  //         );
+  //         await SharedPr.removeUserObj();
+  //         // Get.to(() => const EmployeesListScreen());
+  //         Get.to(() => const LoginScreen2());
+  //       } else {
+  //         appSnackBar(
+  //           message: value.message!,
+  //         );
+  //       }
+  //     });
+  //   } else {
+  //     appSnackBar(
+  //       message: errorMessage!,
+  //     );
+  //   }
+  // }
+}
+
+class RPSback extends CustomPainter {
+  RPSback({required this.color});
+
+  final Color? color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Layer 1
+
+    Paint paintFill0 = Paint()
+      ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    Path path_0 = Path();
+    path_0.moveTo(size.width * -0.0027667, size.height * 0.6699667);
+    path_0.quadraticBezierTo(size.width * -0.0019292, size.height * 0.1649917,
+        size.width * -0.0016500, size.height * -0.0033333);
+    path_0.lineTo(size.width, size.height * 0.0033333);
+    path_0.quadraticBezierTo(size.width * 0.9983375, size.height * 0.4983333,
+        size.width * 0.9977833, size.height * 0.6633333);
+    path_0.cubicTo(
+        size.width * 0.7543333,
+        size.height * 1.1708667,
+        size.width * 0.2483667,
+        size.height * 1.1665333,
+        size.width * -0.0027667,
+        size.height * 0.6699667);
+    path_0.close();
+
+    canvas.drawPath(path_0, paintFill0);
+
+    // Layer 1
+
+    Paint paintStroke0 = Paint()
+      ..color = const Color.fromARGB(255, 33, 150, 243)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    canvas.drawPath(path_0, paintStroke0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class RPSback2 extends CustomPainter {
+  RPSback2({required this.color});
+
+  final Color? color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Layer 1
+
+    Paint paintFill0 = Paint()
+      ..color = color ?? const Color.fromARGB(255, 255, 0, 0)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    Path path_0 = Path();
+    path_0.moveTo(0, size.height * -0.0033333);
+    path_0.quadraticBezierTo(
+        0, size.height * 0.4966667, 0, size.height * 0.6633333);
+    path_0.cubicTo(
+        size.width * 0.1664583,
+        size.height * 1.1162500,
+        size.width * 0.8410417,
+        size.height * 1.1008333,
+        size.width * 0.9991667,
+        size.height * 0.6666667);
+    path_0.quadraticBezierTo(size.width * 0.9995833, size.height * 0.4991667,
+        size.width * 1.0008333, size.height * -0.0033333);
+    path_0.lineTo(0, size.height * -0.0033333);
+    path_0.close();
+
+    canvas.drawPath(path_0, paintFill0);
+
+    // Layer 1
+
+    Paint paintStroke0 = Paint()
+      ..color = const Color.fromARGB(255, 33, 150, 243)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width * 0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+
+    canvas.drawPath(path_0, paintStroke0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

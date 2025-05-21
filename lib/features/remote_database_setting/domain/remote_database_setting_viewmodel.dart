@@ -1,20 +1,19 @@
-import 'dart:io';
-
 import 'package:get/get.dart';
-import '../../../core/utils/response_result.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'remote_database_setting_service.dart';
 
-class DatabaseSettingController extends GetxController {
-  static DatabaseSettingController? _instance;
+class DatabaseSettingLocalController extends GetxController {
+  static DatabaseSettingLocalController? _instance;
   var isLoading = false.obs;
+  RxString errorMessage = ''.obs;
   late RemoteDatabaseSettingService databaseSettingService;
 
-  DatabaseSettingController._() {
+  DatabaseSettingLocalController._() {
     databaseSettingService = RemoteDatabaseSettingService();
   }
 
-  static DatabaseSettingController getInstance() {
-    _instance ??= DatabaseSettingController._();
+  static DatabaseSettingLocalController getInstance() {
+    _instance ??= DatabaseSettingLocalController._();
     return _instance!;
   }
 
@@ -29,42 +28,29 @@ class DatabaseSettingController extends GetxController {
     if SocketException return You Don't have an Internet Connection
     else return Failed to connect with server
   */
-  Future<ResponseResult> checkDatabase(String loginKey) async {
-    isLoading.value = true;
-    dynamic result;
-    // var databaseSettingResult =
-    //     await databaseSettingService.checkKeyLogin(loginKey: loginKey);
+  // Future<ResponseResult> checkDatabase(
+  //     SubscriptionInfo subscriptionInfo) async {
+  //   isLoading.value = true;
+  //   dynamic result;
+  //   var connectivityResult = await (Connectivity().checkConnectivity());
 
-    // if (databaseSettingResult is SubscriptionInfo) {
-    //   await SharedPr.setRemoteDatabaseInfo(
-    //       subscriptionInfo: databaseSettingResult);
+  //   if (!connectivityResult.contains(ConnectivityResult.none)) {
+  //     var checkConnectionResult = await RemoteDatabaseSettingService()
+  //         .checkConnection(subscriptionInfo: subscriptionInfo);
 
-    //   var checkConnectionResult = await RemoteDatabaseSettingService()
-    //       .checkConnection(databaseSettingModel: databaseSettingResult);
-
-    //   if (checkConnectionResult is bool && checkConnectionResult == true) {
-    //     result = ResponseResult(status: true);
-    //   } else {
-    //     result = ResponseResult(
-    //         data: databaseSettingResult.subscriptionId,
-    //         message: "send_ticket_message".tr);
-
-    //     databaseSettingResult
-    //       ..db
-    //       ..url = null;
-    //     await SharedPr.setRemoteDatabaseInfo(
-    //         subscriptionInfo: databaseSettingResult);
-    //   }
-    // } else if (databaseSettingResult is String) {
-    //   result = ResponseResult(message: databaseSettingResult);
-    // } else if (databaseSettingResult is SocketException) {
-    //   result = ResponseResult(message: "no_connection".tr);
-    // } else {
-    //   result = ResponseResult(message: databaseSettingResult.toString());
-    // }
-    isLoading.value = false;
-    return result!;
-  }
+  //     if (checkConnectionResult is bool && checkConnectionResult == true) {
+  //       result = ResponseResult(status: true);
+  //       await SharedPr.setRemoteDatabaseInfo(
+  //           subscriptionInfo: subscriptionInfo);
+  //     } else {
+  //       result = ResponseResult(message: "invalid_dborurl_message".tr);
+  //     }
+  //   } else {
+  //     result = ResponseResult(message: "no_connection".tr);
+  //   }
+  //   isLoading.value = false;
+  //   return result!;
+  // }
 
   // ========================================== [ checkDatabase ] =============================================
 }

@@ -1,34 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class LoginInfo {
-  String? userName;
-  String? password;
-  String? db;
-  String? url;
-  String? pinCode;
+  String? visaNumber;
+  String? pinNumber;
   LoginInfo({
-    this.userName,
-    this.password,
-    this.db,
-    this.url,
-    this.pinCode,
+    this.visaNumber,
+    this.pinNumber,
   });
 
   LoginInfo.fromJson(Map<String, dynamic> json) {
-    userName = json['user_name']??'';
-    password = json['password'] == '' ? null : json['password'];
-    db = json['db'];
-    url = json['url'];
-    pinCode = json['pin_code']?? '';
-    
+    visaNumber = json['visa_no'] ?? '';
+    pinNumber = json['pin_code'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['user_name'] = userName;
-    data['password'] = password;
-    data['db'] = db;
-    data['url'] = url;
-    data['pin_code'] = pinCode;
+    data['visa_no'] = visaNumber;
+    data['pin_code'] = pinNumber;
     return data;
   }
 }

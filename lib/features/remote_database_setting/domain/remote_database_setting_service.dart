@@ -1,12 +1,8 @@
+import 'package:almirabi/core/config/app_shared_pr.dart';
+import 'package:almirabi/core/config/app_urls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:odoo_rpc/odoo_rpc.dart';
-import '../../../core/config/app_odoo_models.dart';
-import '../../../core/config/app_shared_pr.dart';
-import '../../../core/config/app_urls.dart';
-import '../../authentication/utils/handle_exception_helper.dart';
-import '../data/subscription_info.dart';
 import 'remote_database_setting_repository.dart';
 
 class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
@@ -23,9 +19,11 @@ class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
       // odooSession = await odooClient.authenticate(
       //     db ?? "mydb", username ?? "admin", password ?? "admin");
 
-      odooClient = OdooClient(url ?? remoteURL);
-      odooSession = await odooClient.authenticate(db ?? remotedB,
-          username ?? remoteUsername, password ?? remotePassword);
+      odooClient = OdooClient(url ?? SharedPr.subscriptionDetailsObj?.url);
+      odooSession = await odooClient.authenticate(
+          db ?? SharedPr.subscriptionDetailsObj?.db,
+          username ?? remoteUsername,
+          password ?? remotePassword);
 
       await SharedPr.setSessionId(
           sessionId: "session_id=${odooSession.id}"); // output OdooSession
@@ -49,24 +47,30 @@ class RemoteDatabaseSettingService implements RemoteDatabaseSettingRepository {
 
   // ========================================== [ Check Connection ] =============================================
 
-  @override
-  Future checkConnection(
-      {required SubscriptionInfo databaseSettingModel}) async {
-    try {
-      http.Response resBody = await http.get(Uri.parse(
-          '${databaseSettingModel.url}/web?db=${databaseSettingModel.db}'));
-      if (resBody.statusCode == 200) {
-        if (kDebugMode) {
-          //print(resBody.statusCode);
-        }
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return handleException(
-          exception: e, navigation: false, methodName: "checkConnection");
-    }
-  }
+  // @override
+  // Future checkConnection({required SubscriptionInfo subscriptionInfo}) async {
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('${subscriptionInfo.url}/web/database/list'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     );
+  //     print(response.body);
+  //     http.Response resBody = await http.get(Uri.parse(
+  //         '${subscriptionInfo.url}/web/login?db=${subscriptionInfo.db}'));
+  //     if (resBody.statusCode == 200) {
+  //       if (kDebugMode) {
+  //         //print(resBody.statusCode);
+  //       }
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (e) {
+  //     return handleException(
+  //         exception: e, navigation: false, methodName: "checkConnection");
+  //   }
+  // }
 
   // ========================================== [ Check Connection ] =============================================
 }

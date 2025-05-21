@@ -1,5 +1,5 @@
-import '../data/subscription_info.dart';
 
 abstract class RemoteDatabaseSettingRepository {
-  Future checkConnection({required SubscriptionInfo databaseSettingModel});
+  // Future instantiateOdooConnection({url, db, username, password});
+  // Future checkConnection({required SubscriptionInfo subscriptionInfo});
 }

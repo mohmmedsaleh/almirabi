@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import '../../../core/config/app_odoo_models.dart';
-import '../../../core/config/app_shared_pr.dart';
 import '../../../core/utils/general_local_db.dart';
 import '../../../core/utils/general_odoo_fun.dart';
 import '../data/user.dart';
-import '../utils/handle_exception_helper.dart';
 import '../utils/odoo_connection_helper.dart';
 import 'authentication_repository.dart';
 
@@ -24,34 +22,32 @@ class AuthenticationService implements AuthenticationRepository {
   // ========================================== [ AUTHENTICATE ] =============================================
 
   @override
-  Future authenticate(
-      {required String username, required String password}) async {
+  Future authenticate({required String pinNumber}) async {
     try {
       OdooProjectOwnerConnectionHelper.odooSession = null;
-      await OdooProjectOwnerConnectionHelper.instantiateOdooConnection(
-          username: username, password: password);
-
-      List result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
-        'model': OdooModels.resUsers,
-        'method': 'search_read',
-        'args': [],
-        'kwargs': {
-          //'context': {'bin_size': true}, // for user image
-          'domain': [
-            ['id', '=', OdooProjectOwnerConnectionHelper.odooSession!.userId]
-          ],
-          'fields': [
-            'id',
-            'name',
-            'login',
-            'image_1920',
-            'pin_code',
-            'pin_code_lock',
-            'account_lock',
-            'pos_config_ids'
-          ],
-        },
+      await OdooProjectOwnerConnectionHelper.instantiateOdooConnection();
+      // List result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+      //   'model': OdooModels.hremployee,
+      //   'method': 'search_read',
+      //   'args': [],
+      //   'kwargs': {
+      //     //'context': {'bin_size': true}, // for user image
+      //     'domain': [
+      //       ['driver_emp', '=', true],
+      //       ['pin', '=', pinNumber],
+      //       ['visa_no', '=', visaNumber],
+      //     ],
+      //   },
+      // });
+      var result = await OdooProjectOwnerConnectionHelper.odooClient.callKw({
+        'model': OdooModels.transfunctions,
+        'method': 'authentication_login',
+        'args': [pinNumber],
+        'kwargs': {},
       });
+      if (result is bool) {
+        return 'user_not_found'.tr;
+      }
       // _GeneralOdooFunInstance = GeneralOdooFun.getInstance<Customer>(
       //     fromJsonFun: Customer.fromJson, modelName: OdooModels.customer);
       // int affectedRows = await _GeneralOdooFunInstance!.show(id: 0);
@@ -59,7 +55,7 @@ class AuthenticationService implements AuthenticationRepository {
       // print(affectedRows);
       // print("object==========ddd====================");
       // print(result.first);
-      return User.fromJson(result.first);
+      return User.fromJson(result);
     } on OdooSessionExpiredException {
       // OdooProjectOwnerConnectionHelper.sessionClosed = true;
       // if (kDebugMode) {
@@ -67,6 +63,7 @@ class AuthenticationService implements AuthenticationRepository {
       // }
       return 'session_expired'.tr;
     } on OdooException catch (e) {
+      return e.toString().replaceFirst('Exception: ', '');
     } catch (e) {
       // return "exception".tr;
       return e.toString().replaceFirst('Exception: ', '');
